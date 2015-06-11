@@ -1,0 +1,85 @@
+
+
+.site{
+	height: 100%;
+	position: relative;
+	-webkit-transition: all 3s ease-in-out;
+	// transform: translate3d(0px, 600px, 0);
+}
+.site-nav {
+	height: 61px;
+	width: 100%;
+	position: fixed;
+	z-index: 100;
+	//transition-delay: .7s; //medium screen
+    transition-delay: .50s; // on way down workd good
+	//-webkit-transition: all 1.5s ease-in-out;
+}
+
+.nav-bar-bg {
+	height: 100%;
+	background: url(../img/header-new.svg);
+	background-size: cover;
+}
+
+div#imageMorph.section.fp-section.fp-table.active {
+	margin-top: 0;
+}
+
+
+.codicated-big-logo {
+	display: block;
+	width: 80%;
+	margin: 10% auto;
+}
+
+// #imageMorph {
+// 	-webkit-transition: all 3s ease-in-out; 
+// 	transform: translate3d(0px, 600px, 0);
+// }
+
+.iconId {
+  display: block;
+  box-sizing: border-box;
+  width:100%;
+  // height:250px;
+  background: #FFF;
+  margin:auto;
+  padding: 60px;
+
+  position: relative;
+  max-height: 100%;
+  -webkit-transition: all .01s ease-in-out; 
+}
+
+.rec-svg {
+	//height: 3em;
+}
+
+.nav-after-logo-animation {
+	padding: 0;
+	// position:fixed;
+	display: block;
+  	box-sizing: border-box;
+  	//width:110em;
+  	width: 100%;
+  	max-height: 3.8em;
+  	text-align: center;
+  	background: #FFF;
+  	
+  	position: relative;
+  	//top: 22.5em;
+  	top: 54.8%;
+  	//top: 94.3%;
+  	//top: 9.4%; //vertical align bottom
+    // height: 100%;
+	-webkit-transition: all 2.7s ease-in-out; 
+
+}
+
+.nav-after-class-toggle {
+	padding: 0;
+	position:fixed;
+	margin-top: -35%;
+	-webkit-transition: all 1.5s ease-in-out;
+}
