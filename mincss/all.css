@@ -92,12 +92,20 @@ h2,h3{page-break-after:avoid}
 #fp-nav ul li .fp-tooltip.right{right:20px}
 #fp-nav ul li .fp-tooltip.left{left:20px}
 body,html{width:100%;height:100%}
+svg{fill:#c0c1c3}
 .site{height:100%;position:relative;-webkit-transition:all 3s ease-in-out}
 .site-nav{height:61px;width:100%;position:fixed;z-index:100;transition-delay:.5s}
 .nav-bar-bg{height:100%;background:url(../img/header-new.svg);background-size:cover}
 div#imageMorph.section.fp-section.fp-table.active{margin-top:0}
 .codicated-big-logo{display:block;width:80%;margin:10% auto}
 .iconId,.nav-after-logo-animation{display:block;box-sizing:border-box;width:100%;background:#FFF;position:relative}
-.iconId{margin:auto;padding:60px;max-height:100%;-webkit-transition:all .01s ease-in-out}
+.iconId{margin:auto;padding:60px;top:0;max-height:100%;-webkit-transition:all .01s ease-in-out}
 .nav-after-logo-animation{padding:0;max-height:3.8em;text-align:center;top:54.8%;-webkit-transition:all 2.7s ease-in-out}
 .nav-after-class-toggle{padding:0;position:fixed;margin-top:-35%;-webkit-transition:all 1.5s ease-in-out}
+.mission-statement,.responsive-web-dev{display:inline-block;height:100%;position:relative}
+.mission-statement{background-color:#222;float:left;width:60%;top:100%;-webkit-transition:all .9s ease-in-out}
+.mission-statement #small-logo{width:40%;margin:4em 4em 4em -100%;-webkit-transition:all 2s ease-in-out}
+.mission-statement h1{color:#fff;margin:.5em 2em}
+.responsive-web-dev{background-color:#fafaf7;width:40%;text-align:center;color:#36f;-webkit-transition:all 1.2s ease-in-out;-webkit-transition-delay:.9s;margin-left:-100%;z-index:-100}
+.responsive-web-dev img{width:85%;margin:1em auto}
+.responsive-web-dev h2{margin:2.6em .5em .5em}

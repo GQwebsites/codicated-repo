@@ -2311,7 +2311,9 @@ $(document).ready(function() {
                 $(".fp-section").css({"margin-top" : "3.8em"});
 				$("#icon").attr('class', 'nav-after-logo-animation');
 				$("#imageMorph").css({"margin-top" : "0"});
-                //$(".fp-tableCell").css({'vertical-align' : 'top'});
+                $(".mission-statement").css({"top" : "0"});
+                $(".responsive-web-dev").css({"margin-left" : "0"});
+                $("#small-logo").css({"margin" : "4em 4em 4em 4em"});
 				
 
 				
@@ -2328,7 +2330,7 @@ $(document).ready(function() {
             }
          },afterLoad: function(anchorLink, index){
          	if(index == 2){
-                 $(".site-nav").css({'background-color':"#18598c"});
+                 $(".site-nav").css({'background-color':"#c0c1c3"});
                  //$(".fp-tableCell").css({'vertical-align' : 'top'});
              }
             if(index == 1) {
