@@ -1,6 +1,10 @@
+
 $(document).ready(function() {
-    // $('#fullpage').fullpage();
-    var myIcons = new SVGMorpheus('#icon')
+    
+    var myIcons = new SVGMorpheus('#icon'),
+        $siteNav = $("#site-nav"),
+        $icon    = $("#icon");
+        //phoneI = new Vivus('phone-icon', {type: 'delayed', duration: 455,});
 
     $('#fullpage').fullpage({
     	scrollingSpeed: 2000,
@@ -11,37 +15,89 @@ $(document).ready(function() {
             if(index == 1 && direction =='down'){
                 
                 myIcons.to('rec-svg',{duration:1000});
-                $(".fp-section").css({"margin-top" : "3.8em"});
-				$("#icon").attr('class', 'nav-after-logo-animation');
+                $(".navLine").css({'background-color': '#fff','opacity': '0'});
+				$icon.attr('class', 'nav-after-logo-animation');
 				$("#imageMorph").css({"margin-top" : "0"});
-                $(".mission-statement").css({"top" : "0"});
-                $(".responsive-web-dev").css({"margin-left" : "0"});
-                $("#small-logo").css({"margin" : "4em 4em 4em 4em"});
+                $("#push-left-text").css({"right" : "0", "opacity" : "1"});
+                $("#small-logo").css({"margin" : "4em 4em 4em 4em", "opacity" : "1"});
 				
 
 				
             }
 
-            else if(index == 2 && direction == 'up'){
-
+            if(index == 2 && direction == 'up'){
+                $(".navLine").css({'background-color': '#000','opacity': '0'});
+                $("#codicated-c").css({"opacity" : "0"});
                 myIcons.to('codicated-logo-svg',{duration:1000});
-                $(".site-nav").css({'background-color':"transparent"});
-				$("#icon").attr('class', 'iconId');
+                $siteNav.css({'background-color':"transparent"});
+				$icon.attr('class', 'iconId');
                 //$(".fp-tableCell").css({'vertical-align' : 'top'});
 				
 				
             }
-         },afterLoad: function(anchorLink, index){
-         	if(index == 2){
-                 $(".site-nav").css({'background-color':"#c0c1c3"});
-                 //$(".fp-tableCell").css({'vertical-align' : 'top'});
+
+
+            if(index == 2 && direction == 'down'){
+
+                $(".project-title").css({"left" : "0", "opacity" : "1"});
+                $(".project-paragraph").css({"left" : "0", "opacity" : "1"});
+                //$(".fp-section").css({"margin-top" : "0"});
+                
+                
+            }
+
+             if(index == 3 && direction == 'down'){
+                aboutUsDrawFillAnimation();
+                servicesDrawFillAnimation();
+                 phoneDrawFillAnimation();
              }
-            if(index == 1) {
-                //$(".fp-tableCell").css({'vertical-align' : 'top'});
+
+         },afterLoad: function(anchorLink, index){
+            if(index == 1){
+                $(".navLine").css({"opacity" : "1"});
+
             }
+         	if(index == 2){
+                 $siteNav.css({'background-color':"#c0c1c3"});
+                 $(".navLine").css({"opacity" : "1"});
+                 //$("#site-nav").addClass('nav-gradient-background');
+                 $("#codicated-c").css({"opacity" : "1"});
+             }
+             // if(index == 3){
+             //    phoneI.reset();
+             // }
+             if(index == 4){
+                 //phoneI.play();
+             }
+
+            // if(index == 4) {
+            //     var phoneI = new Vivus('phone-icon', {type: 'delayed', duration: 150});
+            //      phoneI.reset().play();
+            //  }
            }
     });
 });
+
+function aboutUsDrawFillAnimation() {
+                    var myAnimation = new DrawFillSVG({
+                      elementId: "about-us-icon"
+                    });
+                  };
+
+function servicesDrawFillAnimation() {
+                    var myAnimation = new DrawFillSVG({
+                      elementId: "services-icon"
+                    });
+                  };
+
+function phoneDrawFillAnimation() {
+                    var myAnimation = new DrawFillSVG({
+                      elementId: "phone-icon"
+                    });
+                  };
+
+// Inline SVG
+//new Vivus('phone-icon', {type: 'delayed', duration: 200}, myCallback);
 
 
 // $(".site-nav").css({'background-color':"#18598c"});

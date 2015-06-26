@@ -9,11 +9,13 @@ html,body {
 $codicated-primary-color: #c0c1c3;
 
 $codicated-secondary-color: #222222;
-$codicated-secondary-hover: $codicated-secondary-color -100;
+$codicated-secondary-hover: $codicated-secondary-color + #fff;
+
+$footer-contact-color: #c0c1c3;
 
 $codicated-white-color: #fafaf7;
 
-$codicated-small-page-logo: #ffcc33;
+$codicated-small-page-logo: #4a4941;
 
 $codicated-blue-color: #3366ff;
 
