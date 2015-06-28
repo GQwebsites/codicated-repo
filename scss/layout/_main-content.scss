@@ -37,7 +37,7 @@
 	width: 40%;
 	height: 100%;
 	text-align: center;
-	color:$codicated-blue-color;
+	color:$codicated-secondary-color;
 	position: relative;
 	//top: 100%;
 	-webkit-transition: all 1.2s ease-in-out;
@@ -70,6 +70,7 @@
 	h2 {
 		color: $codicated-small-page-logo;
 		text-align: center;
+    font-weight: bold;
 	}
 	p{
 		text-align: center;
@@ -103,6 +104,7 @@
 				-webkit-transition: all 1.6s ease-in-out;
 				-webkit-margin-before: 0em;
 				-webkit-margin-after: 0em;
+        font-weight: bold;
 				
 			}
 			.project-paragraph {

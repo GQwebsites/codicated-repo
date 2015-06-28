@@ -2,6 +2,10 @@ html, body {
   width: 100%;
   height: 100%; }
 
+h1, h2, h3, p {
+  font-family: "Roboto", sans-serif;
+  font-weight: lighter; }
+
 svg {
   fill: #c0c1c3; }
 
@@ -72,8 +76,14 @@ svg {
   background: url(../img/header-new.svg);
   background-size: cover; }
 
+#fullpage {
+  height: 100%; }
+
 div#imageMorph.section.fp-section.fp-table.active {
   margin-top: 0; }
+
+#imageMorph {
+  height: 100%; }
 
 .codicated-big-logo {
   display: block;
@@ -140,7 +150,7 @@ div#imageMorph.section.fp-section.fp-table.active {
   width: 40%;
   height: 100%;
   text-align: center;
-  color: #3366ff;
+  color: #222222;
   position: relative;
   -webkit-transition: all 1.2s ease-in-out; }
   .responsive-web-dev img {
@@ -161,7 +171,8 @@ div#imageMorph.section.fp-section.fp-table.active {
   top: 3.8em; }
   .recent-projects h2 {
     color: #4a4941;
-    text-align: center; }
+    text-align: center;
+    font-weight: bold; }
   .recent-projects p {
     text-align: center; }
   .recent-projects .projects-block {
@@ -187,7 +198,8 @@ div#imageMorph.section.fp-section.fp-table.active {
         left: -100%;
         -webkit-transition: all 1.6s ease-in-out;
         -webkit-margin-before: 0em;
-        -webkit-margin-after: 0em; }
+        -webkit-margin-after: 0em;
+        font-weight: bold; }
       .recent-projects .projects .project-description .project-paragraph {
         margin-top: 0;
         padding-left: .6em;

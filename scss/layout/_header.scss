@@ -1,4 +1,7 @@
-
+h1, h2, h3, p {
+  font-family: $main-font;
+  font-weight: lighter;
+}
 
 svg {
 	fill: #c0c1c3;
@@ -133,8 +136,17 @@ svg {
 	background-size: cover;
 }
 
+#fullpage {
+  height: 100%;
+}
+
 div#imageMorph.section.fp-section.fp-table.active {
 	margin-top: 0;
+  //height: 100%;
+}
+
+#imageMorph {
+  height: 100%;
 }
 
 
