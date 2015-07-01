@@ -696,7 +696,7 @@ svg {
 }
 
 .threeD {
-  -webkit-perspective: 200px;
+  -webkit-perspective: 220em;
   -webkit-transition: all .07s linear;
   position: absolute;
   height: 61px;
@@ -704,7 +704,7 @@ svg {
 }
 
 .threedbox:hover {
-  -webkit-transform: rotateX(100deg) translateZ(0px);
+  -webkit-transform: rotateX(90deg) translateZ(0px);
 }
 
 .threedbox {
@@ -724,7 +724,6 @@ svg {
   width: 100%;
   position: fixed;
   z-index: 100;
-  -webkit-transition-delay: .50s;
   transition-delay: .50s;
 }
 
@@ -732,7 +731,6 @@ svg {
   height: 61px;
   background: transparent;
   -webkit-transform: rotateX(0deg) translateZ(25px);
-  -webkit-transition-delay: .50s;
   transition-delay: .50s;
 }
 
@@ -743,31 +741,30 @@ svg {
   opacity: 0;
 }
 
-#site-nav #front .nav-line-container {
+#site-nav #back {
+  height: 61px;
+  background: #7ed0e3;
+  -webkit-transform: rotateX(-90deg) translateZ(31px);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transition-delay: .50s;
+}
+
+.nav-line-container {
   float: right;
   padding: .8em;
 }
 
-#site-nav #front .nav-line-container .navLine {
+.nav-line-container .navLine {
   width: 2.8em;
   height: 4px;
   border-radius: 1em;
   margin-bottom: .6em;
   background-color: #000;
   -webkit-transition: all .4s ease-in-out;
-}
-
-#site-nav #back {
-  height: 61px;
-  background: transparent;
-  -webkit-transform: rotateX(-100deg) translateZ(25px);
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  -webkit-transition-delay: .50s;
-  transition-delay: .50s;
 }
 
 @-webkit-keyframes bounceIn {
@@ -793,23 +790,19 @@ svg {
 @keyframes bounceIn {
   0% {
     opacity: 0;
-    -webkit-transform: scale(0.3);
     transform: scale(0.3);
   }
 
   50% {
     opacity: 1;
-    -webkit-transform: scale(1.05);
     transform: scale(1.05);
   }
 
   70% {
-    -webkit-transform: scale(0.9);
     transform: scale(0.9);
   }
 
   100% {
-    -webkit-transform: scale(1);
     transform: scale(1);
   }
 }
@@ -880,7 +873,7 @@ div#imageMorph.section.fp-section.fp-table.active {
 }
 
 .mission-statement {
-  background-color: #222222;
+  background-color: #f46c6c;
   display: inline-block;
   float: left;
   width: 60%;
@@ -903,11 +896,11 @@ div#imageMorph.section.fp-section.fp-table.active {
 
 .responsive-web-dev {
   display: inline-block;
-  background-color: #fafaf7;
+  background-color: #ffe6b3;
   width: 40%;
   height: 100%;
   text-align: center;
-  color: #222222;
+  color: #474747;
   position: relative;
   -webkit-transition: all 1.2s ease-in-out;
 }
@@ -953,13 +946,13 @@ div#imageMorph.section.fp-section.fp-table.active {
   overflow-x: hidden;
   display: inline-block;
   margin: 2em 2em;
-  background-color: #222222;
+  background-color: #fff;
 }
 
 .recent-projects .projects .project-description {
   width: 100%;
   height: 100%;
-  background-color: #c0c1c3;
+  background-color: #ffe6b3;
   text-align: left;
 }
 
@@ -1099,13 +1092,13 @@ div#imageMorph.section.fp-section.fp-table.active {
 }
 
 .footerColor {
-  background: #222222;
+  background: #ffe6b3;
 }
 
 .footerSection {
   width: 100%;
   height: 100%;
-  background: #222222;
+  background: #ffe6b3;
   position: relative;
   top: 3.8em;
 }
@@ -1116,7 +1109,7 @@ div#imageMorph.section.fp-section.fp-table.active {
   padding: 0;
   width: 50%;
   margin: 15% auto 5%;
-  border-bottom: 1px solid #c0c1c3;
+  border-bottom: 1px solid #29b2d1;
 }
 
 .footerSection li {
@@ -1128,11 +1121,12 @@ div#imageMorph.section.fp-section.fp-table.active {
 }
 
 .footerSection li p {
-  color: #fff;
+  font-size: 1.2em;
+  color: #29b2d1;
 }
 
 .bottomFooter {
-  background: #222222;
+  background: #ffe6b3;
   position: absolute;
   bottom: 7.4em;
 }

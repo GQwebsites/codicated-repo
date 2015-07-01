@@ -2485,7 +2485,7 @@ $(document).ready(function() {
                 myIcons.to('codicated-logo-svg',{duration:1000});
                 $siteNav.css({'background':"transparent"});
                 $("#front").css({'background-color':"transparent"});
-                $("#back").css({'background-color':"transparent"});
+                //$("#back").css({'background-color':"transparent"});
 				$icon.attr('class', 'iconId');
                 //$(".fp-tableCell").css({'vertical-align' : 'top'});
 				
@@ -2515,8 +2515,8 @@ $(document).ready(function() {
             }
          	if(index == 2){
                  $siteNav.css({'background-color':"#fff"});
-                 $("#front").css({'background-color':"#c0c1c3"});
-                 $("#back").css({'background-color':"#067391"});
+                 $("#front").css({'background-color':"#29b2d1"});
+                 //$("#back").css({'background-color':"#067391"});
                  $(".navLine").css({"opacity" : "1"});
                  //$("#site-nav").addClass('nav-gradient-background');
                  $("#codicated-c").css({"opacity" : "1"});

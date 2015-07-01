@@ -37,7 +37,7 @@
 	width: 40%;
 	height: 100%;
 	text-align: center;
-	color:$codicated-secondary-color;
+	color:$codicated-grey;
 	position: relative;
 	//top: 100%;
 	-webkit-transition: all 1.2s ease-in-out;
@@ -86,12 +86,12 @@
 		overflow-x: hidden;
 		display: inline-block;
 		margin: 2em 2em;
-		background-color: $codicated-secondary-color;
+		background-color: $reg-white;
 
 		.project-description {
 			width: 100%;
 			height: 100%;
-			background-color: $codicated-primary-color;
+			background-color: $codicated-white-color;
 			text-align: left;
 
 			.project-title {
