@@ -69,29 +69,12 @@ svg {
          opacity: 0;
          //-webkit-animation: linear bounceIn 1s;
     	}
-
-
-
-    	// .nav-line-container {
-    	// 	float: right;
-    	// 	padding: .8em;
-
-    	// 	.navLine{
-    	// 		width: 2.8em;
-    	// 		height: 4px;
-    	// 		border-radius: 1em;
-    	// 		margin-bottom: .6em;
-    	// 		background-color: #000;
-    	// 		-webkit-transition: all .4s ease-in-out;
-
-    	// 	}
-    	// }
     }
 
 
     #back {
       height: 61px;
-      background: #7ed0e3;
+      background: $nav-back;
       -webkit-transform: rotateX(-90deg)translateZ(31px);
       position: absolute;
       height: 100%;
