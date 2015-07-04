@@ -2458,7 +2458,11 @@ $(document).ready(function() {
     var myIcons = new SVGMorpheus('#icon'),
         $siteNav = $("#site-nav"),
         $icon    = $("#icon");
-        //phoneI = new Vivus('phone-icon', {type: 'delayed', duration: 455,});
+        
+        //Toggle Menu open & close
+        $(".nav-line-container").on( "click", function() {
+                    $(".threedbox").toggleClass('threedbox-open-menu');
+                });
 
     $('#fullpage').fullpage({
     	scrollingSpeed: 2000,
@@ -2466,6 +2470,21 @@ $(document).ready(function() {
             var leavingSection = $(this);
 
             //after leaving section 2
+            if(index == 1 && direction =='down' && $('#boxthreed').hasClass('threedbox-open-menu')){
+                $('.threeD').css({'opacity': '0'});
+                $(".threedbox").toggleClass('threedbox-open-menu');
+                myIcons.to('rec-svg',{duration:1000});
+                $(".navLine").css({'background-color': '#fff','opacity': '0'});
+                $icon.attr('class', 'nav-after-logo-animation');
+                $("#imageMorph").css({"margin-top" : "0"});
+                $("#push-left-text").css({"right" : "0", "opacity" : "1"});
+                $("#small-logo").css({"margin" : "4em 4em 4em 4em", "opacity" : "1"});
+
+                
+
+                
+            }
+
             if(index == 1 && direction =='down'){
                 
                 myIcons.to('rec-svg',{duration:1000});
@@ -2479,7 +2498,8 @@ $(document).ready(function() {
 				
             }
 
-            if(index == 2 && direction == 'up'){
+            if(index == 2 && direction == 'up' && $("#boxthreed").hasClass('threedbox-open-menu')){
+                $(".threedbox").toggleClass('threedbox-open-menu');
                 $(".navLine").css({'background-color': '#000','opacity': '0'});
                 $("#codicated-c").css({"opacity" : "0"});
                 myIcons.to('codicated-logo-svg',{duration:1000});
@@ -2490,6 +2510,20 @@ $(document).ready(function() {
                 //$(".fp-tableCell").css({'vertical-align' : 'top'});
 				
 				
+            }
+
+            if(index == 2 && direction == 'up'){
+                //$(".threedbox").toggleClass('threedbox-open-menu');
+                $(".navLine").css({'background-color': '#000','opacity': '0'});
+                $("#codicated-c").css({"opacity" : "0"});
+                myIcons.to('codicated-logo-svg',{duration:1000});
+                $siteNav.css({'background':"transparent"});
+                $("#front").css({'background-color':"transparent"});
+                //$("#back").css({'background-color':"transparent"});
+                $icon.attr('class', 'iconId');
+                //$(".fp-tableCell").css({'vertical-align' : 'top'});
+                
+                
             }
 
 
@@ -2511,10 +2545,12 @@ $(document).ready(function() {
          },afterLoad: function(anchorLink, index){
             if(index == 1){
                 $(".navLine").css({"opacity" : "1"});
+                //$(".treedbox").toggleClass('threedbox-open-menu');
 
             }
          	if(index == 2){
-                 $siteNav.css({'background-color':"#fff"});
+                 $('.threeD').css({'opacity': '1'});
+                 //$siteNav.css({'background-color':"#fff", 'position':'fixed'});
                  $("#front").css({'background-color':"#29b2d1"});
                  //$("#back").css({'background-color':"#067391"});
                  $(".navLine").css({"opacity" : "1"});

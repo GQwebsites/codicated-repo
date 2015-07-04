@@ -703,10 +703,6 @@ svg {
   width: 100%;
 }
 
-.threedbox:hover {
-  -webkit-transform: rotateX(90deg) translateZ(0px);
-}
-
 .threedbox {
   height: 61px;
   position: absolute;
@@ -715,6 +711,18 @@ svg {
   display: block;
   width: 100%;
   -webkit-transform: translateZ(-25px);
+  -webkit-transition: all .5s ease-out;
+  -webkit-transform-style: preserve-3d;
+}
+
+.threedbox-open-menu {
+  height: 61px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  -webkit-transform: rotateX(90deg) translateZ(0px);
   -webkit-transition: all .5s ease-out;
   -webkit-transform-style: preserve-3d;
 }

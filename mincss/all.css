@@ -74,10 +74,10 @@ body,html{width:100%;height:100%}
 h1,h2,h3,p{font-family:Roboto,sans-serif;font-weight:lighter}
 svg{fill:#c0c1c3}
 .site{height:100%;position:relative;-webkit-transition:all 3s ease-in-out}
-.threeD,.threedbox{width:100%;position:absolute}
-.threeD{-webkit-perspective:220em;-webkit-transition:all .07s linear;height:61px}
-.threedbox:hover{-webkit-transform:rotateX(90deg)translateZ(0)}
-.threedbox{height:61px;top:0;left:0;display:block;-webkit-transform:translateZ(-25px);-webkit-transition:all .5s ease-out;-webkit-transform-style:preserve-3d}
+.threeD{-webkit-perspective:220em;-webkit-transition:all .07s linear;position:absolute;height:61px;width:100%}
+.threedbox,.threedbox-open-menu{left:0;top:0;width:100%;height:61px;position:absolute;display:block;-webkit-transition:all .5s ease-out;-webkit-transform-style:preserve-3d}
+.threedbox{-webkit-transform:translateZ(-25px)}
+.threedbox-open-menu{-webkit-transform:rotateX(90deg)translateZ(0)}
 #site-nav{height:61px;width:100%;position:fixed;z-index:100;transition-delay:.5s}
 #site-nav #front{height:61px;background:0 0;-webkit-transform:rotateX(0)translateZ(25px);transition-delay:.5s}
 #site-nav #front #codicated-c{height:80%;margin:.4em .2em;-webkit-transition:all .4s ease-in-out;opacity:0}
