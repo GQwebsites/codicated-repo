@@ -17,55 +17,104 @@ svg {
 	-webkit-transition: all 3s ease-in-out;
 	
 }
+
+.threeD {
+  -webkit-perspective: 220em;
+  -webkit-transition: all .07s linear;
+  position: absolute;
+  height: 61px;
+  width: 100%;
+}
+
+// .threedbox:hover {
+//   -webkit-transform:  rotateX(90deg) translateZ(0px);
+// }
+
+
+.threedbox {
+      height:61px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      //background: #079391;
+      -webkit-transform: translateZ(-25px);
+      -webkit-transition: all .5s ease-out;
+      -webkit-transform-style: preserve-3d;
+    }
+
+.threedbox-open-menu {
+      height:61px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      //background: #079391;
+      -webkit-transform:  rotateX(90deg) translateZ(0px);
+      -webkit-transition: all .5s ease-out;
+      -webkit-transform-style: preserve-3d;
+    }
+    
 #site-nav {
 	height: 61px;
 	width: 100%;
 	position: fixed;
 	z-index: 100;
-	// background-image: -webkit-linear-gradient(top,rgba(255,255,255,.05)50%,rgba(0,0,0,.02)51%);
-	// background-image: linear-gradient(to bottom,rgba(255,255,255,.05)50%,rgba(0,0,0,.02)51%);
-	// background-size: 100%;
-	// background-repeat: no-repeat;
 	
     transition-delay: .50s; // on way down workd good
+    //-webkit-transition: all .4s ease-in-out;
 	//-webkit-transition: all 1.5s ease-in-out;
 
-// .nav-gradient-background {
-// 	background-color: #c0c1c3;
-// 	background-image: -webkit-linear-gradient(top,rgba(255,255,255,.05)50%,rgba(0,0,0,.02)51%);
-// 	background-image: linear-gradient(to bottom,rgba(255,255,255,.05)50%,rgba(0,0,0,.02)51%);
-// 	background-size: 100%;
-// 	background-repeat: no-repeat;
-// }
+  #front {
+      height: 61px;
+      background: transparent;
+      -webkit-transform: rotateX(0deg) translateZ(25px);
+      transition-delay: .50s;
+    
 
-// @-webkit-keyframes ROTATE {
-//   0% {
-//     -webkit-transform: rotateX(70deg) rotate(0); 
-//   }
-  
-//   50% {
-//     -webkit-transform: rotateX(75deg) rotate(360deg); 
-//   }
 
-//   100% {
-//     -webkit-transform: rotateX(70deg) rotate(720deg); 
-//   }
-// }	
+    	#codicated-c{
+    	height: 80%;
+        margin: .4em .2em;
+         -webkit-transition: all .4s ease-in-out;
+         opacity: 0;
+         //-webkit-animation: linear bounceIn 1s;
+    	}
+    }
 
-	#codicated-c{
-	height: 80%;
-    margin: .4em .2em;
-     -webkit-transition: all .4s ease-in-out;
-     opacity: 0;
-     //-webkit-animation: linear bounceIn 1s;
-	}
 
-	.animated { 
-    -webkit-animation-duration: 1s; 
-    animation-duration: 1s; 
-    -webkit-animation-fill-mode: both; 
-    animation-fill-mode: both; 
-} 
+    #back {
+      height: 61px;
+      background: $nav-back;
+      -webkit-transform: rotateX(-90deg)translateZ(31px);
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      transition-delay: .50s;
+      //-webkit-transition: all .5s ease-out;
+      //-webkit-transform-style: preserve-3d;
+    }
+}
+
+.nav-line-container {
+        float: right;
+        padding: .8em;
+
+        .navLine{
+          width: 2.8em;
+          height: 4px;
+          border-radius: 1em;
+          margin-bottom: .6em;
+          background-color: #000;
+          -webkit-transition: all .4s ease-in-out;
+
+        }
+      }
+
 
 @-webkit-keyframes bounceIn { 
     0% { 
@@ -107,27 +156,10 @@ svg {
     } 
 } 
 
-.bounceIn { 
-    -webkit-animation-name: bounceIn; 
-    animation-name: bounceIn; 
-}
-
-
-
-	.nav-line-container {
-		float: right;
-		padding: .8em;
-
-		.navLine{
-			width: 2.8em;
-			height: 4px;
-			border-radius: 1em;
-			margin-bottom: .6em;
-			background-color: #000;
-			-webkit-transition: all .4s ease-in-out;
-
-		}
-	}
+div#site-nav:hover {
+  //height:200px;
+  //background-color: #222222;
+  //-webkit-transform: rotateX(90deg); 
 }
 
 .nav-bar-bg {
