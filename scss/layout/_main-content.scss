@@ -97,7 +97,8 @@
 			.project-title {
 				padding:.6em 0 0 .6em;
 				opacity: 0;
-				margin-bottom: 0;
+        margin: 0;
+				// margin-bottom: 0;
 				color: $codicated-small-page-logo;
 				position: relative;
 				left: -100%;
@@ -108,8 +109,9 @@
 				
 			}
 			.project-paragraph {
-				margin-top: 0;
-				padding-left: .6em;
+				margin:0;
+        padding: 0 .6em .6em;
+				//padding-left: .6em;
 				position: relative;
 				left: -100%;
 				opacity: 0;
@@ -128,8 +130,8 @@
 /* Hover Transition */
  
 .wrapper {
-  overflow: hidden;
-  display: inline-block;
+  overflow: hidden; 
+  //display: inline-block; This didnt work properly, left space on top in firefox?
   position: relative;
   height: 100%;
   width: 100%;
@@ -231,4 +233,5 @@
  
   .wrapper img {
     vertical-align: bottom;
+    width: 100%;
   }

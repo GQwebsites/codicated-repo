@@ -2,7 +2,9 @@
             display: inline-block;
 			overflow: hidden;
 			background: $nav-back;
-			padding-left: 5px;
+            padding: 0px 5px 0 0;
+            //padding: 0 5px;
+			//padding-left: 5px;
 			margin: 0;
 			height: 100%;
         }
@@ -32,6 +34,10 @@
             -moz-transition: all .07s linear;
             transition: all .07s linear;
             position: relative;
+        }
+
+        a.three-d.last-menu-item {
+            padding: 16px 17px;
         }
 
 		.three-d:not(.active):hover .three-d-box,
