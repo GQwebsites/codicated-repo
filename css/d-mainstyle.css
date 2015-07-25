@@ -276,7 +276,8 @@ a.three-d.last-menu-item {
     width: 40%;
     margin: 4em 4em 4em -100%;
     opacity: 0;
-    -webkit-transition: all 2s ease-in-out; }
+    -webkit-transition: all 2s ease-in-out;
+    -moz-transition: all 2s ease-in-out; }
   .mission-statement h1 {
     color: #fff;
     margin: .5em 2em; }
@@ -314,7 +315,8 @@ a.three-d.last-menu-item {
     text-align: center; }
   .recent-projects .projects-block {
     text-align: center;
-    -webkit-transition: all 2s ease-in-out; }
+    -webkit-transition: all 2s ease-in-out;
+    -moz-transition: all 2s ease-in-out; }
   .recent-projects .projects {
     width: 25%;
     overflow-x: hidden;
@@ -334,6 +336,7 @@ a.three-d.last-menu-item {
         position: relative;
         left: -100%;
         -webkit-transition: all 1.6s ease-in-out;
+        -moz-transition: all 1.6s ease-in-out;
         -webkit-margin-before: 0em;
         -webkit-margin-after: 0em;
         font-weight: bold; }
@@ -344,7 +347,8 @@ a.three-d.last-menu-item {
         left: -100%;
         opacity: 0;
         text-align: left;
-        -webkit-transition: all 1.6s ease-in-out; }
+        -webkit-transition: all 1.6s ease-in-out;
+        -moz-transition: all 1.6s ease-in-out; }
 
 .bcolor {
   background: #f2f2f2; }
@@ -445,6 +449,73 @@ a.three-d.last-menu-item {
   vertical-align: bottom;
   width: 100%; }
 
+@media screen and (max-width: 600px) {
+  .mission-statement {
+    background-color: #f46c6c;
+    display: inline-block;
+    float: left;
+    height: 30%;
+    position: relative;
+    width: 100%;
+    z-index: -100; }
+
+  .mission-statement #small-logo {
+    margin: 1em;
+    width: 25%;
+    display: none; }
+
+  .mission-statement h1 {
+    font-size: 1.4em;
+    color: #fff;
+    margin: 1em;
+    text-align: center; }
+
+  .responsive-web-dev {
+    background-color: #ffe6b3;
+    color: #474747;
+    display: inline-block;
+    height: 70%;
+    text-align: center;
+    width: 100%; }
+
+  .responsive-web-dev #push-left-text {
+    margin: 0.1em 0.5em 0.5em; }
+
+  .recent-projects h2 {
+    margin: 5.5em 0 0; }
+
+  .recent-projects > p {
+    text-align: center;
+    margin: 0 .3em;
+    display: none; }
+
+  ul.projects-block {
+    margin: 0;
+    padding: 0;
+    width: 100%; }
+
+  .recent-projects .projects {
+    width: 75%;
+    display: block;
+    margin: .5em auto;
+    background-color: #ffe6b3; }
+
+  .wrapper {
+    height: 100%;
+    width: 50%;
+    display: inline-block;
+    float: left; }
+
+  .recent-projects .projects .project-description {
+    width: 50%;
+    text-align: left;
+    display: inline-block; }
+    .recent-projects .projects .project-description .project-title, .recent-projects .projects .project-description .project-paragraph {
+      left: 0px;
+      opacity: 1; }
+
+  .recent-projects {
+    top: 0; } }
 .footerColor {
   background: #ffe6b3; }
 
@@ -453,13 +524,13 @@ a.three-d.last-menu-item {
   height: 100%;
   background: #ffe6b3;
   position: relative;
-  top: 3.8em; }
+  top: 9.8em; }
   .footerSection ul {
     text-align: center;
     display: table;
     padding: 0;
     width: 50%;
-    margin: 15% auto 5%;
+    margin: 0 auto;
     border-bottom: 1px solid #29b2d1; }
   .footerSection li {
     display: inline-block;
@@ -488,3 +559,18 @@ a.three-d.last-menu-item {
 
 #services-icon, #about-us-icon, #phone-icon {
   width: 100%; }
+
+@media screen and (max-width: 600px) {
+  .footerSection ul {
+    width: 90%; }
+
+  .footerSection li {
+    width: 27.7%; }
+
+  .bottomFooter {
+    bottom: 8.4em; }
+
+  .bottomFooter img {
+    width: 70%;
+    margin: 0 auto;
+    display: block; } }

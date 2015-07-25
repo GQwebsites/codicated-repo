@@ -7,7 +7,8 @@
   height:100%;
   background: $codicated-white-color;
   position: relative;
-  top: 3.8em;
+  //top: 3.8em;
+  top: 9.8em;
 
   	ul {
   		text-align:center;
@@ -15,7 +16,8 @@
 		//margin: 0 auto;
 		padding: 0;
 		width: 50%;
-    margin: 15% auto 5%;
+    //margin: 15% auto 5%;
+    margin: 0 auto;
     border-bottom: 1px solid $codicated-primary-color;
   	}
 
@@ -58,10 +60,22 @@
 	//padding: .6em;
 }
 
-// #phone-icon {
-//   padding: .1em;
-// }
+@media screen and (max-width: 600px) {
+  .footerSection ul {
+    width: 90%;
+  }
 
-// #services-icon {
+  .footerSection li {
+    width: 27.7%;
+  }
 
-// }
+  .bottomFooter {
+    bottom: 8.4em;
+  }
+
+  .bottomFooter img {
+     width: 70%;
+     margin: 0 auto;
+     display: block;
+  }
+}

@@ -2457,7 +2457,8 @@ $(document).ready(function() {
     
     var myIcons = new SVGMorpheus('#icon'),
         $siteNav = $("#site-nav"),
-        $icon    = $("#icon");
+        $icon    = $("#icon"),
+        $mobileMatch = window.matchMedia('(max-width: 600px)');
         
         //Toggle Menu open & close
         $(".nav-line-container").on( "click", function() {
@@ -2489,13 +2490,26 @@ $(document).ready(function() {
                 
                 myIcons.to('rec-svg',{duration:1000});
                 $(".navLine").css({'background-color': '#fff','opacity': '0'});
-				$icon.attr('class', 'nav-after-logo-animation');
-				$("#imageMorph").css({"margin-top" : "0"});
+				        $icon.attr('class', 'nav-after-logo-animation');
+				        $("#imageMorph").css({"margin-top" : "0"});
                 $("#push-left-text").css({"right" : "0", "opacity" : "1"});
                 $("#small-logo").css({"margin" : "4em 4em 4em 4em", "opacity" : "1"});
 				
 
 				
+            }
+
+            if(index == 1 && direction =='down' && $mobileMatch.matches){
+                
+                myIcons.to('rec-svg',{duration:1000});
+                $(".navLine").css({'background-color': '#fff','opacity': '0'});
+                $icon.attr('class', 'nav-after-logo-animation');
+                $("#imageMorph").css({"margin-top" : "0"});
+                $("#push-left-text").css({"right" : "0", "opacity" : "1"});
+                $("#small-logo").css({"margin" : "1em", "opacity" : "1"});
+        
+
+        
             }
 
             if(index == 2 && direction == 'up' && $("#boxthreed").hasClass('threedbox-open-menu')){

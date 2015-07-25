@@ -118,7 +118,7 @@ a.three-d.last-menu-item{padding:16px 17px}
 .back-li,.front-li{padding:15px 10px;pointer-events:none;-moz-box-sizing:border-box;box-sizing:border-box}
 .statementWrapper{width:100%;height:100%;position:relative;top:3.8em}
 .mission-statement{background-color:#f46c6c;display:inline-block;float:left;width:60%;height:100%;position:relative;-webkit-transition:all .9s ease-in-out}
-.mission-statement #small-logo{width:40%;margin:4em 4em 4em -100%;opacity:0;-webkit-transition:all 2s ease-in-out}
+.mission-statement #small-logo{width:40%;margin:4em 4em 4em -100%;opacity:0;-webkit-transition:all 2s ease-in-out;-moz-transition:all 2s ease-in-out}
 .responsive-web-dev,.responsive-web-dev #push-left-text{position:relative;-webkit-transition:all 1.2s ease-in-out}
 .mission-statement h1{color:#fff;margin:.5em 2em}
 .responsive-web-dev{display:inline-block;background-color:#ffe6b3;width:40%;height:100%;text-align:center;color:#474747}
@@ -127,11 +127,11 @@ a.three-d.last-menu-item{padding:16px 17px}
 .recent-projects{width:100%;height:100%;background:#f2f2f2;position:relative;top:3.8em}
 .recent-projects h2{color:#4a4941;text-align:center;font-weight:700}
 .recent-projects p{text-align:center}
-.recent-projects .projects-block{text-align:center;-webkit-transition:all 2s ease-in-out}
+.recent-projects .projects-block{text-align:center;-webkit-transition:all 2s ease-in-out;-moz-transition:all 2s ease-in-out}
 .recent-projects .projects{width:25%;overflow-x:hidden;display:inline-block;margin:2em;background-color:#fff}
 .recent-projects .projects .project-description{width:100%;height:100%;background-color:#ffe6b3;text-align:left}
-.recent-projects .projects .project-description .project-title{padding:.6em 0 0 .6em;opacity:0;margin:0;color:#4a4941;position:relative;left:-100%;-webkit-transition:all 1.6s ease-in-out;-webkit-margin-before:0;-webkit-margin-after:0;font-weight:700}
-.recent-projects .projects .project-description .project-paragraph{margin:0;padding:0 .6em .6em;position:relative;left:-100%;opacity:0;text-align:left;-webkit-transition:all 1.6s ease-in-out}
+.recent-projects .projects .project-description .project-title{padding:.6em 0 0 .6em;opacity:0;margin:0;color:#4a4941;position:relative;left:-100%;-webkit-transition:all 1.6s ease-in-out;-moz-transition:all 1.6s ease-in-out;-webkit-margin-before:0;-webkit-margin-after:0;font-weight:700}
+.recent-projects .projects .project-description .project-paragraph{margin:0;padding:0 .6em .6em;position:relative;left:-100%;opacity:0;text-align:left;-webkit-transition:all 1.6s ease-in-out;-moz-transition:all 1.6s ease-in-out}
 .bcolor{background:#f2f2f2}
 .wrapper{overflow:hidden;position:relative;height:100%;width:100%}
 .wrapper .overlay,.wrapper .overlay .arrow-left,.wrapper .overlay .rectangle{top:0;position:absolute}
@@ -139,15 +139,29 @@ a.three-d.last-menu-item{padding:16px 17px}
 .wrapper:hover .description{-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";filter:alpha(opacity=100);-moz-opacity:1;-khtml-opacity:1;opacity:1;transition:1s ease-in;-webkit-transition:1s ease-in}
 .wrapper .overlay{display:block;width:100%;right:-100%;transition:.4s ease-out;-webkit-transition:.4s ease-out}
 .wrapper .overlay .rectangle{display:block;margin-left:200px;width:100%;height:100%;background-color:rgba(255,255,255,.95)}
-.bottomFooter,.footerColor,.footerSection{background:#ffe6b3}
 .wrapper .overlay .arrow-left{position:relative;left:0;width:0;height:0;top:0;bottom:0;border-bottom:500px solid transparent;border-right:200px solid rgba(255,255,255,.95)}
 .wrapper .description,.wrapper .link{position:absolute;top:0;left:0;right:0;bottom:0}
 .wrapper .description{text-align:left;padding:30px 50px;color:#cc6812;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity:0;opacity:0;transition:.2s ease-out;-webkit-transition:.2s ease-out}
 .wrapper .description h3{text-align:center;font-size:20px;margin-bottom:25px;font-weight:700}
 .wrapper .link{z-index:10;margin:0}
 .wrapper img{vertical-align:bottom;width:100%}
-.footerSection{width:100%;height:100%;position:relative;top:3.8em}
-.footerSection ul{text-align:center;display:table;padding:0;width:50%;margin:15% auto 5%;border-bottom:1px solid #29b2d1}
+@media screen and (max-width:600px){.mission-statement{background-color:#f46c6c;display:inline-block;float:left;height:30%;position:relative;width:100%;z-index:-100}
+.mission-statement #small-logo{margin:1em;width:25%;display:none}
+.mission-statement h1{font-size:1.4em;color:#fff;margin:1em;text-align:center}
+.responsive-web-dev{background-color:#ffe6b3;color:#474747;display:inline-block;height:70%;text-align:center;width:100%}
+.responsive-web-dev #push-left-text{margin:.1em .5em .5em}
+.recent-projects h2{margin:5.5em 0 0}
+.recent-projects>p{text-align:center;margin:0 .3em;display:none}
+ul.projects-block{margin:0;padding:0;width:100%}
+.recent-projects .projects{width:75%;display:block;margin:.5em auto;background-color:#ffe6b3}
+.wrapper{height:100%;width:50%;display:inline-block;float:left}
+.recent-projects .projects .project-description{width:50%;text-align:left;display:inline-block}
+.recent-projects .projects .project-description .project-paragraph,.recent-projects .projects .project-description .project-title{left:0;opacity:1}
+.recent-projects{top:0}
+}
+.bottomFooter,.footerColor,.footerSection{background:#ffe6b3}
+.footerSection{width:100%;height:100%;position:relative;top:9.8em}
+.footerSection ul{text-align:center;display:table;padding:0;width:50%;margin:0 auto;border-bottom:1px solid #29b2d1}
 .footerSection li{display:inline-block;float:left;text-align:center;width:30%;margin-right:1em}
 .footerSection li p{font-size:1.2em;color:#29b2d1}
 .bottomFooter{position:absolute;bottom:7.4em}
@@ -155,3 +169,8 @@ a.three-d.last-menu-item{padding:16px 17px}
 .bottomFooter ul{float:right;margin-top:6%;border-bottom:none}
 .bottomFooter li{color:#fff;width:20%}
 #about-us-icon,#phone-icon,#services-icon{width:100%}
+@media screen and (max-width:600px){.footerSection ul{width:90%}
+.footerSection li{width:27.7%}
+.bottomFooter{bottom:8.4em}
+.bottomFooter img{width:70%;margin:0 auto;display:block}
+}
