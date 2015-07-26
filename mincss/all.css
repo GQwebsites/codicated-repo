@@ -158,6 +158,10 @@ ul.projects-block{margin:0;padding:0;width:100%}
 .recent-projects .projects .project-description{width:50%;text-align:left;display:inline-block}
 .recent-projects .projects .project-description .project-paragraph,.recent-projects .projects .project-description .project-title{left:0;opacity:1}
 .recent-projects{top:0}
+.wrapper:hover .description{-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity:0;opacity:0;transition:1s ease-in;-webkit-transition:1s ease-in}
+.wrapper:hover .overlay{right:-200px}
+.ul-nav-back{height:15.6em;width:79%}
+.ul-nav-back li{display:block;border-bottom:2px solid #fff}
 }
 .bottomFooter,.footerColor,.footerSection{background:#ffe6b3}
 .footerSection{width:100%;height:100%;position:relative;top:9.8em}
