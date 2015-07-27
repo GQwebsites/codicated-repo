@@ -356,8 +356,30 @@
   // }
 
   .ul-nav-back {
-        height: 15.6em;
-        width: 79%;
+        //height: 15.6em;
+        height: 70em;
+
+        //width: 79%;
+        width: 76%;
+
+  }
+
+  //Turn Nav Lines into an X
+
+  #back .nav-line-container .navLine:first-child {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
+    margin-top: .9em;
+  }
+
+  #back .nav-line-container .navLine:nth-child(2) {
+  -webkit-transform: rotate(-45deg);
+  margin-top: -.8em;
+  }
+
+  #back .nav-line-container .navLine:nth-child(3) {
+   display: none;
   }
 
   .ul-nav-back li {

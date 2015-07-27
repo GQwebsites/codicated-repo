@@ -160,7 +160,10 @@ ul.projects-block{margin:0;padding:0;width:100%}
 .recent-projects{top:0}
 .wrapper:hover .description{-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity:0;opacity:0;transition:1s ease-in;-webkit-transition:1s ease-in}
 .wrapper:hover .overlay{right:-200px}
-.ul-nav-back{height:15.6em;width:79%}
+.ul-nav-back{height:70em;width:76%}
+#back .nav-line-container .navLine:first-child{-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);transform:rotate(45deg);margin-top:.9em}
+#back .nav-line-container .navLine:nth-child(2){-webkit-transform:rotate(-45deg);margin-top:-.8em}
+#back .nav-line-container .navLine:nth-child(3){display:none}
 .ul-nav-back li{display:block;border-bottom:2px solid #fff}
 }
 .bottomFooter,.footerColor,.footerSection{background:#ffe6b3}
