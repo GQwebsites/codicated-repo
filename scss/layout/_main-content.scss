@@ -239,6 +239,78 @@
     width: 100%;
   }
 
+@media screen and (max-width: 962px) {
+  //Recent Projects mobile CSS
+  .recent-projects h2 {
+    margin: 5.5em 0 0;
+  }
+  .recent-projects>p {
+    text-align:center;
+    margin:0 .3em;
+    display: none;
+  }
+
+
+  ul.projects-block {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .recent-projects .projects {
+    width: 75%;
+    height: 25%;
+    display:block;
+    margin: .5em auto;
+    background-color: #ffe6b3;
+  }
+
+  .wrapper{
+    height: 100%;
+    width: 50%;
+    display: inline-block;
+    float: left;
+      .description {
+        padding: 5px 30px;
+      }
+  }
+
+  .recent-projects .projects .project-description {
+    width: 50%;
+    font-size: 1.2em;
+    text-align: center;
+    display: inline-block;
+      .project-title ,.project-paragraph{
+       left: 0px;
+        opacity: 1;
+        text-align: center;
+        
+  }
+  }
+
+  .recent-projects {
+    top: 0;
+  }
+
+ .wrapper:hover .description {
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
+    /* IE 5.5-7 */
+    filter: alpha(opacity=1);
+    /* Netscape */
+    -moz-opacity: 1;
+    /* Safari 1.x */
+    -khtml-opacity: 1;
+    /* Modern browsers */
+    opacity: 1;
+ 
+    transition: 1s ease-in;
+    -webkit-transition: 1s ease-in;
+  }
+
+
+}
 
 @media screen and (max-width: 600px) {
 
@@ -288,7 +360,7 @@
     margin: 5.5em 0 0;
   }
   .recent-projects>p {
-    text-align:center;
+    text-align:left;
     margin:0 .3em;
     display: none;
   }
@@ -298,6 +370,7 @@
     margin: 0;
     padding: 0;
     width: 100%;
+    height: auto;
   }
 
   .recent-projects .projects {
@@ -316,13 +389,13 @@
 
   .recent-projects .projects .project-description {
     width: 50%;
-    //height: 100%;
-    //background-color: #ffe6b3;
+    font-size: 1em;
     text-align: left;
     display: inline-block;
       .project-title ,.project-paragraph{
         left: 0px;
         opacity: 1;
+        text-align: left;
         
   }
   }
@@ -387,53 +460,29 @@
     border-bottom: 2px solid #fff;
   }
 
+
+  //Exerimental code for mobile fall back from SVG to PNG
+
+  #icon {
+    display: none;
+  }
+
+  #ct {
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  // //Code to make nav slide in for mobile devices, combine this wiht some JS
+  #site-nav {
+    right: 0;
+    transition: all 1.2s ease-in-out;
+    // -webkit-transition: .5s ease-out;
+    -webkit-transition: all 1.2s ease-in-out;
+    //transition-delay: 2s;
+  }
 }
 
 
 
-// @media only screen 
-//   and (min-device-width: 320px) 
-//   and (max-device-width: 480px)
-//   and (-webkit-min-device-pixel-ratio: 2) {
-//     .mission-statement {
-//       height: 27.3%
-//     }
-//   .mission-statement #small-logo {
-//   display: none;
-// }
-//   .mission-statement h1 {
-//     margin: .5em 1em;
-//   }
 
-//   .recent-projects p {
-//     display: none;
-//   }
-
-//   ul.projects-block {
-//     margin: 0 auto;
-//     width: 90%;
-//   }
-// }
-
-// @media only screen 
-//   and (min-device-width: 375px) 
-//   and (max-device-width: 667px) {
-//     .mission-statement {
-//       height: 40%
-//     }
-//     .mission-statement #small-logo {
-//     display: inline-block;
-//   }
-//     .mission-statement h1 {
-//       margin: 0 1em;
-//     }
-
-//     .recent-projects p {
-//       display: block;
-//     }
-
-//     ul.projects-block {
-//       margin: 0;
-//       width: 100%;
-//     }
-// }

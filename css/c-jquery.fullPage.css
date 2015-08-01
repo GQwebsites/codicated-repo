@@ -25,11 +25,13 @@ html.fp-enabled,
     touch-action: none;
 }
 .fp-section {
-    position: relative; /* Safari<=5 Android<=3 */ /* <=28 */
+    position: relative; 
     box-sizing: border-box;
-    
-
+    /* Safari<=5 Android<=3 */ /* <=28 */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
+
 .fp-slide {
     float: left;
 }
@@ -165,8 +167,10 @@ html.fp-enabled,
     left: 50%;
     top: 50%;
     margin: -2px 0 0 -2px;
-    -webkit-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
 }
 #fp-nav ul li:hover a span,
 .fp-slidesNav ul li:hover a span{

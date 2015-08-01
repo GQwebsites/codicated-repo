@@ -21,10 +21,10 @@ svg {
 
 .threeD {
   //-webkit-perspective: 220em;
-  -webkit-perspective: 6000em;
+  -webkit-perspective: 60000em;
   -webkit-transition: all .07s linear;
   //-moz-perspective: 220em;
-  -moz-perspective: 6000em;
+  -moz-perspective: 60000em;
   -moz-transition: all .07s linear;
   position: relative;
   height: 100%;
@@ -208,6 +208,10 @@ div#imageMorph.section.fp-section.fp-table.active {
 	margin: 10% auto;
 }
 
+#ct {
+  display: none;
+}
+
 
 .iconId {
   display: block;
@@ -261,18 +265,15 @@ div#imageMorph.section.fp-section.fp-table.active {
   -moz-transition: all 1.5s ease-in-out;
 }
 
-// @media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
 
-//   .back-nav-lines {
-//       margin-top: -15.5em;
-//   }
+  #site-nav #front {
+    transition-delay: .0s;
 
-//   .ul-nav-back {
-//         height: 15.6em;
-//         width: 80%;
-//   }
+  }
 
-//   .ul-nav-back li {
-//     display: block;
-//   }
-// }
+  #site-nav #front #codicated-c {
+    -webkit-transition: all .0s ease-in-out; 
+    transition: all .0s ease-in-out;
+  }
+}

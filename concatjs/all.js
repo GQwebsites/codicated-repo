@@ -155,10 +155,10 @@
   window.DrawFillSVG = DrawFillSVG;
 
 })( window );
-/**
- * fullPage 2.6.5
+/*!
+ * fullPage 2.6.7
  * https://github.com/alvarotrigo/fullPage.js
- * MIT licensed
+ * @license MIT licensed
  *
  * Copyright (C) 2015 alvarotrigo.com - A project by Alvaro Trigo
  */
@@ -252,6 +252,7 @@
             //navigation
             menu: false,
             anchors:[],
+            lockAnchors: false,
             navigation: false,
             navigationPosition: 'right',
             navigationTooltips: [],
@@ -290,7 +291,9 @@
             paddingTop: 0,
             paddingBottom: 0,
             fixedElements: null,
-            responsive: 0,
+            responsive: 0, //backwards compabitility with responsiveWiddth
+            responsiveWidth: 0,
+            responsiveHeight: 0,
 
             //Custom selectors
             sectionSelector: SECTION_DEFAULT_SEL,
@@ -308,7 +311,6 @@
         }, options);
 
         displayWarnings();
-
 
         //easeInOutCubic animation included in the plugin
         $.extend($.easing,{ easeInOutCubic: function (x, t, b, c, d) {if ((t/=d/2) < 1) return c/2*t*t*t + b;return c/2*((t-=2)*t*t + 2) + b;}});
@@ -365,7 +367,6 @@
                     $htmlBody.scrollTop(element.position().top);
                 }
             }
-
         };
 
         /**
@@ -390,6 +391,13 @@
         };
 
         /**
+        * Sets lockAnchors
+        */
+        FP.setLockAnchors = function(value){
+            options.lockAnchors = value;
+        };
+
+        /**
         * Adds or remove the possiblity of scrolling through sections by using the mouse wheel or the trackpad.
         */
         FP.setMouseWheelScrolling = function (value){
@@ -407,11 +415,11 @@
         * @param directions string containing the direction or directions separated by comma.
         */
         FP.setAllowScrolling = function (value, directions){
-            if(typeof directions != 'undefined'){
+            if(typeof directions !== 'undefined'){
                 directions = directions.replace(/ /g,'').split(',');
 
                 $.each(directions, function (index, direction){
-                    setIsScrollable(value, direction);
+                    setIsScrollAllowed(value, direction, 'm');
                 });
             }
             else if(value){
@@ -426,8 +434,16 @@
         /**
         * Adds or remove the possiblity of scrolling through sections by using the keyboard arrow keys
         */
-        FP.setKeyboardScrolling = function (value){
-            options.keyboardScrolling = value;
+        FP.setKeyboardScrolling = function (value, directions){
+            if(typeof directions !== 'undefined'){
+                directions = directions.replace(/ /g,'').split(',');
+
+                $.each(directions, function (index, direction){
+                    setIsScrollAllowed(value, direction, 'k');
+                });
+            }else{
+                options.keyboardScrolling = value;
+            }
         };
 
         /**
@@ -459,6 +475,13 @@
             }
 
             if(next.length){
+                // before slide move callback
+                if(options.onBeforeMoveSection && $.isFunction( options.onBeforeMoveSection )){
+                    if(options.onBeforeMoveSection.call(this, direction, currentSlide, destiny, slides, activeSection) === false){
+                        return;
+                    }
+                }
+
                 scrollPage(next, null, false);
             }
         };
@@ -559,6 +582,29 @@
             $.isFunction( options.afterReBuild ) && !resizing && options.afterReBuild.call(container);
         };
 
+        /**
+        * Turns fullPage.js to normal scrolling mode when the viewport `width` or `height`
+        * are smaller than the set limit values.
+        */
+        FP.setResponsive = function (active){
+            var isResponsive = container.hasClass(RESPONSIVE);
+
+            if(active){
+                if(!isResponsive){
+                    FP.setAutoScrolling(false, 'internal');
+                    FP.setFitToSection(false, 'internal');
+                    $(SECTION_NAV_SEL).hide();
+                    container.addClass(RESPONSIVE);
+                }
+            }
+            else if(isResponsive){
+                FP.setAutoScrolling(originals.autoScrolling, 'internal');
+                FP.setFitToSection(originals.autoScrolling, 'internal');
+                $(SECTION_NAV_SEL).show();
+                container.removeClass(RESPONSIVE);
+            }
+        }
+
         //flag to avoid very fast sliding for landscape sliders
         var slideMoving = false;
 
@@ -573,8 +619,18 @@
         var scrollings = [];
         var nav;
         var controlPressed;
-        var isScrollAllowed = { 'up':true, 'down':true, 'left':true, 'right':true };
+        var isScrollAllowed = {};
+        isScrollAllowed.m = {  'up':true, 'down':true, 'left':true, 'right':true };
+        isScrollAllowed.k = $.extend(true,{}, isScrollAllowed.m);
         var originals = $.extend(true, {}, options); //deep copy
+
+        //timeouts
+        var resizeId;
+        var afterSectionLoadsId;
+        var afterSlideLoadsId;
+        var scrollId;
+        var scrollId2;
+        var keydownId;
 
         if($(this).length){
             container.css({
@@ -585,10 +641,6 @@
             //adding a class to recognize the container internally in the code
             container.addClass(WRAPPER);
             $('html').addClass(ENABLED);
-        }
-        //trying to use fullpage without a selector?
-        else{
-            showError('error', 'Error! Fullpage.js needs to be initialized with a selector. For example: $(\'#myContainer\').fullpage();');
         }
 
         //if css3 is not supported, it will use jQuery animations
@@ -657,12 +709,14 @@
 
                 $(this).find(SLIDES_CONTAINER_SEL).css('width', sliderWidth + '%');
 
-                if(options.controlArrows && numSlides > 1){
-                    createSlideArrows($(this));
-                }
+                if(numSlides > 1){
+                    if(options.controlArrows){
+                        createSlideArrows($(this));
+                    }
 
-                if(options.slidesNavigation){
-                    addSlidesNavigation($(this), numSlides);
+                    if(options.slidesNavigation){
+                        addSlidesNavigation($(this), numSlides);
+                    }
                 }
 
                 slides.each(function(index) {
@@ -675,7 +729,7 @@
 
                 var startingSlide = that.find(SLIDE_ACTIVE_SEL);
 
-                //if the slide won#t be an starting point, the default will be the first one
+                //if the slide won't be an starting point, the default will be the first one
                 if(!startingSlide.length){
                     slides.eq(0).addClass(ACTIVE);
                 }
@@ -842,15 +896,30 @@
         function afterRenderActions(){
             var section = $(SECTION_ACTIVE_SEL);
 
-            //to solve a bug with slimScroll vendor #1037, #553
-            section.find('.fp-scrollable').mouseover();
+            solveBugSlimScroll(section);
+            lazyLoad(section);
+            playMedia(section);
 
             $.isFunction( options.afterLoad ) && options.afterLoad.call(section, section.data('anchor'), (section.index(SECTION_SEL) + 1));
-            $.isFunction( options.afterRender ) && options.afterRender.call( this);
+            $.isFunction( options.afterRender ) && options.afterRender.call(container);
         }
 
-        var scrollId;
-        var scrollId2;
+
+        /**
+        * Solves a bug with slimScroll vendor library #1037, #553
+        */
+        function solveBugSlimScroll(section){
+            var slides = section.find('SLIDES_WRAPPER');
+            var scrollableWrap = section.find(SCROLLABLE_SEL);
+
+            if(slides.length){
+                scrollableWrap = slides.find(SLIDE_ACTIVE_SEL);
+            }
+
+            scrollableWrap.mouseover();
+        }
+
+
         var isScrolling = false;
 
         //when scrolling...
@@ -903,6 +972,7 @@
                         $.isFunction( options.onLeave ) && options.onLeave.call( leavingSection, leavingSectionIndex, sectionIndex, yMovement);
 
                         $.isFunction( options.afterLoad ) && options.afterLoad.call( currentSection, anchorLink, sectionIndex);
+                        lazyLoad(currentSection);
 
                         activateMenuAndNav(anchorLink, sectionIndex - 1);
 
@@ -958,7 +1028,7 @@
         * by 'automatically' scrolling a section or by using the default and normal scrolling.
         */
         function scrolling(type, scrollable){
-            if (!isScrollAllowed[type]){
+            if (!isScrollAllowed.m[type]){
                 return;
             }
             var check, scrollSection;
@@ -1022,11 +1092,11 @@
                         //is the movement greater than the minimum resistance to scroll?
                         if (Math.abs(touchStartX - touchEndX) > ($window.width() / 100 * options.touchSensitivity)) {
                             if (touchStartX > touchEndX) {
-                                if(isScrollAllowed.right){
+                                if(isScrollAllowed.m.right){
                                     FP.moveSlideRight(); //next
                                 }
                             } else {
-                                if(isScrollAllowed.left){
+                                if(isScrollAllowed.m.left){
                                     FP.moveSlideLeft(); //prev
                                 }
                             }
@@ -1128,11 +1198,11 @@
             //autoscrolling and not zooming?
             if(options.autoScrolling && !controlPressed){
                 // cross-browser wheel delta
-                e = window.event || e;
+                e = e || window.event;
                 var value = e.wheelDelta || -e.deltaY || -e.detail;
                 var delta = Math.max(-1, Math.min(1, value));
 
-                //Limiting the array to 150 (lets not waist memory!)
+                //Limiting the array to 150 (lets not waste memory!)
                 if(scrollings.length > 149){
                     scrollings.shift();
                 }
@@ -1192,9 +1262,10 @@
         function moveSlide(direction){
             var activeSection = $(SECTION_ACTIVE_SEL);
             var slides = activeSection.find(SLIDES_WRAPPER_SEL);
+            var numSlides = slides.find(SLIDE_SEL).length;
 
             // more than one slide needed and nothing should be sliding
-            if (!slides.length || slideMoving) {
+            if (!slides.length || slideMoving || numSlides < 2) {
                 return;
             }
 
@@ -1276,6 +1347,15 @@
                 v = createInfiniteSections(v);
             }
 
+            //callback (onLeave) if the site is not just resizing and readjusting the slides
+            if($.isFunction(options.onLeave) && !v.localIsResizing){
+                if(options.onLeave.call(v.activeSection, v.leavingSection, (v.sectionIndex + 1), v.yMovement) === false){
+                    return;
+                }else{
+                    stopMedia(v.activeSection);
+                }
+            }
+
             element.addClass(ACTIVE).siblings().removeClass(ACTIVE);
 
             //preventing from activating the MouseWheelHandler event
@@ -1283,9 +1363,6 @@
             canScroll = false;
 
             setState(slideIndex, slideAnchorLink, v.anchorLink, v.sectionIndex);
-
-            //callback (onLeave) if the site is not just resizing and readjusting the slides
-            $.isFunction(options.onLeave) && !v.localIsResizing && options.onLeave.call(v.activeSection, v.leavingSection, (v.sectionIndex + 1), v.yMovement);
 
             performMovement(v);
 
@@ -1309,7 +1386,7 @@
                 //even when the scrollingSpeed is 0 there's a little delay, which might cause the
                 //scrollingSpeed to change in case of using silentMoveTo();
                 if(options.scrollingSpeed){
-                    setTimeout(function () {
+                    afterSectionLoadsId = setTimeout(function () {
                         afterSectionLoads(v);
                     }, options.scrollingSpeed);
                 }else{
@@ -1402,7 +1479,7 @@
 
 
         /**
-        * Actions to do once the section is loaded
+        * Actions to do once the section is loaded.
         */
         function afterSectionLoads (v){
             continuousVerticalFixSectionOrder(v);
@@ -1412,9 +1489,55 @@
             //callback (afterLoad) if the site is not just resizing and readjusting the slides
             $.isFunction(options.afterLoad) && !v.localIsResizing && options.afterLoad.call(v.element, v.anchorLink, (v.sectionIndex + 1));
 
+            lazyLoad(v.element);
+            playMedia(v.element)
+
             canScroll = true;
 
             $.isFunction(v.callback) && v.callback.call(this);
+        }
+
+        /**
+        * Lazy loads image, video and audio elements.
+        */
+        function lazyLoad(destiny){
+            //Lazy loading images, videos and audios
+            var slide = destiny.find(SLIDE_ACTIVE_SEL);
+            if( slide.length ) {
+                destiny = $(slide);
+            }
+            destiny.find('img[data-src], video[data-src], audio[data-src]').each(function(){
+                $(this).attr('src', $(this).data('src'));
+                $(this).removeAttr('data-src');
+            });
+        }
+
+        /**
+        * Plays video and audio elements.
+        */
+        function playMedia(destiny){
+            //playing HTML5 media elements
+            destiny.find('video, audio').each(function(){
+                var element = $(this).get(0);
+
+                if( element.hasAttribute('autoplay') && typeof element.play === 'function' ) {
+                    element.play();
+                }
+            });
+        }
+
+        /**
+        * Stops video and audio elements.
+        */
+        function stopMedia(destiny){
+            //stopping HTML5 media elements
+            destiny.find('video, audio').each(function(){
+                var element = $(this).get(0);
+
+                if( !element.hasAttribute('data-ignore') && typeof element.pause === 'function' ) {
+                    element.pause();
+                }
+            });
         }
 
         /**
@@ -1436,7 +1559,7 @@
         $window.on('hashchange', hashChangeHandler);
 
         function hashChangeHandler(){
-            if(!isScrolling){
+            if(!isScrolling && !options.lockAnchors){
                 var value =  window.location.hash.replace('#', '').split('/');
                 var section = value[0];
                 var slide = value[1];
@@ -1466,12 +1589,18 @@
             controlPressed = e.ctrlKey;
         });
 
+        //when opening a new tab (ctrl + t), `control` won't be pressed when comming back.
+        $(window).blur(function() {
+            controlPressed = false;
+        });
+
         var keydownId;
         function keydownHandler(e) {
-            clearTimeout(keydownId);
-            controlPressed = e.ctrlKey;
 
-            var activeElement = $(document.activeElement);
+            clearTimeout(keydownId);
+
+
+            var activeElement = $(':focus');
 
             if(!activeElement.is('textarea') && !activeElement.is('input') && !activeElement.is('select') &&
                 options.keyboardScrolling && options.autoScrolling){
@@ -1494,42 +1623,56 @@
         */
         function onkeydown(e){
             var shiftPressed = e.shiftKey;
+            controlPressed = e.ctrlKey;
+
             switch (e.which) {
                 //up
                 case 38:
                 case 33:
-                    FP.moveSectionUp();
+                    if(isScrollAllowed.k.up){
+                        FP.moveSectionUp();
+                    }
                     break;
 
                 //down
                 case 32: //spacebar
-                    if(shiftPressed){
+                    if(shiftPressed && isScrollAllowed.k.up){
                         FP.moveSectionUp();
                         break;
                     }
                 case 40:
                 case 34:
-                    FP.moveSectionDown();
+                    if(isScrollAllowed.k.down){
+                        FP.moveSectionDown();
+                    }
                     break;
 
                 //Home
                 case 36:
-                    FP.moveTo(1);
+                    if(isScrollAllowed.k.up){
+                        FP.moveTo(1);
+                    }
                     break;
 
                 //End
                 case 35:
-                    FP.moveTo( $(SECTION_SEL).length );
+                     if(isScrollAllowed.k.down){
+                        FP.moveTo( $(SECTION_SEL).length );
+                    }
                     break;
 
                 //left
                 case 37:
-                    FP.moveSlideLeft();
+                    if(isScrollAllowed.k.left){
+                        FP.moveSlideLeft();
+                    }
                     break;
 
                 //right
                 case 39:
-                    FP.moveSlideRight();
+                    if(isScrollAllowed.k.right){
+                        FP.moveSlideRight();
+                    }
                     break;
 
                 default:
@@ -1612,11 +1755,11 @@
          */
         $(SECTION_SEL).on('click touchstart', SLIDES_ARROW_SEL, function() {
             if ($(this).hasClass(SLIDES_PREV)) {
-                if(isScrollAllowed.left){
+                if(isScrollAllowed.m.left){
                     FP.moveSlideLeft();
                 }
             } else {
-                if(isScrollAllowed.right){
+                if(isScrollAllowed.m.right){
                     FP.moveSlideRight();
                 }
             }
@@ -1645,11 +1788,17 @@
 
                 //if the site is not just resizing and readjusting the slides
                 if(!localIsResizing && xMovement!=='none'){
-                    $.isFunction( options.onSlideLeave ) && options.onSlideLeave.call( prevSlide, anchorLink, (sectionIndex + 1), prevSlideIndex, xMovement);
+                    if($.isFunction( options.onSlideLeave )){
+                        if(options.onSlideLeave.call( prevSlide, anchorLink, (sectionIndex + 1), prevSlideIndex, xMovement, slideIndex ) === false){
+                            slideMoving = false;
+                            return;
+                        }
+                    }
                 }
             }
 
             destiny.addClass(ACTIVE).siblings().removeClass(ACTIVE);
+            lazyLoad(destiny);
 
             if(!options.loopHorizontal && options.controlArrows){
                 //hidding it for the fist slide, showing for the rest
@@ -1678,7 +1827,7 @@
 
                 addAnimation(slides.find(SLIDES_CONTAINER_SEL), options.scrollingSpeed>0).css(getTransforms(translate3d));
 
-                setTimeout(function(){
+                afterSlideLoadsId = setTimeout(function(){
                     afterSlideLoads();
                 }, options.scrollingSpeed, options.easing);
             }else{
@@ -1698,7 +1847,6 @@
         $window.resize(resizeHandler);
 
         var previousHeight = windowsHeight;
-        var resizeId;
         function resizeHandler(){
             //checking if it needs to get responsive
             responsive();
@@ -1733,20 +1881,19 @@
         * A class `fp-responsive` is added to the plugin's container in case the user wants to use it for his own responsive CSS.
         */
         function responsive(){
-            if(options.responsive){
+            var widthLimit = options.responsive || options.responsiveWidth; //backwards compatiblity
+            var heightLimit = options.responsiveHeight;
+
+            if(widthLimit){
+                FP.setResponsive($window.width() < widthLimit);
+            }
+
+            if(heightLimit){
                 var isResponsive = container.hasClass(RESPONSIVE);
-                if ($window.width() < options.responsive ){
-                    if(!isResponsive){
-                        FP.setAutoScrolling(false, 'internal');
-                        FP.setFitToSection(false, 'internal');
-                        $(SECTION_NAV_SEL).hide();
-                        container.addClass(RESPONSIVE);
-                    }
-                }else if(isResponsive){
-                    FP.setAutoScrolling(originals.autoScrolling, 'internal');
-                    FP.setFitToSection(originals.autoScrolling, 'internal');
-                    $(SECTION_NAV_SEL).show();
-                    container.removeClass(RESPONSIVE);
+
+                //if its not already in responsive mode because of the `width` limit
+                if(!isResponsive){
+                    FP.setResponsive($window.height() < heightLimit);
                 }
             }
         }
@@ -2052,7 +2199,7 @@
         function setState(slideIndex, slideAnchor, anchorLink, sectionIndex){
             var sectionHash = '';
 
-            if(options.anchors.length){
+            if(options.anchors.length && !options.lockAnchors){
 
                 //isn't it the first slide?
                 if(slideIndex){
@@ -2187,6 +2334,7 @@
             if (document.addEventListener) {
                 document.removeEventListener('mousewheel', MouseWheelHandler, false); //IE9, Chrome, Safari, Oper
                 document.removeEventListener('wheel', MouseWheelHandler, false); //Firefox
+                document.removeEventListener('DOMMouseScroll', MouseWheelHandler, false); //old Firefox
             } else {
                 document.detachEvent('onmousewheel', MouseWheelHandler); //IE 6/7/8
             }
@@ -2200,6 +2348,7 @@
             if (document.addEventListener) {
                 document.addEventListener('mousewheel', MouseWheelHandler, false); //IE9, Chrome, Safari, Oper
                 document.addEventListener('wheel', MouseWheelHandler, false); //Firefox
+                document.addEventListener('DOMMouseScroll', MouseWheelHandler, false); //Old Firefox
             } else {
                 document.attachEvent('onmousewheel', MouseWheelHandler); //IE 6/7/8
             }
@@ -2262,7 +2411,7 @@
             events.x = (typeof e.pageX !== 'undefined' && (e.pageY || e.pageX) ? e.pageX : e.touches[0].pageX);
 
             //in touch devices with scrollBar:true, e.pageY is detected, but we have to deal with touch events. #1008
-            if(isTouch && isReallyTouch(e)){
+            if(isTouch && isReallyTouch(e) && options.scrollBar){
                 events.y = e.touches[0].pageY;
                 events.x = e.touches[0].pageX;
             }
@@ -2320,14 +2469,20 @@
 
         /**
         * Allowing or disallowing the mouse/swipe scroll in a given direction. (not for keyboard)
+        * @type  m (mouse) or k (keyboard)
         */
-        function setIsScrollable(value, direction){
+        function setIsScrollAllowed(value, direction, type){
             switch (direction){
-                case 'up': isScrollAllowed.up = value; break;
-                case 'down': isScrollAllowed.down = value; break;
-                case 'left': isScrollAllowed.left = value; break;
-                case 'right': isScrollAllowed.right = value; break;
-                case 'all': FP.setAllowScrolling(value);
+                case 'up': isScrollAllowed[type].up = value; break;
+                case 'down': isScrollAllowed[type].down = value; break;
+                case 'left': isScrollAllowed[type].left = value; break;
+                case 'right': isScrollAllowed[type].right = value; break;
+                case 'all':
+                    if(type == 'm'){
+                        FP.setAllowScrolling(value);
+                    }else{
+                        FP.setKeyboardScrolling(value);
+                    }
             }
         }
 
@@ -2339,6 +2494,12 @@
             FP.setAllowScrolling(false);
             FP.setKeyboardScrolling(false);
             container.addClass(DESTROYED);
+
+            clearTimeout(afterSlideLoadsId);
+            clearTimeout(afterSectionLoadsId);
+            clearTimeout(resizeId);
+            clearTimeout(scrollId);
+            clearTimeout(scrollId2);
 
             $window
                 .off('scroll', scrollHandler)
@@ -2430,6 +2591,11 @@
                 options.continuousVertical = false;
                 showError('warn', 'Option `loopTop/loopBottom` is mutually exclusive with `continuousVertical`; `continuousVertical` disabled');
             }
+
+            if(options.scrollBar && options.scrollOverflow){
+                showError('warn', 'Option `scrollBar` is mutually exclusive with `scrollOverflow`. Sections with scrollOverflow might not work well in Firefox');
+            }
+
             if(options.continuousVertical && options.scrollBar){
                 options.continuousVertical = false;
                 showError('warn', 'Option `scrollBar` is mutually exclusive with `continuousVertical`; `continuousVertical` disabled');
@@ -2455,13 +2621,18 @@
 
 $(document).ready(function() {
     
-    var myIcons = new SVGMorpheus('#icon'),
+      var myIcons = new SVGMorpheus('#icon'),
         $siteNav = $("#site-nav"),
         $icon    = $("#icon"),
-        $mobileMatch = window.matchMedia('(max-width: 600px)');
+        $mobileMatch = window.matchMedia('(max-width: 600px)'),
+        $biggerThanMobile = window.matchMedia('(min-width: 600px)'),
+        $navLineContainer = $(".nav-line-container"),
+        $navLine = $(".navLine");
+        
+
         
         //Toggle Menu open & close
-        $(".nav-line-container").on( "click", function() {
+        $navLineContainer.on( "click", function() {
                     $(".threedbox").toggleClass('threedbox-open-menu');
                 });
 
@@ -2470,74 +2641,29 @@ $(document).ready(function() {
         onLeave: function(index, nextIndex, direction){
             var leavingSection = $(this);
 
-            //after leaving section 2
-            if(index == 1 && direction =='down' && $('#boxthreed').hasClass('threedbox-open-menu')){
-                $('.threeD').css({'opacity': '0'});
-                $(".threedbox").toggleClass('threedbox-open-menu');
-                myIcons.to('rec-svg',{duration:1000});
-                $(".navLine").css({'background-color': '#fff','opacity': '0'});
-                $icon.attr('class', 'nav-after-logo-animation');
-                $("#imageMorph").css({"margin-top" : "0"});
-                $("#push-left-text").css({"right" : "0", "opacity" : "1"});
-                $("#small-logo").css({"margin" : "4em 4em 4em 4em", "opacity" : "1"});
-
-                
-
-                
-            }
 
             if(index == 1 && direction =='down'){
-                
-                myIcons.to('rec-svg',{duration:1000});
-                $(".navLine").css({'background-color': '#fff','opacity': '0'});
-				        $icon.attr('class', 'nav-after-logo-animation');
-				        $("#imageMorph").css({"margin-top" : "0"});
+                toggleOpenMenuOnScroll();
+                morphSVGtoRec();
+                $navLine.css({'background-color': '#fff','opacity': '0'});
+				$icon.attr('class', 'nav-after-logo-animation');
+				$("#imageMorph").css({"margin-top" : "0"});
                 $("#push-left-text").css({"right" : "0", "opacity" : "1"});
                 $("#small-logo").css({"margin" : "4em 4em 4em 4em", "opacity" : "1"});
-				
-
-				
+                slideMenuOffScreenWhenMobile();
             }
 
-            if(index == 1 && direction =='down' && $mobileMatch.matches){
-                
-                myIcons.to('rec-svg',{duration:1000});
-                $(".navLine").css({'background-color': '#fff','opacity': '0'});
-                $icon.attr('class', 'nav-after-logo-animation');
-                $("#imageMorph").css({"margin-top" : "0"});
-                $("#push-left-text").css({"right" : "0", "opacity" : "1"});
-                $("#small-logo").css({"margin" : "1em", "opacity" : "1"});
-        
-
-        
-            }
-
-            if(index == 2 && direction == 'up' && $("#boxthreed").hasClass('threedbox-open-menu')){
-                $(".threedbox").toggleClass('threedbox-open-menu');
-                $(".navLine").css({'background-color': '#000','opacity': '0'});
-                $("#codicated-c").css({"opacity" : "0"});
-                myIcons.to('codicated-logo-svg',{duration:1000});
-                $siteNav.css({'background':"transparent"});
-                $("#front").css({'background-color':"transparent"});
-                //$("#back").css({'background-color':"transparent"});
-				$icon.attr('class', 'iconId');
-                //$(".fp-tableCell").css({'vertical-align' : 'top'});
-				
-				
-            }
+   
 
             if(index == 2 && direction == 'up'){
-                //$(".threedbox").toggleClass('threedbox-open-menu');
-                $(".navLine").css({'background-color': '#000','opacity': '0'});
+                toggleOpenMenuOnScroll();
+                $navLine.css({'background-color': '#000','opacity': '0'});
                 $("#codicated-c").css({"opacity" : "0"});
-                myIcons.to('codicated-logo-svg',{duration:1000});
+                morphSVGtoCoditechure();
+                slideMenuOffScreenWhenMobile()
                 $siteNav.css({'background':"transparent"});
                 $("#front").css({'background-color':"transparent"});
-                //$("#back").css({'background-color':"transparent"});
                 $icon.attr('class', 'iconId');
-                //$(".fp-tableCell").css({'vertical-align' : 'top'});
-                
-                
             }
 
 
@@ -2545,7 +2671,6 @@ $(document).ready(function() {
 
                 $(".project-title").css({"left" : "0", "opacity" : "1"});
                 $(".project-paragraph").css({"left" : "0", "opacity" : "1"});
-                //$(".fp-section").css({"margin-top" : "0"});
                 
                 
             }
@@ -2553,38 +2678,119 @@ $(document).ready(function() {
              if(index == 3 && direction == 'down'){
                 aboutUsDrawFillAnimation();
                 servicesDrawFillAnimation();
-                 phoneDrawFillAnimation();
+                phoneDrawFillAnimation();
              }
 
          },afterLoad: function(anchorLink, index){
-            if(index == 1){
-                $(".navLine").css({"opacity" : "1"});
-                //$(".treedbox").toggleClass('threedbox-open-menu');
+                    if(index == 1){
+                        navLineOpacityOne();
+                        slideMenuOnScreenWhenMobile();
+
+                    }
+
+                    // if(index == 2 && $mobileMatch.matches){
+                    //     $("#front").css({'background-color':"#29b2d1"});
+                    //     slideMenuOnScreenWhenMobile();
+
+                    //     navLineOpacityOne();
+                    //     coditechtureCopacityOne();
+
+
+                    // }
+
+                 	if(index == 2){
+
+                         $("#front").css({'background-color':"#29b2d1"});
+                         slideMenuOnScreenWhenMobile();
+
+                         navLineOpacityOne();
+                         coditechtureCopacityOne();
+                     }
+
+                     if(index == 3){
+                        $siteNav.css({'background-color':"transparent"});
+                     }
+
+                   }
+            });
+
+    function morphSVGtoRec() {
+                if ($biggerThanMobile.matches) {
+                    myIcons.to('rec-svg',{duration:1000});
+                }
+            }
+
+            function morphSVGtoCoditechure() {
+                if ($biggerThanMobile.matches) {
+                    myIcons.to('codicated-logo-svg',{duration:1000});
+                }
+            }
+
+            function slideMenuOffScreenWhenMobile() {
+                if ($mobileMatch.matches) {
+                    var $sn = $("#site-nav");
+                        $sn.css({"right" : "-100%"});
+                    
+                }
+            }
+
+            function slideMenuOnScreenWhenMobile() {
+                if ($mobileMatch.matches) {
+                    var $sn = $("#site-nav");
+                        $sn.css({"right" : "0"});
+                    
+                }
+            }
+
+            function frontMenuTransparent() {
+                if($biggerThanMobile.matches) {
+                    var $front = $("#front");
+                        $front.css({'background-color':"transparent"});
+                }
+            }
+            
+            function toggleOpenMenuOnScroll() {
+                var $boxthreed = $('#boxthreed');
+                    if($boxthreed.hasClass('threedbox-open-menu')) {
+                        var $threedbox = $(".threedbox");
+                            $threedbox.toggleClass('threedbox-open-menu');
+                    } 
+            }
+
+            function coditechtureCopacityOne() {
+               var $codicatedC = $("#codicated-c");
+                   $codicatedC.css({"opacity" : "1"});
 
             }
-         	if(index == 2){
-                 $('.threeD').css({'opacity': '1'});
-                 //$siteNav.css({'background-color':"#fff", 'position':'fixed'});
-                 $("#front").css({'background-color':"#29b2d1"});
-                 //$("#back").css({'background-color':"#067391"});
-                 $(".navLine").css({"opacity" : "1"});
-                 //$("#site-nav").addClass('nav-gradient-background');
-                 $("#codicated-c").css({"opacity" : "1"});
-             }
-             if(index == 3){
-                $siteNav.css({'background-color':"transparent"});
-             }
-             if(index == 4){
-                 //phoneI.play();
-             }
 
-            // if(index == 4) {
-            //     var phoneI = new Vivus('phone-icon', {type: 'delayed', duration: 150});
-            //      phoneI.reset().play();
-            //  }
-           }
-    });
+            function navLineOpacityOne() {
+                var $navLine = $(".navLine");
+                    $navLine.css({"opacity" : "1"});
+            }
 });
+
+// //Check if browser supports SVG
+// function svgasimg() {
+//   return document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1");
+// }
+// // if browser doesn't support SVG, then fall back with PNG
+// if (!svgasimg()){
+//   var e = document.getElementsByTagName("img");
+//   if (!e.length){
+//     e = document.getElementsByTagName("IMG");
+//   }
+//   for (var i=0, n=e.length; i<n; i++){
+//     var img = e[i],
+//         src = img.getAttribute("src");
+//     if (src.match(/svgz?$/)) {
+//       /* URL ends in svg or svgz */
+//       img.setAttribute("src", 
+//              img.getAttribute("data-fallback"));
+//     }
+//   }    
+// }
+
+
 
 function aboutUsDrawFillAnimation() {
                     var myAnimation = new DrawFillSVG({
@@ -2604,303 +2810,249 @@ function phoneDrawFillAnimation() {
                     });
                   };
 
-// Inline SVG
-//new Vivus('phone-icon', {type: 'delayed', duration: 200}, myCallback);
-
-
-// $(".site-nav").css({'background-color':"#18598c"});
 
 
 
+// 'use strict';
 
-//  $(document).on('scroll',function () {
-	
-	
-// // $('#push').click(function (e) {
-// // 	    e.preventDefault();
-// 	if ($(this).scrollTop() > 1) {
-// 		//$(".iconId").toggleClass("nav-after-logo-animation");
-// 	myIcons.to('rec-svg',{duration:1000});
-// 	$("#icon").attr('class', 'nav-after-logo-animation');
-// 	alert("what");
+// /**
+//  * Pathformer
+//  * Beta version
+//  *
+//  * Take any SVG version 1.1 and transform
+//  * child elements to 'path' elements
+//  *
+//  * This code is purely forked from
+//  * https://github.com/Waest/SVGPathConverter
+//  */
 
-// 	// $('.site').css({'top':'-100%'});
+// /**
+//  * Class constructor
+//  *
+//  * @param {DOM|String} element Dom element of the SVG or id of it
+//  */
+// function Pathformer(element) {
+//   // Test params
+//   if (typeof element === 'undefined') {
+//     throw new Error('Pathformer [constructor]: "element" parameter is required');
+//   }
 
-// 	// $(".iconId").attr('class', 'nav-after-class-toggle');
-// 	// $windowHeight = window.innerHeight;
-// 	//   $('.site').css({"transform": "translate3d(0," + -$windowHeight + "px, 0)"});
+//   // Set the element
+//   if (element.constructor === String) {
+//     element = document.getElementById(element);
+//     if (!element) {
+//       throw new Error('Pathformer [constructor]: "element" parameter is not related to an existing ID');
+//     }
+//   }
+//   if (element.constructor instanceof window.SVGElement || /^svg$/i.test(element.nodeName)) {
+//     this.el = element;
+//   } else {
+//     throw new Error('Pathformer [constructor]: "element" parameter must be a string or a SVGelement');
+//   }
 
+//   // Start
+//   this.scan(element);
+// }
 
+// /**
+//  * List of tags which can be transformed
+//  * to path elements
+//  *
+//  * @type {Array}
+//  */
+// Pathformer.prototype.TYPES = ['line', 'elipse', 'circle', 'polygon', 'polyline', 'rect'];
 
-// 	}
+// /**
+//  * List of attribute names which contain
+//  * data. This array list them to check if
+//  * they contain bad values, like percentage. 
+//  *
+//  * @type {Array}
+//  */
+// Pathformer.prototype.ATTR_WATCH = ['cx', 'cy', 'points', 'r', 'rx', 'ry', 'x', 'x1', 'x2', 'y', 'y1', 'y2'];
 
-// 	else {
-// 	$('#push').removeClass("shoe");
-// 		myIcons.to('codicated-logo-svg',{duration:1000});
-// 		$("#icon").attr('class', 'iconId');
-		
-// 		 // alert("yes");
-//  }
-	
-// });
-
-//  $(document).ready(function(){
-// 	$('#push').on('click',function (e) {
-// 	    e.preventDefault();
-
-// 	    var target = $('#lori');
-	    
-
-// 	    $('html, body').stop().animate({
-// 	        'scrollTop': target.offset().top
-// 	    }, 900, 'swing', function () {
-// 	        window.location.hash = target;
-// 	    });
-// 	});
-// });
-	
-
-
-'use strict';
-
-/**
- * Pathformer
- * Beta version
- *
- * Take any SVG version 1.1 and transform
- * child elements to 'path' elements
- *
- * This code is purely forked from
- * https://github.com/Waest/SVGPathConverter
- */
-
-/**
- * Class constructor
- *
- * @param {DOM|String} element Dom element of the SVG or id of it
- */
-function Pathformer(element) {
-  // Test params
-  if (typeof element === 'undefined') {
-    throw new Error('Pathformer [constructor]: "element" parameter is required');
-  }
-
-  // Set the element
-  if (element.constructor === String) {
-    element = document.getElementById(element);
-    if (!element) {
-      throw new Error('Pathformer [constructor]: "element" parameter is not related to an existing ID');
-    }
-  }
-  if (element.constructor instanceof window.SVGElement || /^svg$/i.test(element.nodeName)) {
-    this.el = element;
-  } else {
-    throw new Error('Pathformer [constructor]: "element" parameter must be a string or a SVGelement');
-  }
-
-  // Start
-  this.scan(element);
-}
-
-/**
- * List of tags which can be transformed
- * to path elements
- *
- * @type {Array}
- */
-Pathformer.prototype.TYPES = ['line', 'elipse', 'circle', 'polygon', 'polyline', 'rect'];
-
-/**
- * List of attribute names which contain
- * data. This array list them to check if
- * they contain bad values, like percentage. 
- *
- * @type {Array}
- */
-Pathformer.prototype.ATTR_WATCH = ['cx', 'cy', 'points', 'r', 'rx', 'ry', 'x', 'x1', 'x2', 'y', 'y1', 'y2'];
-
-/**
- * Finds the elements compatible for transform
- * and apply the liked method
- *
- * @param  {object} options Object from the constructor
- */
-Pathformer.prototype.scan = function (svg) {
-  var fn, element, pathData, pathDom,
-    elements = svg.querySelectorAll(this.TYPES.join(','));
-  for (var i = 0; i < elements.length; i++) {
-    element = elements[i];
-    fn = this[element.tagName.toLowerCase() + 'ToPath'];
-    pathData = fn(this.parseAttr(element.attributes));
-    pathDom = this.pathMaker(element, pathData);
-    element.parentNode.replaceChild(pathDom, element);
-  }
-};
+// /**
+//  * Finds the elements compatible for transform
+//  * and apply the liked method
+//  *
+//  * @param  {object} options Object from the constructor
+//  */
+// Pathformer.prototype.scan = function (svg) {
+//   var fn, element, pathData, pathDom,
+//     elements = svg.querySelectorAll(this.TYPES.join(','));
+//   for (var i = 0; i < elements.length; i++) {
+//     element = elements[i];
+//     fn = this[element.tagName.toLowerCase() + 'ToPath'];
+//     pathData = fn(this.parseAttr(element.attributes));
+//     pathDom = this.pathMaker(element, pathData);
+//     element.parentNode.replaceChild(pathDom, element);
+//   }
+// };
 
 
-/**
- * Read `line` element to extract and transform
- * data, to make it ready for a `path` object.
- *
- * @param  {DOMelement} element Line element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.lineToPath = function (element) {
-  var newElement = {};
-  newElement.d = 'M' + element.x1 + ',' + element.y1 + 'L' + element.x2 + ',' + element.y2;
-  return newElement;
-};
+// /**
+//  * Read `line` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  *
+//  * @param  {DOMelement} element Line element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.lineToPath = function (element) {
+//   var newElement = {};
+//   newElement.d = 'M' + element.x1 + ',' + element.y1 + 'L' + element.x2 + ',' + element.y2;
+//   return newElement;
+// };
 
-/**
- * Read `rect` element to extract and transform
- * data, to make it ready for a `path` object.
- * The radius-border is not taken in charge yet.
- * (your help is more than welcomed)
- *
- * @param  {DOMelement} element Rect element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.rectToPath = function (element) {
-  var newElement = {},
-    x = parseFloat(element.x) || 0,
-    y = parseFloat(element.y) || 0,
-    width = parseFloat(element.width) || 0,
-    height = parseFloat(element.height) || 0;
-  newElement.d  = 'M' + x + ' ' + y + ' ';
-  newElement.d += 'L' + (x + width) + ' ' + y + ' ';
-  newElement.d += 'L' + (x + width) + ' ' + (y + height) + ' ';
-  newElement.d += 'L' + x + ' ' + (y + height) + ' Z';
-  return newElement;
-};
+// /**
+//  * Read `rect` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  * The radius-border is not taken in charge yet.
+//  * (your help is more than welcomed)
+//  *
+//  * @param  {DOMelement} element Rect element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.rectToPath = function (element) {
+//   var newElement = {},
+//     x = parseFloat(element.x) || 0,
+//     y = parseFloat(element.y) || 0,
+//     width = parseFloat(element.width) || 0,
+//     height = parseFloat(element.height) || 0;
+//   newElement.d  = 'M' + x + ' ' + y + ' ';
+//   newElement.d += 'L' + (x + width) + ' ' + y + ' ';
+//   newElement.d += 'L' + (x + width) + ' ' + (y + height) + ' ';
+//   newElement.d += 'L' + x + ' ' + (y + height) + ' Z';
+//   return newElement;
+// };
 
-/**
- * Read `polyline` element to extract and transform
- * data, to make it ready for a `path` object.
- *
- * @param  {DOMelement} element Polyline element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.polylineToPath = function (element) {
-  var i, path;
-  var newElement = {};
-  var points = element.points.split(' ');
+// /**
+//  * Read `polyline` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  *
+//  * @param  {DOMelement} element Polyline element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.polylineToPath = function (element) {
+//   var i, path;
+//   var newElement = {};
+//   var points = element.points.split(' ');
   
-  // Reformatting if points are defined without commas
-  if (element.points.indexOf(',') === -1) {
-    var formattedPoints = [];
-    for (i = 0; i < points.length; i+=2) {
-      formattedPoints.push(points[i] + ',' + points[i+1]);
-    }
-    points = formattedPoints;
-  }
+//   // Reformatting if points are defined without commas
+//   if (element.points.indexOf(',') === -1) {
+//     var formattedPoints = [];
+//     for (i = 0; i < points.length; i+=2) {
+//       formattedPoints.push(points[i] + ',' + points[i+1]);
+//     }
+//     points = formattedPoints;
+//   }
 
-  // Generate the path.d value
-  path = 'M' + points[0];
-  for(i = 1; i < points.length; i++) {
-    if (points[i].indexOf(',') !== -1) {
-      path += 'L' + points[i];
-    }
-  }
-  newElement.d = path;
-  return newElement;
-};
+//   // Generate the path.d value
+//   path = 'M' + points[0];
+//   for(i = 1; i < points.length; i++) {
+//     if (points[i].indexOf(',') !== -1) {
+//       path += 'L' + points[i];
+//     }
+//   }
+//   newElement.d = path;
+//   return newElement;
+// };
 
-/**
- * Read `polygon` element to extract and transform
- * data, to make it ready for a `path` object.
- * This method rely on polylineToPath, because the
- * logic is similar. The path created is just closed,
- * so it needs an 'Z' at the end.
- *
- * @param  {DOMelement} element Polygon element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.polygonToPath = function (element) {
-  var newElement = Pathformer.prototype.polylineToPath(element);
-  newElement.d += 'Z';
-  return newElement;
-};
+// /**
+//  * Read `polygon` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  * This method rely on polylineToPath, because the
+//  * logic is similar. The path created is just closed,
+//  * so it needs an 'Z' at the end.
+//  *
+//  * @param  {DOMelement} element Polygon element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.polygonToPath = function (element) {
+//   var newElement = Pathformer.prototype.polylineToPath(element);
+//   newElement.d += 'Z';
+//   return newElement;
+// };
 
-/**
- * Read `elipse` element to extract and transform
- * data, to make it ready for a `path` object.
- *
- * @param  {DOMelement} element Elipse element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.elipseToPath = function (element) {
-  var startX = element.cx - element.rx,
-      startY = element.cy;
-  var endX = parseFloat(element.cx) + parseFloat(element.rx),
-      endY = element.cy;
+// /**
+//  * Read `elipse` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  *
+//  * @param  {DOMelement} element Elipse element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.elipseToPath = function (element) {
+//   var startX = element.cx - element.rx,
+//       startY = element.cy;
+//   var endX = parseFloat(element.cx) + parseFloat(element.rx),
+//       endY = element.cy;
 
-  var newElement = {};
-  newElement.d = 'M' + startX + ',' + startY +
-                 'A' + element.rx + ',' + element.ry + ' 0,1,1 ' + endX + ',' + endY +
-                 'A' + element.rx + ',' + element.ry + ' 0,1,1 ' + startX + ',' + endY;
-  return newElement;
-};
+//   var newElement = {};
+//   newElement.d = 'M' + startX + ',' + startY +
+//                  'A' + element.rx + ',' + element.ry + ' 0,1,1 ' + endX + ',' + endY +
+//                  'A' + element.rx + ',' + element.ry + ' 0,1,1 ' + startX + ',' + endY;
+//   return newElement;
+// };
 
-/**
- * Read `circle` element to extract and transform
- * data, to make it ready for a `path` object.
- *
- * @param  {DOMelement} element Circle element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.circleToPath = function (element) {
-  var newElement = {};
-  var startX = element.cx - element.r,
-      startY = element.cy;
-  var endX = parseFloat(element.cx) + parseFloat(element.r),
-      endY = element.cy;
-  newElement.d =  'M' + startX + ',' + startY +
-                  'A' + element.r + ',' + element.r + ' 0,1,1 ' + endX + ',' + endY +
-                  'A' + element.r + ',' + element.r + ' 0,1,1 ' + startX + ',' + endY;
-  return newElement;
-};
+// /**
+//  * Read `circle` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  *
+//  * @param  {DOMelement} element Circle element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.circleToPath = function (element) {
+//   var newElement = {};
+//   var startX = element.cx - element.r,
+//       startY = element.cy;
+//   var endX = parseFloat(element.cx) + parseFloat(element.r),
+//       endY = element.cy;
+//   newElement.d =  'M' + startX + ',' + startY +
+//                   'A' + element.r + ',' + element.r + ' 0,1,1 ' + endX + ',' + endY +
+//                   'A' + element.r + ',' + element.r + ' 0,1,1 ' + startX + ',' + endY;
+//   return newElement;
+// };
 
-/**
- * Create `path` elements form original element
- * and prepared objects
- *
- * @param  {DOMelement} element  Original element to transform
- * @param  {object} pathData     Path data (from `toPath` methods)
- * @return {DOMelement}          Path element
- */
-Pathformer.prototype.pathMaker = function (element, pathData) {
-  var i, attr, pathTag = document.createElementNS('http://www.w3.org/2000/svg','path');
-  for(i = 0; i < element.attributes.length; i++) {
-    attr = element.attributes[i];
-    if (this.ATTR_WATCH.indexOf(attr.name) === -1) {
-      pathTag.setAttribute(attr.name, attr.value);
-    }
-  }
-  for(i in pathData) {
-    pathTag.setAttribute(i, pathData[i]);
-  }
-  return pathTag;
-};
+// /**
+//  * Create `path` elements form original element
+//  * and prepared objects
+//  *
+//  * @param  {DOMelement} element  Original element to transform
+//  * @param  {object} pathData     Path data (from `toPath` methods)
+//  * @return {DOMelement}          Path element
+//  */
+// Pathformer.prototype.pathMaker = function (element, pathData) {
+//   var i, attr, pathTag = document.createElementNS('http://www.w3.org/2000/svg','path');
+//   for(i = 0; i < element.attributes.length; i++) {
+//     attr = element.attributes[i];
+//     if (this.ATTR_WATCH.indexOf(attr.name) === -1) {
+//       pathTag.setAttribute(attr.name, attr.value);
+//     }
+//   }
+//   for(i in pathData) {
+//     pathTag.setAttribute(i, pathData[i]);
+//   }
+//   return pathTag;
+// };
 
-/**
- * Parse attributes of a DOM element to
- * get an object of attribute => value
- *
- * @param  {NamedNodeMap} attributes Attributes object from DOM element to parse
- * @return {object}                  Object of attributes
- */
-Pathformer.prototype.parseAttr = function (element) {
-  var attr, output = {};
-  for (var i = 0; i < element.length; i++) {
-    attr = element[i];
-    // Check if no data attribute contains '%', or the transformation is impossible
-    if (this.ATTR_WATCH.indexOf(attr.name) !== -1 && attr.value.indexOf('%') !== -1) {
-      throw new Error('Pathformer [parseAttr]: a SVG shape got values in percentage. This cannot be transformed into \'path\' tags. Please use \'viewBox\'.');
-    }
-    output[attr.name] = attr.value;
-  }
-  return output;
-};
+// /**
+//  * Parse attributes of a DOM element to
+//  * get an object of attribute => value
+//  *
+//  * @param  {NamedNodeMap} attributes Attributes object from DOM element to parse
+//  * @return {object}                  Object of attributes
+//  */
+// Pathformer.prototype.parseAttr = function (element) {
+//   var attr, output = {};
+//   for (var i = 0; i < element.length; i++) {
+//     attr = element[i];
+//     // Check if no data attribute contains '%', or the transformation is impossible
+//     if (this.ATTR_WATCH.indexOf(attr.name) !== -1 && attr.value.indexOf('%') !== -1) {
+//       throw new Error('Pathformer [parseAttr]: a SVG shape got values in percentage. This cannot be transformed into \'path\' tags. Please use \'viewBox\'.');
+//     }
+//     output[attr.name] = attr.value;
+//   }
+//   return output;
+// };
 
 // Avoid `console` errors in browsers that lack a console.
 (function() {
@@ -4392,978 +4544,978 @@ SVGMorpheus.prototype.to=function(iconId, options, callback) {
 
 return SVGMorpheus;
 }());
-/**
- * vivus - JavaScript library to make drawing animation on SVG
- * @version v0.2.1
- * @link https://github.com/maxwellito/vivus
- * @license MIT
- */
+// /**
+//  * vivus - JavaScript library to make drawing animation on SVG
+//  * @version v0.2.1
+//  * @link https://github.com/maxwellito/vivus
+//  * @license MIT
+//  */
 
-'use strict';
+// 'use strict';
 
-(function (window, document) {
+// (function (window, document) {
 
-  'use strict';
+//   'use strict';
 
-/**
- * Pathformer
- * Beta version
- *
- * Take any SVG version 1.1 and transform
- * child elements to 'path' elements
- *
- * This code is purely forked from
- * https://github.com/Waest/SVGPathConverter
- */
+// /**
+//  * Pathformer
+//  * Beta version
+//  *
+//  * Take any SVG version 1.1 and transform
+//  * child elements to 'path' elements
+//  *
+//  * This code is purely forked from
+//  * https://github.com/Waest/SVGPathConverter
+//  */
 
-/**
- * Class constructor
- *
- * @param {DOM|String} element Dom element of the SVG or id of it
- */
-function Pathformer(element) {
-  // Test params
-  if (typeof element === 'undefined') {
-    throw new Error('Pathformer [constructor]: "element" parameter is required');
-  }
+// /**
+//  * Class constructor
+//  *
+//  * @param {DOM|String} element Dom element of the SVG or id of it
+//  */
+// function Pathformer(element) {
+//   // Test params
+//   if (typeof element === 'undefined') {
+//     throw new Error('Pathformer [constructor]: "element" parameter is required');
+//   }
 
-  // Set the element
-  if (element.constructor === String) {
-    element = document.getElementById(element);
-    if (!element) {
-      throw new Error('Pathformer [constructor]: "element" parameter is not related to an existing ID');
-    }
-  }
-  if (element.constructor instanceof window.SVGElement || /^svg$/i.test(element.nodeName)) {
-    this.el = element;
-  } else {
-    throw new Error('Pathformer [constructor]: "element" parameter must be a string or a SVGelement');
-  }
+//   // Set the element
+//   if (element.constructor === String) {
+//     element = document.getElementById(element);
+//     if (!element) {
+//       throw new Error('Pathformer [constructor]: "element" parameter is not related to an existing ID');
+//     }
+//   }
+//   if (element.constructor instanceof window.SVGElement || /^svg$/i.test(element.nodeName)) {
+//     this.el = element;
+//   } else {
+//     throw new Error('Pathformer [constructor]: "element" parameter must be a string or a SVGelement');
+//   }
 
-  // Start
-  this.scan(element);
-}
+//   // Start
+//   this.scan(element);
+// }
 
-/**
- * List of tags which can be transformed
- * to path elements
- *
- * @type {Array}
- */
-Pathformer.prototype.TYPES = ['line', 'elipse', 'circle', 'polygon', 'polyline', 'rect'];
+// /**
+//  * List of tags which can be transformed
+//  * to path elements
+//  *
+//  * @type {Array}
+//  */
+// Pathformer.prototype.TYPES = ['line', 'elipse', 'circle', 'polygon', 'polyline', 'rect'];
 
-/**
- * List of attribute names which contain
- * data. This array list them to check if
- * they contain bad values, like percentage. 
- *
- * @type {Array}
- */
-Pathformer.prototype.ATTR_WATCH = ['cx', 'cy', 'points', 'r', 'rx', 'ry', 'x', 'x1', 'x2', 'y', 'y1', 'y2'];
+// /**
+//  * List of attribute names which contain
+//  * data. This array list them to check if
+//  * they contain bad values, like percentage. 
+//  *
+//  * @type {Array}
+//  */
+// Pathformer.prototype.ATTR_WATCH = ['cx', 'cy', 'points', 'r', 'rx', 'ry', 'x', 'x1', 'x2', 'y', 'y1', 'y2'];
 
-/**
- * Finds the elements compatible for transform
- * and apply the liked method
- *
- * @param  {object} options Object from the constructor
- */
-Pathformer.prototype.scan = function (svg) {
-  var fn, element, pathData, pathDom,
-    elements = svg.querySelectorAll(this.TYPES.join(','));
-  for (var i = 0; i < elements.length; i++) {
-    element = elements[i];
-    fn = this[element.tagName.toLowerCase() + 'ToPath'];
-    pathData = fn(this.parseAttr(element.attributes));
-    pathDom = this.pathMaker(element, pathData);
-    element.parentNode.replaceChild(pathDom, element);
-  }
-};
+// /**
+//  * Finds the elements compatible for transform
+//  * and apply the liked method
+//  *
+//  * @param  {object} options Object from the constructor
+//  */
+// Pathformer.prototype.scan = function (svg) {
+//   var fn, element, pathData, pathDom,
+//     elements = svg.querySelectorAll(this.TYPES.join(','));
+//   for (var i = 0; i < elements.length; i++) {
+//     element = elements[i];
+//     fn = this[element.tagName.toLowerCase() + 'ToPath'];
+//     pathData = fn(this.parseAttr(element.attributes));
+//     pathDom = this.pathMaker(element, pathData);
+//     element.parentNode.replaceChild(pathDom, element);
+//   }
+// };
 
 
-/**
- * Read `line` element to extract and transform
- * data, to make it ready for a `path` object.
- *
- * @param  {DOMelement} element Line element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.lineToPath = function (element) {
-  var newElement = {};
-  newElement.d = 'M' + element.x1 + ',' + element.y1 + 'L' + element.x2 + ',' + element.y2;
-  return newElement;
-};
+// /**
+//  * Read `line` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  *
+//  * @param  {DOMelement} element Line element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.lineToPath = function (element) {
+//   var newElement = {};
+//   newElement.d = 'M' + element.x1 + ',' + element.y1 + 'L' + element.x2 + ',' + element.y2;
+//   return newElement;
+// };
 
-/**
- * Read `rect` element to extract and transform
- * data, to make it ready for a `path` object.
- * The radius-border is not taken in charge yet.
- * (your help is more than welcomed)
- *
- * @param  {DOMelement} element Rect element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.rectToPath = function (element) {
-  var newElement = {},
-    x = parseFloat(element.x) || 0,
-    y = parseFloat(element.y) || 0,
-    width = parseFloat(element.width) || 0,
-    height = parseFloat(element.height) || 0;
-  newElement.d  = 'M' + x + ' ' + y + ' ';
-  newElement.d += 'L' + (x + width) + ' ' + y + ' ';
-  newElement.d += 'L' + (x + width) + ' ' + (y + height) + ' ';
-  newElement.d += 'L' + x + ' ' + (y + height) + ' Z';
-  return newElement;
-};
+// /**
+//  * Read `rect` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  * The radius-border is not taken in charge yet.
+//  * (your help is more than welcomed)
+//  *
+//  * @param  {DOMelement} element Rect element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.rectToPath = function (element) {
+//   var newElement = {},
+//     x = parseFloat(element.x) || 0,
+//     y = parseFloat(element.y) || 0,
+//     width = parseFloat(element.width) || 0,
+//     height = parseFloat(element.height) || 0;
+//   newElement.d  = 'M' + x + ' ' + y + ' ';
+//   newElement.d += 'L' + (x + width) + ' ' + y + ' ';
+//   newElement.d += 'L' + (x + width) + ' ' + (y + height) + ' ';
+//   newElement.d += 'L' + x + ' ' + (y + height) + ' Z';
+//   return newElement;
+// };
 
-/**
- * Read `polyline` element to extract and transform
- * data, to make it ready for a `path` object.
- *
- * @param  {DOMelement} element Polyline element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.polylineToPath = function (element) {
-  var i, path;
-  var newElement = {};
-  var points = element.points.split(' ');
+// /**
+//  * Read `polyline` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  *
+//  * @param  {DOMelement} element Polyline element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.polylineToPath = function (element) {
+//   var i, path;
+//   var newElement = {};
+//   var points = element.points.split(' ');
   
-  // Reformatting if points are defined without commas
-  if (element.points.indexOf(',') === -1) {
-    var formattedPoints = [];
-    for (i = 0; i < points.length; i+=2) {
-      formattedPoints.push(points[i] + ',' + points[i+1]);
-    }
-    points = formattedPoints;
-  }
-
-  // Generate the path.d value
-  path = 'M' + points[0];
-  for(i = 1; i < points.length; i++) {
-    if (points[i].indexOf(',') !== -1) {
-      path += 'L' + points[i];
-    }
-  }
-  newElement.d = path;
-  return newElement;
-};
-
-/**
- * Read `polygon` element to extract and transform
- * data, to make it ready for a `path` object.
- * This method rely on polylineToPath, because the
- * logic is similar. The path created is just closed,
- * so it needs an 'Z' at the end.
- *
- * @param  {DOMelement} element Polygon element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.polygonToPath = function (element) {
-  var newElement = Pathformer.prototype.polylineToPath(element);
-  newElement.d += 'Z';
-  return newElement;
-};
-
-/**
- * Read `elipse` element to extract and transform
- * data, to make it ready for a `path` object.
- *
- * @param  {DOMelement} element Elipse element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.elipseToPath = function (element) {
-  var startX = element.cx - element.rx,
-      startY = element.cy;
-  var endX = parseFloat(element.cx) + parseFloat(element.rx),
-      endY = element.cy;
-
-  var newElement = {};
-  newElement.d = 'M' + startX + ',' + startY +
-                 'A' + element.rx + ',' + element.ry + ' 0,1,1 ' + endX + ',' + endY +
-                 'A' + element.rx + ',' + element.ry + ' 0,1,1 ' + startX + ',' + endY;
-  return newElement;
-};
-
-/**
- * Read `circle` element to extract and transform
- * data, to make it ready for a `path` object.
- *
- * @param  {DOMelement} element Circle element to transform
- * @return {object}             Data for a `path` element
- */
-Pathformer.prototype.circleToPath = function (element) {
-  var newElement = {};
-  var startX = element.cx - element.r,
-      startY = element.cy;
-  var endX = parseFloat(element.cx) + parseFloat(element.r),
-      endY = element.cy;
-  newElement.d =  'M' + startX + ',' + startY +
-                  'A' + element.r + ',' + element.r + ' 0,1,1 ' + endX + ',' + endY +
-                  'A' + element.r + ',' + element.r + ' 0,1,1 ' + startX + ',' + endY;
-  return newElement;
-};
-
-/**
- * Create `path` elements form original element
- * and prepared objects
- *
- * @param  {DOMelement} element  Original element to transform
- * @param  {object} pathData     Path data (from `toPath` methods)
- * @return {DOMelement}          Path element
- */
-Pathformer.prototype.pathMaker = function (element, pathData) {
-  var i, attr, pathTag = document.createElementNS('http://www.w3.org/2000/svg','path');
-  for(i = 0; i < element.attributes.length; i++) {
-    attr = element.attributes[i];
-    if (this.ATTR_WATCH.indexOf(attr.name) === -1) {
-      pathTag.setAttribute(attr.name, attr.value);
-    }
-  }
-  for(i in pathData) {
-    pathTag.setAttribute(i, pathData[i]);
-  }
-  return pathTag;
-};
-
-/**
- * Parse attributes of a DOM element to
- * get an object of attribute => value
- *
- * @param  {NamedNodeMap} attributes Attributes object from DOM element to parse
- * @return {object}                  Object of attributes
- */
-Pathformer.prototype.parseAttr = function (element) {
-  var attr, output = {};
-  for (var i = 0; i < element.length; i++) {
-    attr = element[i];
-    // Check if no data attribute contains '%', or the transformation is impossible
-    if (this.ATTR_WATCH.indexOf(attr.name) !== -1 && attr.value.indexOf('%') !== -1) {
-      throw new Error('Pathformer [parseAttr]: a SVG shape got values in percentage. This cannot be transformed into \'path\' tags. Please use \'viewBox\'.');
-    }
-    output[attr.name] = attr.value;
-  }
-  return output;
-};
-
-  'use strict';
-
-var requestAnimFrame, cancelAnimFrame, parsePositiveInt;
-
-/**
- * Vivus
- * Beta version
- *
- * Take any SVG and make the animation
- * to give give the impression of live drawing
- *
- * This in more than just inspired from codrops
- * At that point, it's a pure fork.
- */
-
-/**
- * Class constructor
- * option structure
- *   type: 'delayed'|'async'|'oneByOne'|'script' (to know if the item must be drawn asynchronously or not, default: delayed)
- *   duration: <int> (in frames)
- *   start: 'inViewport'|'manual'|'autostart' (start automatically the animation, default: inViewport)
- *   delay: <int> (delay between the drawing of first and last path)
- *   dashGap <integer> whitespace extra margin between dashes
- *   pathTimingFunction <function> timing animation function for each path element of the SVG
- *   animTimingFunction <function> timing animation function for the complete SVG
- *   forceRender <boolean> force the browser to re-render all updated path items
- *   selfDestroy <boolean> removes all extra styling on the SVG, and leaves it as original
- *
- * The attribute 'type' is by default on 'delayed'.
- *  - 'delayed'
- *    all paths are draw at the same time but with a
- *    little delay between them before start
- *  - 'async'
- *    all path are start and finish at the same time
- *  - 'oneByOne'
- *    only one path is draw at the time
- *    the end of the first one will trigger the draw
- *    of the next one
- *
- * All these values can be overwritten individually
- * for each path item in the SVG
- * The value of frames will always take the advantage of
- * the duration value.
- * If you fail somewhere, an error will be thrown.
- * Good luck.
- *
- * @constructor
- * @this {Vivus}
- * @param {DOM|String}   element  Dom element of the SVG or id of it
- * @param {Object}       options  Options about the animation
- * @param {Function}     callback Callback for the end of the animation
- */
-function Vivus (element, options, callback) {
-
-  // Setup
-  this.isReady = false;
-  this.setElement(element, options);
-  this.setOptions(options);
-  this.setCallback(callback);
-
-  if (this.isReady) {
-    this.init();
-  }
-}
-
-/**
- * Timing functions
- ************************************** 
- * 
- * Default functions to help developers.
- * It always take a number as parameter (between 0 to 1) then
- * return a number (between 0 and 1)
- */
-Vivus.LINEAR          = function (x) {return x;};
-Vivus.EASE            = function (x) {return -Math.cos(x * Math.PI) / 2 + 0.5;};
-Vivus.EASE_OUT        = function (x) {return 1 - Math.pow(1-x, 3);};
-Vivus.EASE_IN         = function (x) {return Math.pow(x, 3);};
-Vivus.EASE_OUT_BOUNCE = function (x) {
-  var base = -Math.cos(x * (0.5 * Math.PI)) + 1,
-    rate = Math.pow(base,1.5),
-    rateR = Math.pow(1 - x, 2),
-    progress = -Math.abs(Math.cos(rate * (2.5 * Math.PI) )) + 1;
-  return (1- rateR) + (progress * rateR);
-};
-
-
-/**
- * Setters
- **************************************
- */
-
-/**
- * Check and set the element in the instance
- * The method will not return anything, but will throw an
- * error if the parameter is invalid
- *
- * @param {DOM|String}   element  SVG Dom element or id of it
- */
-Vivus.prototype.setElement = function (element, options) {
-  // Basic check
-  if (typeof element === 'undefined') {
-    throw new Error('Vivus [constructor]: "element" parameter is required');
-  }
-
-  // Set the element
-  if (element.constructor === String) {
-    element = document.getElementById(element);
-    if (!element) {
-      throw new Error('Vivus [constructor]: "element" parameter is not related to an existing ID');
-    }
-  }
-
-  // Create the object element if the property `file` exists in the options object
-  if (options && options.file) {
-    var objElm = document.createElement('object');
-    objElm.setAttribute('type', 'image/svg+xml');
-    objElm.setAttribute('data', options.file);
-    element.appendChild(objElm);
-    element = objElm;
-  }
-
-  switch (element.constructor) {
-  case window.SVGSVGElement:
-  case window.SVGElement:
-    this.el = element;
-    this.isReady = true;
-    break;
-
-  case window.HTMLObjectElement:
-    // If the Object is already loaded
-    this.el = element.contentDocument && element.contentDocument.querySelector('svg');
-    if (this.el) {
-      this.isReady = true;
-      return;
-    }
-
-    // If we have to wait for it
-    var self = this;
-    element.addEventListener('load', function () {
-      self.el = element.contentDocument && element.contentDocument.querySelector('svg');
-      if (!self.el) {
-        throw new Error('Vivus [constructor]: object loaded does not contain any SVG');
-      }
-      else {
-        self.isReady = true;
-        self.init();
-      }
-    });
-    break;
-
-  default:
-    throw new Error('Vivus [constructor]: "element" parameter is not valid (or miss the "file" attribute)');
-  }
-};
-
-/**
- * Set up user option to the instance
- * The method will not return anything, but will throw an
- * error if the parameter is invalid
- *
- * @param  {object} options Object from the constructor
- */
-Vivus.prototype.setOptions = function (options) {
-  var allowedTypes = ['delayed', 'async', 'oneByOne', 'scenario', 'scenario-sync'];
-  var allowedStarts =  ['inViewport', 'manual', 'autostart'];
-
-  // Basic check
-  if (options !== undefined && options.constructor !== Object) {
-    throw new Error('Vivus [constructor]: "options" parameter must be an object');
-  }
-  else {
-    options = options || {};
-  }
-
-  // Set the animation type
-  if (options.type && allowedTypes.indexOf(options.type) === -1) {
-    throw new Error('Vivus [constructor]: ' + options.type + ' is not an existing animation `type`');
-  }
-  else {
-    this.type = options.type || allowedTypes[0];
-  }
-
-  // Set the start type
-  if (options.start && allowedStarts.indexOf(options.start) === -1) {
-    throw new Error('Vivus [constructor]: ' + options.start + ' is not an existing `start` option');
-  }
-  else {
-    this.start = options.start || allowedStarts[0];
-  }
-
-  this.isIE        = (window.navigator.userAgent.indexOf('MSIE') !== -1);
-  this.duration    = parsePositiveInt(options.duration, 120);
-  this.delay       = parsePositiveInt(options.delay, null);
-  this.dashGap     = parsePositiveInt(options.dashGap, 2);
-  this.forceRender = options.hasOwnProperty('forceRender') ? !!options.forceRender : this.isIE;
-  this.selfDestroy = !!options.selfDestroy;
-  this.onReady     = options.onReady;
-
-  this.animTimingFunction = options.animTimingFunction || Vivus.LINEAR;
-  this.pathTimingFunction = options.pathTimingFunction || Vivus.LINEAR;
-
-  if (this.delay >= this.duration) {
-    throw new Error('Vivus [constructor]: delay must be shorter than duration');
-  }
-};
-
-/**
- * Set up callback to the instance
- * The method will not return enything, but will throw an
- * error if the parameter is invalid
- *
- * @param  {Function} callback Callback for the animation end
- */
-Vivus.prototype.setCallback = function (callback) {
-  // Basic check
-  if (!!callback && callback.constructor !== Function) {
-    throw new Error('Vivus [constructor]: "callback" parameter must be a function');
-  }
-  this.callback = callback || function () {};
-};
-
-
-/**
- * Core
- **************************************
- */
-
-/**
- * Map the svg, path by path.
- * The method return nothing, it just fill the
- * `map` array. Each item in this array represent
- * a path element from the SVG, with informations for
- * the animation.
- *
- * ```
- * [
- *   {
- *     el: <DOMobj> the path element
- *     length: <number> length of the path line
- *     startAt: <number> time start of the path animation (in frames)
- *     duration: <number> path animation duration (in frames)
- *   },
- *   ...
- * ]
- * ```
- *
- */
-Vivus.prototype.mapping = function () {
-  var i, paths, path, pAttrs, pathObj, totalLength, lengthMeter, timePoint;
-  timePoint = totalLength = lengthMeter = 0;
-  paths = this.el.querySelectorAll('path');
-
-  for (i = 0; i < paths.length; i++) {
-    path = paths[i];
-    pathObj = {
-      el: path,
-      length: Math.ceil(path.getTotalLength())
-    };
-    // Test if the path length is correct
-    if (isNaN(pathObj.length)) {
-      if (window.console && console.warn) {
-        console.warn('Vivus [mapping]: cannot retrieve a path element length', path);
-      }
-      continue;
-    }
-    totalLength += pathObj.length;
-    this.map.push(pathObj);
-    path.style.strokeDasharray  = pathObj.length + ' ' + (pathObj.length + this.dashGap);
-    path.style.strokeDashoffset = pathObj.length;
-
-    // Fix IE glitch
-    if (this.isIE) {
-      pathObj.length += this.dashGap;
-    }
-    this.renderPath(i);
-  }
-
-  totalLength = totalLength === 0 ? 1 : totalLength;
-  this.delay = this.delay === null ? this.duration / 3 : this.delay;
-  this.delayUnit = this.delay / (paths.length > 1 ? paths.length - 1 : 1);
-
-  for (i = 0; i < this.map.length; i++) {
-    pathObj = this.map[i];
-
-    switch (this.type) {
-    case 'delayed':
-      pathObj.startAt = this.delayUnit * i;
-      pathObj.duration = this.duration - this.delay;
-      break;
-
-    case 'oneByOne':
-      pathObj.startAt = lengthMeter / totalLength * this.duration;
-      pathObj.duration = pathObj.length / totalLength * this.duration;
-      break;
-
-    case 'async':
-      pathObj.startAt = 0;
-      pathObj.duration = this.duration;
-      break;
-
-    case 'scenario-sync':
-      path = paths[i];
-      pAttrs = this.parseAttr(path);
-      pathObj.startAt = timePoint + (parsePositiveInt(pAttrs['data-delay'], this.delayUnit) || 0);
-      pathObj.duration = parsePositiveInt(pAttrs['data-duration'], this.duration);
-      timePoint = pAttrs['data-async'] !== undefined ? pathObj.startAt : pathObj.startAt + pathObj.duration;
-      this.frameLength = Math.max(this.frameLength, (pathObj.startAt + pathObj.duration));
-      break;
-
-    case 'scenario':
-      path = paths[i];
-      pAttrs = this.parseAttr(path);
-      pathObj.startAt = parsePositiveInt(pAttrs['data-start'], this.delayUnit) || 0;
-      pathObj.duration = parsePositiveInt(pAttrs['data-duration'], this.duration);
-      this.frameLength = Math.max(this.frameLength, (pathObj.startAt + pathObj.duration));
-      break;
-    }
-    lengthMeter += pathObj.length;
-    this.frameLength = this.frameLength || this.duration;
-  }
-};
-
-/**
- * Interval method to draw the SVG from current
- * position of the animation. It update the value of
- * `currentFrame` and re-trace the SVG.
- *
- * It use this.handle to store the requestAnimationFrame
- * and clear it one the animation is stopped. So this
- * attribute can be used to know if the animation is
- * playing.
- *
- * Once the animation at the end, this method will
- * trigger the Vivus callback.
- *
- */
-Vivus.prototype.drawer = function () {
-  var self = this;
-  this.currentFrame += this.speed;
-
-  if (this.currentFrame <= 0) {
-    this.stop();
-    this.reset();
-    this.callback(this);
-  } else if (this.currentFrame >= this.frameLength) {
-    this.stop();
-    this.currentFrame = this.frameLength;
-    this.trace();
-    if (this.selfDestroy) {
-      this.destroy();
-    }
-    this.callback(this);
-  } else {
-    this.trace();
-    this.handle = requestAnimFrame(function () {
-      self.drawer();
-    });
-  }
-};
-
-/**
- * Draw the SVG at the current instant from the
- * `currentFrame` value. Here is where most of the magic is.
- * The trick is to use the `strokeDashoffset` style property.
- *
- * For optimisation reasons, a new property called `progress`
- * is added in each item of `map`. This one contain the current
- * progress of the path element. Only if the new value is different
- * the new value will be applied to the DOM element. This
- * method save a lot of resources to re-render the SVG. And could
- * be improved if the animation couldn't be played forward.
- *
- */
-Vivus.prototype.trace = function () {
-  var i, progress, path, currentFrame;
-  currentFrame = this.animTimingFunction(this.currentFrame / this.frameLength) * this.frameLength;
-  for (i = 0; i < this.map.length; i++) {
-    path = this.map[i];
-    progress = (currentFrame - path.startAt) / path.duration;
-    progress = this.pathTimingFunction(Math.max(0, Math.min(1, progress)));
-    if (path.progress !== progress) {
-      path.progress = progress;
-      path.el.style.strokeDashoffset = Math.floor(path.length * (1 - progress));
-      this.renderPath(i);
-    }
-  }
-};
-
-/**
- * Method forcing the browser to re-render a path element
- * from it's index in the map. Depending on the `forceRender`
- * value.
- * The trick is to replace the path element by it's clone.
- * This practice is not recommended because it's asking more
- * ressources, too much DOM manupulation..
- * but it's the only way to let the magic happen on IE.
- * By default, this fallback is only applied on IE.
- * 
- * @param  {Number} index Path index
- */
-Vivus.prototype.renderPath = function (index) {
-  if (this.forceRender && this.map && this.map[index]) {
-    var pathObj = this.map[index],
-        newPath = pathObj.el.cloneNode(true);
-    pathObj.el.parentNode.replaceChild(newPath, pathObj.el);
-    pathObj.el = newPath;
-  }
-};
-
-/**
- * When the SVG object is loaded and ready,
- * this method will continue the initialisation.
- *
- * This this mainly due to the case of passing an
- * object tag in the constructor. It will wait
- * the end of the loading to initialise.
- * 
- */
-Vivus.prototype.init = function () {
-  // Set object variables
-  this.frameLength = 0;
-  this.currentFrame = 0;
-  this.map = [];
-
-  // Start
-  new Pathformer(this.el);
-  this.mapping();
-  this.starter();
-
-  if (this.onReady) {
-    this.onReady(this);
-  }
-};
-
-/**
- * Trigger to start of the animation.
- * Depending on the `start` value, a different script
- * will be applied.
- *
- * If the `start` value is not valid, an error will be thrown.
- * Even if technically, this is impossible.
- *
- */
-Vivus.prototype.starter = function () {
-  switch (this.start) {
-  case 'manual':
-    return;
-
-  case 'autostart':
-    this.play();
-    break;
-
-  case 'inViewport':
-    var self = this,
-    listener = function () {
-      if (self.isInViewport(self.el, 1)) {
-        self.play();
-        window.removeEventListener('scroll', listener);
-      }
-    };
-    window.addEventListener('scroll', listener);
-    listener();
-    break;
-  }
-};
-
-
-/**
- * Controls
- **************************************
- */
-
-/**
- * Get the current status of the animation between
- * three different states: 'start', 'progress', 'end'.
- * @return {string} Instance status
- */
-Vivus.prototype.getStatus = function () {
-  return this.currentFrame === 0 ? 'start' : this.currentFrame === this.frameLength ? 'end' : 'progress';
-};
-
-
-/**
- * Controls
- **************************************
- */
-
-/**
- * Reset the instance to the initial state : undraw
- * Be careful, it just reset the animation, if you're
- * playing the animation, this won't stop it. But just
- * make it start from start.
- *
- */
-Vivus.prototype.reset = function () {
-  return this.setFrameProgress(0);
-};
-
-/**
- * Set the instance to the final state : drawn
- * Be careful, it just set the animation, if you're
- * playing the animation on rewind, this won't stop it.
- * But just make it start from the end.
- *
- */
-Vivus.prototype.finish = function () {
-  return this.setFrameProgress(1);
-};
-
-/**
- * Set the level of progress of the drawing.
- * 
- * @param {number} progress Level of progress to set
- */
-Vivus.prototype.setFrameProgress = function (progress) {
-  progress = Math.min(1, Math.max(0, progress));
-  this.currentFrame = Math.round(this.frameLength * progress);
-  this.trace();
-  return this;
-};
-
-/**
- * Play the animation at the desired speed.
- * Speed must be a valid number (no zero).
- * By default, the speed value is 1.
- * But a negative value is accepted to go forward.
- *
- * And works with float too.
- * But don't forget we are in JavaScript, se be nice
- * with him and give him a 1/2^x value.
- *
- * @param  {number} speed Animation speed [optional]
- */
-Vivus.prototype.play = function (speed) {
-  if (speed && typeof speed !== 'number') {
-    throw new Error('Vivus [play]: invalid speed');
-  }
-  this.speed = speed || 1;
-  if (!this.handle) {
-    this.drawer();
-  }
-  return this;
-};
-
-/**
- * Stop the current animation, if on progress.
- * Should not trigger any error.
- *
- */
-Vivus.prototype.stop = function () {
-  if (this.handle) {
-    cancelAnimFrame(this.handle);
-    delete this.handle;
-  }
-  return this;
-};
-
-/**
- * Destroy the instance.
- * Remove all bad styling attributes on all
- * path tags
- *
- */
-Vivus.prototype.destroy = function () {
-  var i, path;
-  for (i = 0; i < this.map.length; i++) {
-    path = this.map[i];
-    path.el.style.strokeDashoffset = null;
-    path.el.style.strokeDasharray = null;
-    this.renderPath(i);
-  }
-};
-
-
-/**
- * Utils methods
- * from Codrops
- **************************************
- */
-
-/**
- * Parse attributes of a DOM element to
- * get an object of {attributeName => attributeValue}
- *
- * @param  {object} element DOM element to parse
- * @return {object}         Object of attributes
- */
-Vivus.prototype.parseAttr = function (element) {
-  var attr, output = {};
-  if (element && element.attributes) {
-    for (var i = 0; i < element.attributes.length; i++) {
-      attr = element.attributes[i];
-      output[attr.name] = attr.value;
-    }
-  }
-  return output;
-};
-
-/**
- * Reply if an element is in the page viewport
- *
- * @param  {object} el Element to observe
- * @param  {number} h  Percentage of height
- * @return {boolean}
- */
-Vivus.prototype.isInViewport = function (el, h) {
-  var scrolled   = this.scrollY(),
-    viewed       = scrolled + this.getViewportH(),
-    elBCR        = el.getBoundingClientRect(),
-    elHeight     = elBCR.height,
-    elTop        = scrolled + elBCR.top,
-    elBottom     = elTop + elHeight;
-
-  // if 0, the element is considered in the viewport as soon as it enters.
-  // if 1, the element is considered in the viewport only when it's fully inside
-  // value in percentage (1 >= h >= 0)
-  h = h || 0;
-
-  return (elTop + elHeight * h) <= viewed && (elBottom) >= scrolled;
-};
-
-/**
- * Alias for document element
- *
- * @type {DOMelement}
- */
-Vivus.prototype.docElem = window.document.documentElement;
-
-/**
- * Get the viewport height in pixels
- *
- * @return {integer} Viewport height
- */
-Vivus.prototype.getViewportH = function () {
-  var client = this.docElem.clientHeight,
-    inner = window.innerHeight;
-
-  if (client < inner) {
-    return inner;
-  }
-  else {
-    return client;
-  }
-};
-
-/**
- * Get the page Y offset
- *
- * @return {integer} Page Y offset
- */
-Vivus.prototype.scrollY = function () {
-  return window.pageYOffset || this.docElem.scrollTop;
-};
-
-/**
- * Alias for `requestAnimationFrame` or
- * `setTimeout` function for deprecated browsers.
- *
- */
-requestAnimFrame = (function () {
-  return (
-    window.requestAnimationFrame       ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame    ||
-    window.oRequestAnimationFrame      ||
-    window.msRequestAnimationFrame     ||
-    function(/* function */ callback){
-      return window.setTimeout(callback, 1000 / 60);
-    }
-  );
-})();
-
-/**
- * Alias for `cancelAnimationFrame` or
- * `cancelTimeout` function for deprecated browsers.
- *
- */
-cancelAnimFrame = (function () {
-  return (
-    window.cancelAnimationFrame       ||
-    window.webkitCancelAnimationFrame ||
-    window.mozCancelAnimationFrame    ||
-    window.oCancelAnimationFrame      ||
-    window.msCancelAnimationFrame     ||
-    function(id){
-      return window.clearTimeout(id);
-    }
-  );
-})();
-
-/**
- * Parse string to integer.
- * If the number is not positive or null
- * the method will return the default value
- * or 0 if undefined
- *
- * @param {string} value String to parse
- * @param {*} defaultValue Value to return if the result parsed is invalid
- * @return {number}
- *
- */
-parsePositiveInt = function (value, defaultValue) {
-  var output = parseInt(value, 10);
-  return (output >= 0) ? output : defaultValue;
-};
-
-
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], function() {
-      return Vivus;
-    });
-  } else if (typeof exports === 'object') {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = Vivus;
-  } else {
-    // Browser globals
-    window.Vivus = Vivus;
-  }
-
-}(window, document));
+//   // Reformatting if points are defined without commas
+//   if (element.points.indexOf(',') === -1) {
+//     var formattedPoints = [];
+//     for (i = 0; i < points.length; i+=2) {
+//       formattedPoints.push(points[i] + ',' + points[i+1]);
+//     }
+//     points = formattedPoints;
+//   }
+
+//   // Generate the path.d value
+//   path = 'M' + points[0];
+//   for(i = 1; i < points.length; i++) {
+//     if (points[i].indexOf(',') !== -1) {
+//       path += 'L' + points[i];
+//     }
+//   }
+//   newElement.d = path;
+//   return newElement;
+// };
+
+// /**
+//  * Read `polygon` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  * This method rely on polylineToPath, because the
+//  * logic is similar. The path created is just closed,
+//  * so it needs an 'Z' at the end.
+//  *
+//  * @param  {DOMelement} element Polygon element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.polygonToPath = function (element) {
+//   var newElement = Pathformer.prototype.polylineToPath(element);
+//   newElement.d += 'Z';
+//   return newElement;
+// };
+
+// /**
+//  * Read `elipse` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  *
+//  * @param  {DOMelement} element Elipse element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.elipseToPath = function (element) {
+//   var startX = element.cx - element.rx,
+//       startY = element.cy;
+//   var endX = parseFloat(element.cx) + parseFloat(element.rx),
+//       endY = element.cy;
+
+//   var newElement = {};
+//   newElement.d = 'M' + startX + ',' + startY +
+//                  'A' + element.rx + ',' + element.ry + ' 0,1,1 ' + endX + ',' + endY +
+//                  'A' + element.rx + ',' + element.ry + ' 0,1,1 ' + startX + ',' + endY;
+//   return newElement;
+// };
+
+// /**
+//  * Read `circle` element to extract and transform
+//  * data, to make it ready for a `path` object.
+//  *
+//  * @param  {DOMelement} element Circle element to transform
+//  * @return {object}             Data for a `path` element
+//  */
+// Pathformer.prototype.circleToPath = function (element) {
+//   var newElement = {};
+//   var startX = element.cx - element.r,
+//       startY = element.cy;
+//   var endX = parseFloat(element.cx) + parseFloat(element.r),
+//       endY = element.cy;
+//   newElement.d =  'M' + startX + ',' + startY +
+//                   'A' + element.r + ',' + element.r + ' 0,1,1 ' + endX + ',' + endY +
+//                   'A' + element.r + ',' + element.r + ' 0,1,1 ' + startX + ',' + endY;
+//   return newElement;
+// };
+
+// /**
+//  * Create `path` elements form original element
+//  * and prepared objects
+//  *
+//  * @param  {DOMelement} element  Original element to transform
+//  * @param  {object} pathData     Path data (from `toPath` methods)
+//  * @return {DOMelement}          Path element
+//  */
+// Pathformer.prototype.pathMaker = function (element, pathData) {
+//   var i, attr, pathTag = document.createElementNS('http://www.w3.org/2000/svg','path');
+//   for(i = 0; i < element.attributes.length; i++) {
+//     attr = element.attributes[i];
+//     if (this.ATTR_WATCH.indexOf(attr.name) === -1) {
+//       pathTag.setAttribute(attr.name, attr.value);
+//     }
+//   }
+//   for(i in pathData) {
+//     pathTag.setAttribute(i, pathData[i]);
+//   }
+//   return pathTag;
+// };
+
+// /**
+//  * Parse attributes of a DOM element to
+//  * get an object of attribute => value
+//  *
+//  * @param  {NamedNodeMap} attributes Attributes object from DOM element to parse
+//  * @return {object}                  Object of attributes
+//  */
+// Pathformer.prototype.parseAttr = function (element) {
+//   var attr, output = {};
+//   for (var i = 0; i < element.length; i++) {
+//     attr = element[i];
+//     // Check if no data attribute contains '%', or the transformation is impossible
+//     if (this.ATTR_WATCH.indexOf(attr.name) !== -1 && attr.value.indexOf('%') !== -1) {
+//       throw new Error('Pathformer [parseAttr]: a SVG shape got values in percentage. This cannot be transformed into \'path\' tags. Please use \'viewBox\'.');
+//     }
+//     output[attr.name] = attr.value;
+//   }
+//   return output;
+// };
+
+//   'use strict';
+
+// var requestAnimFrame, cancelAnimFrame, parsePositiveInt;
+
+// /**
+//  * Vivus
+//  * Beta version
+//  *
+//  * Take any SVG and make the animation
+//  * to give give the impression of live drawing
+//  *
+//  * This in more than just inspired from codrops
+//  * At that point, it's a pure fork.
+//  */
+
+// /**
+//  * Class constructor
+//  * option structure
+//  *   type: 'delayed'|'async'|'oneByOne'|'script' (to know if the item must be drawn asynchronously or not, default: delayed)
+//  *   duration: <int> (in frames)
+//  *   start: 'inViewport'|'manual'|'autostart' (start automatically the animation, default: inViewport)
+//  *   delay: <int> (delay between the drawing of first and last path)
+//  *   dashGap <integer> whitespace extra margin between dashes
+//  *   pathTimingFunction <function> timing animation function for each path element of the SVG
+//  *   animTimingFunction <function> timing animation function for the complete SVG
+//  *   forceRender <boolean> force the browser to re-render all updated path items
+//  *   selfDestroy <boolean> removes all extra styling on the SVG, and leaves it as original
+//  *
+//  * The attribute 'type' is by default on 'delayed'.
+//  *  - 'delayed'
+//  *    all paths are draw at the same time but with a
+//  *    little delay between them before start
+//  *  - 'async'
+//  *    all path are start and finish at the same time
+//  *  - 'oneByOne'
+//  *    only one path is draw at the time
+//  *    the end of the first one will trigger the draw
+//  *    of the next one
+//  *
+//  * All these values can be overwritten individually
+//  * for each path item in the SVG
+//  * The value of frames will always take the advantage of
+//  * the duration value.
+//  * If you fail somewhere, an error will be thrown.
+//  * Good luck.
+//  *
+//  * @constructor
+//  * @this {Vivus}
+//  * @param {DOM|String}   element  Dom element of the SVG or id of it
+//  * @param {Object}       options  Options about the animation
+//  * @param {Function}     callback Callback for the end of the animation
+//  */
+// function Vivus (element, options, callback) {
+
+//   // Setup
+//   this.isReady = false;
+//   this.setElement(element, options);
+//   this.setOptions(options);
+//   this.setCallback(callback);
+
+//   if (this.isReady) {
+//     this.init();
+//   }
+// }
+
+// /**
+//  * Timing functions
+//  ************************************** 
+//  * 
+//  * Default functions to help developers.
+//  * It always take a number as parameter (between 0 to 1) then
+//  * return a number (between 0 and 1)
+//  */
+// Vivus.LINEAR          = function (x) {return x;};
+// Vivus.EASE            = function (x) {return -Math.cos(x * Math.PI) / 2 + 0.5;};
+// Vivus.EASE_OUT        = function (x) {return 1 - Math.pow(1-x, 3);};
+// Vivus.EASE_IN         = function (x) {return Math.pow(x, 3);};
+// Vivus.EASE_OUT_BOUNCE = function (x) {
+//   var base = -Math.cos(x * (0.5 * Math.PI)) + 1,
+//     rate = Math.pow(base,1.5),
+//     rateR = Math.pow(1 - x, 2),
+//     progress = -Math.abs(Math.cos(rate * (2.5 * Math.PI) )) + 1;
+//   return (1- rateR) + (progress * rateR);
+// };
+
+
+// /**
+//  * Setters
+//  **************************************
+//  */
+
+// /**
+//  * Check and set the element in the instance
+//  * The method will not return anything, but will throw an
+//  * error if the parameter is invalid
+//  *
+//  * @param {DOM|String}   element  SVG Dom element or id of it
+//  */
+// Vivus.prototype.setElement = function (element, options) {
+//   // Basic check
+//   if (typeof element === 'undefined') {
+//     throw new Error('Vivus [constructor]: "element" parameter is required');
+//   }
+
+//   // Set the element
+//   if (element.constructor === String) {
+//     element = document.getElementById(element);
+//     if (!element) {
+//       throw new Error('Vivus [constructor]: "element" parameter is not related to an existing ID');
+//     }
+//   }
+
+//   // Create the object element if the property `file` exists in the options object
+//   if (options && options.file) {
+//     var objElm = document.createElement('object');
+//     objElm.setAttribute('type', 'image/svg+xml');
+//     objElm.setAttribute('data', options.file);
+//     element.appendChild(objElm);
+//     element = objElm;
+//   }
+
+//   switch (element.constructor) {
+//   case window.SVGSVGElement:
+//   case window.SVGElement:
+//     this.el = element;
+//     this.isReady = true;
+//     break;
+
+//   case window.HTMLObjectElement:
+//     // If the Object is already loaded
+//     this.el = element.contentDocument && element.contentDocument.querySelector('svg');
+//     if (this.el) {
+//       this.isReady = true;
+//       return;
+//     }
+
+//     // If we have to wait for it
+//     var self = this;
+//     element.addEventListener('load', function () {
+//       self.el = element.contentDocument && element.contentDocument.querySelector('svg');
+//       if (!self.el) {
+//         throw new Error('Vivus [constructor]: object loaded does not contain any SVG');
+//       }
+//       else {
+//         self.isReady = true;
+//         self.init();
+//       }
+//     });
+//     break;
+
+//   default:
+//     throw new Error('Vivus [constructor]: "element" parameter is not valid (or miss the "file" attribute)');
+//   }
+// };
+
+// /**
+//  * Set up user option to the instance
+//  * The method will not return anything, but will throw an
+//  * error if the parameter is invalid
+//  *
+//  * @param  {object} options Object from the constructor
+//  */
+// Vivus.prototype.setOptions = function (options) {
+//   var allowedTypes = ['delayed', 'async', 'oneByOne', 'scenario', 'scenario-sync'];
+//   var allowedStarts =  ['inViewport', 'manual', 'autostart'];
+
+//   // Basic check
+//   if (options !== undefined && options.constructor !== Object) {
+//     throw new Error('Vivus [constructor]: "options" parameter must be an object');
+//   }
+//   else {
+//     options = options || {};
+//   }
+
+//   // Set the animation type
+//   if (options.type && allowedTypes.indexOf(options.type) === -1) {
+//     throw new Error('Vivus [constructor]: ' + options.type + ' is not an existing animation `type`');
+//   }
+//   else {
+//     this.type = options.type || allowedTypes[0];
+//   }
+
+//   // Set the start type
+//   if (options.start && allowedStarts.indexOf(options.start) === -1) {
+//     throw new Error('Vivus [constructor]: ' + options.start + ' is not an existing `start` option');
+//   }
+//   else {
+//     this.start = options.start || allowedStarts[0];
+//   }
+
+//   this.isIE        = (window.navigator.userAgent.indexOf('MSIE') !== -1);
+//   this.duration    = parsePositiveInt(options.duration, 120);
+//   this.delay       = parsePositiveInt(options.delay, null);
+//   this.dashGap     = parsePositiveInt(options.dashGap, 2);
+//   this.forceRender = options.hasOwnProperty('forceRender') ? !!options.forceRender : this.isIE;
+//   this.selfDestroy = !!options.selfDestroy;
+//   this.onReady     = options.onReady;
+
+//   this.animTimingFunction = options.animTimingFunction || Vivus.LINEAR;
+//   this.pathTimingFunction = options.pathTimingFunction || Vivus.LINEAR;
+
+//   if (this.delay >= this.duration) {
+//     throw new Error('Vivus [constructor]: delay must be shorter than duration');
+//   }
+// };
+
+// /**
+//  * Set up callback to the instance
+//  * The method will not return enything, but will throw an
+//  * error if the parameter is invalid
+//  *
+//  * @param  {Function} callback Callback for the animation end
+//  */
+// Vivus.prototype.setCallback = function (callback) {
+//   // Basic check
+//   if (!!callback && callback.constructor !== Function) {
+//     throw new Error('Vivus [constructor]: "callback" parameter must be a function');
+//   }
+//   this.callback = callback || function () {};
+// };
+
+
+// /**
+//  * Core
+//  **************************************
+//  */
+
+// /**
+//  * Map the svg, path by path.
+//  * The method return nothing, it just fill the
+//  * `map` array. Each item in this array represent
+//  * a path element from the SVG, with informations for
+//  * the animation.
+//  *
+//  * ```
+//  * [
+//  *   {
+//  *     el: <DOMobj> the path element
+//  *     length: <number> length of the path line
+//  *     startAt: <number> time start of the path animation (in frames)
+//  *     duration: <number> path animation duration (in frames)
+//  *   },
+//  *   ...
+//  * ]
+//  * ```
+//  *
+//  */
+// Vivus.prototype.mapping = function () {
+//   var i, paths, path, pAttrs, pathObj, totalLength, lengthMeter, timePoint;
+//   timePoint = totalLength = lengthMeter = 0;
+//   paths = this.el.querySelectorAll('path');
+
+//   for (i = 0; i < paths.length; i++) {
+//     path = paths[i];
+//     pathObj = {
+//       el: path,
+//       length: Math.ceil(path.getTotalLength())
+//     };
+//     // Test if the path length is correct
+//     if (isNaN(pathObj.length)) {
+//       if (window.console && console.warn) {
+//         console.warn('Vivus [mapping]: cannot retrieve a path element length', path);
+//       }
+//       continue;
+//     }
+//     totalLength += pathObj.length;
+//     this.map.push(pathObj);
+//     path.style.strokeDasharray  = pathObj.length + ' ' + (pathObj.length + this.dashGap);
+//     path.style.strokeDashoffset = pathObj.length;
+
+//     // Fix IE glitch
+//     if (this.isIE) {
+//       pathObj.length += this.dashGap;
+//     }
+//     this.renderPath(i);
+//   }
+
+//   totalLength = totalLength === 0 ? 1 : totalLength;
+//   this.delay = this.delay === null ? this.duration / 3 : this.delay;
+//   this.delayUnit = this.delay / (paths.length > 1 ? paths.length - 1 : 1);
+
+//   for (i = 0; i < this.map.length; i++) {
+//     pathObj = this.map[i];
+
+//     switch (this.type) {
+//     case 'delayed':
+//       pathObj.startAt = this.delayUnit * i;
+//       pathObj.duration = this.duration - this.delay;
+//       break;
+
+//     case 'oneByOne':
+//       pathObj.startAt = lengthMeter / totalLength * this.duration;
+//       pathObj.duration = pathObj.length / totalLength * this.duration;
+//       break;
+
+//     case 'async':
+//       pathObj.startAt = 0;
+//       pathObj.duration = this.duration;
+//       break;
+
+//     case 'scenario-sync':
+//       path = paths[i];
+//       pAttrs = this.parseAttr(path);
+//       pathObj.startAt = timePoint + (parsePositiveInt(pAttrs['data-delay'], this.delayUnit) || 0);
+//       pathObj.duration = parsePositiveInt(pAttrs['data-duration'], this.duration);
+//       timePoint = pAttrs['data-async'] !== undefined ? pathObj.startAt : pathObj.startAt + pathObj.duration;
+//       this.frameLength = Math.max(this.frameLength, (pathObj.startAt + pathObj.duration));
+//       break;
+
+//     case 'scenario':
+//       path = paths[i];
+//       pAttrs = this.parseAttr(path);
+//       pathObj.startAt = parsePositiveInt(pAttrs['data-start'], this.delayUnit) || 0;
+//       pathObj.duration = parsePositiveInt(pAttrs['data-duration'], this.duration);
+//       this.frameLength = Math.max(this.frameLength, (pathObj.startAt + pathObj.duration));
+//       break;
+//     }
+//     lengthMeter += pathObj.length;
+//     this.frameLength = this.frameLength || this.duration;
+//   }
+// };
+
+// /**
+//  * Interval method to draw the SVG from current
+//  * position of the animation. It update the value of
+//  * `currentFrame` and re-trace the SVG.
+//  *
+//  * It use this.handle to store the requestAnimationFrame
+//  * and clear it one the animation is stopped. So this
+//  * attribute can be used to know if the animation is
+//  * playing.
+//  *
+//  * Once the animation at the end, this method will
+//  * trigger the Vivus callback.
+//  *
+//  */
+// Vivus.prototype.drawer = function () {
+//   var self = this;
+//   this.currentFrame += this.speed;
+
+//   if (this.currentFrame <= 0) {
+//     this.stop();
+//     this.reset();
+//     this.callback(this);
+//   } else if (this.currentFrame >= this.frameLength) {
+//     this.stop();
+//     this.currentFrame = this.frameLength;
+//     this.trace();
+//     if (this.selfDestroy) {
+//       this.destroy();
+//     }
+//     this.callback(this);
+//   } else {
+//     this.trace();
+//     this.handle = requestAnimFrame(function () {
+//       self.drawer();
+//     });
+//   }
+// };
+
+// /**
+//  * Draw the SVG at the current instant from the
+//  * `currentFrame` value. Here is where most of the magic is.
+//  * The trick is to use the `strokeDashoffset` style property.
+//  *
+//  * For optimisation reasons, a new property called `progress`
+//  * is added in each item of `map`. This one contain the current
+//  * progress of the path element. Only if the new value is different
+//  * the new value will be applied to the DOM element. This
+//  * method save a lot of resources to re-render the SVG. And could
+//  * be improved if the animation couldn't be played forward.
+//  *
+//  */
+// Vivus.prototype.trace = function () {
+//   var i, progress, path, currentFrame;
+//   currentFrame = this.animTimingFunction(this.currentFrame / this.frameLength) * this.frameLength;
+//   for (i = 0; i < this.map.length; i++) {
+//     path = this.map[i];
+//     progress = (currentFrame - path.startAt) / path.duration;
+//     progress = this.pathTimingFunction(Math.max(0, Math.min(1, progress)));
+//     if (path.progress !== progress) {
+//       path.progress = progress;
+//       path.el.style.strokeDashoffset = Math.floor(path.length * (1 - progress));
+//       this.renderPath(i);
+//     }
+//   }
+// };
+
+// /**
+//  * Method forcing the browser to re-render a path element
+//  * from it's index in the map. Depending on the `forceRender`
+//  * value.
+//  * The trick is to replace the path element by it's clone.
+//  * This practice is not recommended because it's asking more
+//  * ressources, too much DOM manupulation..
+//  * but it's the only way to let the magic happen on IE.
+//  * By default, this fallback is only applied on IE.
+//  * 
+//  * @param  {Number} index Path index
+//  */
+// Vivus.prototype.renderPath = function (index) {
+//   if (this.forceRender && this.map && this.map[index]) {
+//     var pathObj = this.map[index],
+//         newPath = pathObj.el.cloneNode(true);
+//     pathObj.el.parentNode.replaceChild(newPath, pathObj.el);
+//     pathObj.el = newPath;
+//   }
+// };
+
+// /**
+//  * When the SVG object is loaded and ready,
+//  * this method will continue the initialisation.
+//  *
+//  * This this mainly due to the case of passing an
+//  * object tag in the constructor. It will wait
+//  * the end of the loading to initialise.
+//  * 
+//  */
+// Vivus.prototype.init = function () {
+//   // Set object variables
+//   this.frameLength = 0;
+//   this.currentFrame = 0;
+//   this.map = [];
+
+//   // Start
+//   new Pathformer(this.el);
+//   this.mapping();
+//   this.starter();
+
+//   if (this.onReady) {
+//     this.onReady(this);
+//   }
+// };
+
+// /**
+//  * Trigger to start of the animation.
+//  * Depending on the `start` value, a different script
+//  * will be applied.
+//  *
+//  * If the `start` value is not valid, an error will be thrown.
+//  * Even if technically, this is impossible.
+//  *
+//  */
+// Vivus.prototype.starter = function () {
+//   switch (this.start) {
+//   case 'manual':
+//     return;
+
+//   case 'autostart':
+//     this.play();
+//     break;
+
+//   case 'inViewport':
+//     var self = this,
+//     listener = function () {
+//       if (self.isInViewport(self.el, 1)) {
+//         self.play();
+//         window.removeEventListener('scroll', listener);
+//       }
+//     };
+//     window.addEventListener('scroll', listener);
+//     listener();
+//     break;
+//   }
+// };
+
+
+// /**
+//  * Controls
+//  **************************************
+//  */
+
+// /**
+//  * Get the current status of the animation between
+//  * three different states: 'start', 'progress', 'end'.
+//  * @return {string} Instance status
+//  */
+// Vivus.prototype.getStatus = function () {
+//   return this.currentFrame === 0 ? 'start' : this.currentFrame === this.frameLength ? 'end' : 'progress';
+// };
+
+
+// /**
+//  * Controls
+//  **************************************
+//  */
+
+// /**
+//  * Reset the instance to the initial state : undraw
+//  * Be careful, it just reset the animation, if you're
+//  * playing the animation, this won't stop it. But just
+//  * make it start from start.
+//  *
+//  */
+// Vivus.prototype.reset = function () {
+//   return this.setFrameProgress(0);
+// };
+
+// /**
+//  * Set the instance to the final state : drawn
+//  * Be careful, it just set the animation, if you're
+//  * playing the animation on rewind, this won't stop it.
+//  * But just make it start from the end.
+//  *
+//  */
+// Vivus.prototype.finish = function () {
+//   return this.setFrameProgress(1);
+// };
+
+// /**
+//  * Set the level of progress of the drawing.
+//  * 
+//  * @param {number} progress Level of progress to set
+//  */
+// Vivus.prototype.setFrameProgress = function (progress) {
+//   progress = Math.min(1, Math.max(0, progress));
+//   this.currentFrame = Math.round(this.frameLength * progress);
+//   this.trace();
+//   return this;
+// };
+
+// /**
+//  * Play the animation at the desired speed.
+//  * Speed must be a valid number (no zero).
+//  * By default, the speed value is 1.
+//  * But a negative value is accepted to go forward.
+//  *
+//  * And works with float too.
+//  * But don't forget we are in JavaScript, se be nice
+//  * with him and give him a 1/2^x value.
+//  *
+//  * @param  {number} speed Animation speed [optional]
+//  */
+// Vivus.prototype.play = function (speed) {
+//   if (speed && typeof speed !== 'number') {
+//     throw new Error('Vivus [play]: invalid speed');
+//   }
+//   this.speed = speed || 1;
+//   if (!this.handle) {
+//     this.drawer();
+//   }
+//   return this;
+// };
+
+// /**
+//  * Stop the current animation, if on progress.
+//  * Should not trigger any error.
+//  *
+//  */
+// Vivus.prototype.stop = function () {
+//   if (this.handle) {
+//     cancelAnimFrame(this.handle);
+//     delete this.handle;
+//   }
+//   return this;
+// };
+
+// /**
+//  * Destroy the instance.
+//  * Remove all bad styling attributes on all
+//  * path tags
+//  *
+//  */
+// Vivus.prototype.destroy = function () {
+//   var i, path;
+//   for (i = 0; i < this.map.length; i++) {
+//     path = this.map[i];
+//     path.el.style.strokeDashoffset = null;
+//     path.el.style.strokeDasharray = null;
+//     this.renderPath(i);
+//   }
+// };
+
+
+// /**
+//  * Utils methods
+//  * from Codrops
+//  **************************************
+//  */
+
+// /**
+//  * Parse attributes of a DOM element to
+//  * get an object of {attributeName => attributeValue}
+//  *
+//  * @param  {object} element DOM element to parse
+//  * @return {object}         Object of attributes
+//  */
+// Vivus.prototype.parseAttr = function (element) {
+//   var attr, output = {};
+//   if (element && element.attributes) {
+//     for (var i = 0; i < element.attributes.length; i++) {
+//       attr = element.attributes[i];
+//       output[attr.name] = attr.value;
+//     }
+//   }
+//   return output;
+// };
+
+// /**
+//  * Reply if an element is in the page viewport
+//  *
+//  * @param  {object} el Element to observe
+//  * @param  {number} h  Percentage of height
+//  * @return {boolean}
+//  */
+// Vivus.prototype.isInViewport = function (el, h) {
+//   var scrolled   = this.scrollY(),
+//     viewed       = scrolled + this.getViewportH(),
+//     elBCR        = el.getBoundingClientRect(),
+//     elHeight     = elBCR.height,
+//     elTop        = scrolled + elBCR.top,
+//     elBottom     = elTop + elHeight;
+
+//   // if 0, the element is considered in the viewport as soon as it enters.
+//   // if 1, the element is considered in the viewport only when it's fully inside
+//   // value in percentage (1 >= h >= 0)
+//   h = h || 0;
+
+//   return (elTop + elHeight * h) <= viewed && (elBottom) >= scrolled;
+// };
+
+// /**
+//  * Alias for document element
+//  *
+//  * @type {DOMelement}
+//  */
+// Vivus.prototype.docElem = window.document.documentElement;
+
+// /**
+//  * Get the viewport height in pixels
+//  *
+//  * @return {integer} Viewport height
+//  */
+// Vivus.prototype.getViewportH = function () {
+//   var client = this.docElem.clientHeight,
+//     inner = window.innerHeight;
+
+//   if (client < inner) {
+//     return inner;
+//   }
+//   else {
+//     return client;
+//   }
+// };
+
+// /**
+//  * Get the page Y offset
+//  *
+//  * @return {integer} Page Y offset
+//  */
+// Vivus.prototype.scrollY = function () {
+//   return window.pageYOffset || this.docElem.scrollTop;
+// };
+
+// /**
+//  * Alias for `requestAnimationFrame` or
+//  * `setTimeout` function for deprecated browsers.
+//  *
+//  */
+// requestAnimFrame = (function () {
+//   return (
+//     window.requestAnimationFrame       ||
+//     window.webkitRequestAnimationFrame ||
+//     window.mozRequestAnimationFrame    ||
+//     window.oRequestAnimationFrame      ||
+//     window.msRequestAnimationFrame     ||
+//     function(/* function */ callback){
+//       return window.setTimeout(callback, 1000 / 60);
+//     }
+//   );
+// })();
+
+// /**
+//  * Alias for `cancelAnimationFrame` or
+//  * `cancelTimeout` function for deprecated browsers.
+//  *
+//  */
+// cancelAnimFrame = (function () {
+//   return (
+//     window.cancelAnimationFrame       ||
+//     window.webkitCancelAnimationFrame ||
+//     window.mozCancelAnimationFrame    ||
+//     window.oCancelAnimationFrame      ||
+//     window.msCancelAnimationFrame     ||
+//     function(id){
+//       return window.clearTimeout(id);
+//     }
+//   );
+// })();
+
+// /**
+//  * Parse string to integer.
+//  * If the number is not positive or null
+//  * the method will return the default value
+//  * or 0 if undefined
+//  *
+//  * @param {string} value String to parse
+//  * @param {*} defaultValue Value to return if the result parsed is invalid
+//  * @return {number}
+//  *
+//  */
+// parsePositiveInt = function (value, defaultValue) {
+//   var output = parseInt(value, 10);
+//   return (output >= 0) ? output : defaultValue;
+// };
+
+
+//   if (typeof define === 'function' && define.amd) {
+//     // AMD. Register as an anonymous module.
+//     define([], function() {
+//       return Vivus;
+//     });
+//   } else if (typeof exports === 'object') {
+//     // Node. Does not work with strict CommonJS, but
+//     // only CommonJS-like environments that support module.exports,
+//     // like Node.
+//     module.exports = Vivus;
+//   } else {
+//     // Browser globals
+//     window.Vivus = Vivus;
+//   }
+
+// }(window, document));
