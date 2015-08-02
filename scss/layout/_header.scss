@@ -1,3 +1,4 @@
+
 h1, h2, h3, p {
   font-family: $main-font;
   font-weight: lighter;
@@ -265,11 +266,39 @@ div#imageMorph.section.fp-section.fp-table.active {
   -moz-transition: all 1.5s ease-in-out;
 }
 
+@media only screen 
+  and (min-device-width: 1600px) 
+  and (max-device-width: 2560px) 
+  and (-webkit-min-device-pixel-ratio: 1.5) {
+
+    #site-nav, #site-nav #front {
+      transition-delay: .2s;
+    }
+
+}
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+
+    #site-nav, #site-nav #front {
+      transition-delay: .2s;
+    }
+
+}
+
 @media screen and (max-width: 600px) {
 
   #site-nav #front {
     transition-delay: .0s;
 
+  }
+
+  .nav-line-container .navLine {
+    -webkit-transition: all .0s ease-in-out;
+    -moz-transition: all .0s ease-in-out;
+    transition: all .0s ease-in-out;
   }
 
   #site-nav #front #codicated-c {

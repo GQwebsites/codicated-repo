@@ -107,7 +107,12 @@ div#imageMorph.section.fp-section.fp-table.active{margin-top:0}
 .nav-after-logo-animation{padding:0;max-height:3.8em;text-align:center;top:54.8%;-webkit-transition:all 2.7s ease-in-out;-moz-transition:all 2.7s ease-in-out}
 .ul-nav,.ul-nav li{display:inline-block}
 .nav-after-class-toggle{padding:0;position:fixed;margin-top:-35%;-webkit-transition:all 1.5s ease-in-out;-moz-transition:all 1.5s ease-in-out}
+@media only screen and (min-device-width:1600px)and (max-device-width:2560px)and (-webkit-min-device-pixel-ratio:1.5){#site-nav,#site-nav #front{transition-delay:.2s}
+}
+@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (-webkit-min-device-pixel-ratio:1){#site-nav,#site-nav #front{transition-delay:.2s}
+}
 @media screen and (max-width:600px){#site-nav #front{transition-delay:0s}
+.nav-line-container .navLine{-webkit-transition:all 0s ease-in-out;-moz-transition:all 0s ease-in-out;transition:all 0s ease-in-out}
 #site-nav #front #codicated-c{-webkit-transition:all 0s ease-in-out;transition:all 0s ease-in-out}
 }
 .ul-nav{overflow:hidden;background:#7ed0e3;padding:0 5px 0 0;margin:0;height:100%}
@@ -198,6 +203,10 @@ ul.projects-block{margin:0;padding:0;width:100%;height:auto}
 .footerSection li{width:27.7%}
 .bottomFooter{bottom:8.4em}
 .bottomFooter img{width:30%;margin:0 auto;display:block}
+}
+@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){.footerSection ul{margin:17em auto}
+.footerSection li{width:28.7%}
+.bottomFooter{bottom:18.4em}
 }
 @media screen and (max-width:600px){.footerSection ul{width:90%}
 .footerSection li{width:27.7%}
