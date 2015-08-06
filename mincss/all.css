@@ -97,14 +97,15 @@ svg{fill:#c0c1c3}
 100%{transform:scale(1)}
 }
 .nav-bar-bg{height:100%;background:url(../img/header-new.svg);background-size:cover}
+.iconId,.nav-after-logo-animation{box-sizing:border-box;background:#FFF;position:relative}
 #fullpage{height:100%}
 div#imageMorph.section.fp-section.fp-table.active{margin-top:0}
 #imageMorph{height:100%}
 .codicated-big-logo{display:block;width:80%;margin:10% auto}
-#ct{display:none}
-.iconId,.nav-after-logo-animation{width:100%;display:block;box-sizing:border-box;background:#FFF;position:relative}
-.iconId{margin:auto;padding:60px;top:0;max-height:100%;-webkit-animation:linear bounceIn 1s;-webkit-transition:all .01s ease-in-out;-moz-animation:linear bounceIn 1s;-moz-transition:all .01s ease-in-out}
-.nav-after-logo-animation{padding:0;max-height:3.8em;text-align:center;top:54.8%;-webkit-transition:all 2.7s ease-in-out;-moz-transition:all 2.7s ease-in-out}
+#ct,#ieNine .iconId{display:none}
+#ieNine #ct,.iconId{display:block}
+.iconId{width:100%;margin:auto;padding:60px;top:0;max-height:100%;-webkit-animation:linear bounceIn 1s;-webkit-transition:all .01s ease-in-out;-moz-animation:linear bounceIn 1s;-moz-transition:all .01s ease-in-out}
+.nav-after-logo-animation{padding:0;display:block;width:100%;max-height:3.8em;text-align:center;top:54.8%;-webkit-transition:all 2.7s ease-in-out;-moz-transition:all 2.7s ease-in-out}
 .ul-nav,.ul-nav li{display:inline-block}
 .nav-after-class-toggle{padding:0;position:fixed;margin-top:-35%;-webkit-transition:all 1.5s ease-in-out;-moz-transition:all 1.5s ease-in-out}
 @media only screen and (min-device-width:1600px)and (max-device-width:2560px)and (-webkit-min-device-pixel-ratio:1.5){#site-nav,#site-nav #front{transition-delay:.2s}
@@ -154,7 +155,7 @@ a.three-d.last-menu-item{padding:16px 17px}
 .wrapper .description h3{text-align:center;font-size:20px;margin-bottom:25px;font-weight:700}
 .wrapper .link{z-index:10;margin:0}
 .wrapper img{vertical-align:bottom;width:100%}
-@media screen and (max-width:962px){.recent-projects h2{margin:5.5em 0 0}
+@media screen and (max-width:769px){.recent-projects h2{margin:5.5em 0 0}
 .recent-projects>p{text-align:center;margin:0 .3em;display:none}
 ul.projects-block{margin:0;padding:0;width:100%;height:100%}
 .recent-projects .projects{width:75%;height:25%;display:block;margin:.5em auto;background-color:#ffe6b3}
@@ -189,7 +190,14 @@ ul.projects-block{margin:0;padding:0;width:100%;height:auto}
 #ct{width:80%;display:block;margin:0 auto}
 #site-nav{right:0;transition:all 1.2s ease-in-out;-webkit-transition:all 1.2s ease-in-out}
 }
+@media only screen and (min-device-width:320px)and (max-device-width:568px)and (-webkit-min-device-pixel-ratio:2)and (orientation:landscape){.recent-projects .projects{width:25%;height:100%;display:inline-block;margin:1em auto}
+.recent-projects .projects .project-description{display:none}
+.wrapper{width:100%}
+}
+.wire-frame{background:url(../img/wire-frame-website-800x600.png);background-size:cover}
+.service-list-image{width:50%;height:100%;background:url(../img/wire-frame-blue-drawing-1159x780.jpg);background-size:cover;display:inline-block;float:left}
 .bottomFooter,.footerColor,.footerSection{background:#ffe6b3}
+.service-list-box{width:50%;font-size:1.3em;text-align:center;display:inline-block;margin:5% 0}
 .footerSection{width:100%;height:100%;position:relative;top:9.8em}
 .footerSection ul{text-align:center;display:block;padding:0;width:50%;height:100%;margin:0 auto;border-bottom:1px solid #29b2d1}
 .footerSection li{display:inline-block;float:left;text-align:center;width:30%;height:15%;margin-right:1em}

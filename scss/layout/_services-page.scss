@@ -1,0 +1,26 @@
+// .service-list-section, .sbcolor{
+//    background-color: $nav-back;
+// }
+
+.wire-frame {
+  background: url('../img/wire-frame-website-800x600.png');
+  background-size: cover;
+}
+
+.service-list-image {
+	width: 50%;
+	height: 100%;
+	background: url('../img/wire-frame-blue-drawing-1159x780.jpg');
+    background-size: cover; 
+	display: inline-block;
+	float: left;
+}
+
+.service-list-box {
+	width: 50%;
+	font-size: 1.3em;
+	text-align: center;
+	// color: $codicated-white-color;
+	display: inline-block;
+	margin: 5% 0;
+}

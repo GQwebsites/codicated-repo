@@ -4,8 +4,8 @@ $(document).ready(function() {
       var myIcons = new SVGMorpheus('#icon'),
         $siteNav = $("#site-nav"),
         $icon    = $("#icon"),
-        $mobileMatch = window.matchMedia('(max-width: 600px)'),
-        $biggerThanMobile = window.matchMedia('(min-width: 600px)'),
+        $mobileMatch = matchMedia('(max-width: 600px)'),
+        $biggerThanMobile = matchMedia('(min-width: 600px)'),
         $navLineContainer = $(".nav-line-container"),
         $navLine = $(".navLine");
         

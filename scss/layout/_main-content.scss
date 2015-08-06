@@ -60,6 +60,11 @@
 		}
 }
 
+// .wire-frame {
+//   background: url('../img/wire-frame-website-800x600.png');
+//   background-size: cover;
+// }
+
 .recent-projects{
 	width:100%;
 	height:100%;
@@ -239,7 +244,7 @@
     width: 100%;
   }
 
-@media screen and (max-width: 962px) {
+@media screen and (max-width: 769px) {
   //Recent Projects mobile CSS
   .recent-projects h2 {
     margin: 5.5em 0 0;
@@ -461,7 +466,7 @@
   }
 
 
-  //Exerimental code for mobile fall back from SVG to PNG
+  //Mobile fall back from SVG to PNG
 
   #icon {
     display: none;
@@ -482,6 +487,29 @@
     //transition-delay: 2s;
   }
 }
+
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+
+    .recent-projects .projects {
+      width: 25%;
+      height: 100%;
+      display: inline-block;
+      margin: 1em auto;
+    }
+
+    .recent-projects .projects .project-description {
+      display: none;
+    }
+
+    .wrapper {
+      width: 100%;
+
+    }
+  }
 
 
 

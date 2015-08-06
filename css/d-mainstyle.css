@@ -147,6 +147,12 @@ div#imageMorph.section.fp-section.fp-table.active {
 #ct {
   display: none; }
 
+#ieNine #ct {
+  display: block; }
+
+#ieNine .iconId {
+  display: none; }
+
 .iconId {
   display: block;
   box-sizing: border-box;
@@ -471,7 +477,7 @@ a.three-d.last-menu-item {
   vertical-align: bottom;
   width: 100%; }
 
-@media screen and (max-width: 962px) {
+@media screen and (max-width: 769px) {
   .recent-projects h2 {
     margin: 5.5em 0 0; }
 
@@ -648,6 +654,37 @@ a.three-d.last-menu-item {
     right: 0;
     transition: all 1.2s ease-in-out;
     -webkit-transition: all 1.2s ease-in-out; } }
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
+  .recent-projects .projects {
+    width: 25%;
+    height: 100%;
+    display: inline-block;
+    margin: 1em auto; }
+
+  .recent-projects .projects .project-description {
+    display: none; }
+
+  .wrapper {
+    width: 100%; } }
+.wire-frame {
+  background: url("../img/wire-frame-website-800x600.png");
+  background-size: cover; }
+
+.service-list-image {
+  width: 50%;
+  height: 100%;
+  background: url("../img/wire-frame-blue-drawing-1159x780.jpg");
+  background-size: cover;
+  display: inline-block;
+  float: left; }
+
+.service-list-box {
+  width: 50%;
+  font-size: 1.3em;
+  text-align: center;
+  display: inline-block;
+  margin: 5% 0; }
+
 .footerColor {
   background: #ffe6b3; }
 

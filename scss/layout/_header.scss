@@ -213,6 +213,14 @@ div#imageMorph.section.fp-section.fp-table.active {
   display: none;
 }
 
+//Show Coditechture PNG fallback when IE9
+#ieNine #ct {
+  display: block;
+}
+//Hide SVG when IE9
+#ieNine .iconId {
+  display: none;
+}
 
 .iconId {
   display: block;
