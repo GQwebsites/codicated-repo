@@ -67,12 +67,13 @@ td,th{padding:0}
 #fp-nav ul li a span,.fp-slidesNav ul li a span{border-radius:50%;position:absolute;z-index:1;height:4px;width:4px;border:0;background:#333;left:50%;top:50%;margin:-2px 0 0 -2px;transition:all .1s ease-in-out;-webkit-transition:all .1s ease-in-out;-moz-transition:all .1s ease-in-out;-o-transition:all .1s ease-in-out}
 #fp-nav ul li:hover a span,.fp-slidesNav ul li:hover a span{width:10px;height:10px;margin:-5px 0 0 -5px}
 #fp-nav ul li .fp-tooltip{position:absolute;top:-2px;color:#fff;font-size:14px;font-family:arial,helvetica,sans-serif;white-space:nowrap;max-width:220px;overflow:hidden;display:block;opacity:0;width:0}
-.site,.threeD{position:relative;height:100%}
 #fp-nav ul li:hover .fp-tooltip,#fp-nav.fp-show-active a.active+.fp-tooltip{-webkit-transition:opacity .2s ease-in;transition:opacity .2s ease-in;width:auto;opacity:1}
 #fp-nav ul li .fp-tooltip.right{right:20px}
 #fp-nav ul li .fp-tooltip.left{left:20px}
 body,html{height:100%}
 h1,h2,h3,p{font-family:Roboto,sans-serif;font-weight:lighter}
+#top-logo-page-text{position:absolute;opacity:1;z-index:2000;margin:20% 47%;font-size:2em;color:#fff;font-weight:700;transition:all .3s ease-in-out;-webkit-transition:all .3s ease-in-out;-moz-transition:all .3s ease-in-out}
+.site,.threeD{position:relative;height:100%}
 svg{fill:#c0c1c3}
 .site{-webkit-transition:all 3s ease-in-out;-moz-transition:all 3s ease-in-out}
 .threeD{-webkit-perspective:60000em;-webkit-transition:all .07s linear;-moz-perspective:60000em;-moz-transition:all .07s linear;width:100%}
@@ -135,13 +136,14 @@ a.three-d.last-menu-item{padding:16px 17px}
 .responsive-web-dev img{width:85%;margin:1em auto}
 .responsive-web-dev #push-left-text{margin:2.6em .5em .5em;right:-100%;opacity:0}
 .recent-projects{width:100%;height:100%;background:#f2f2f2;position:relative;top:3.8em}
-.recent-projects h2{color:#4a4941;text-align:center;font-weight:700}
+.recent-projects h2{color:#576366;text-align:center;font-weight:700}
 .recent-projects p{text-align:center}
 .recent-projects .projects-block{text-align:center;-webkit-transition:all 2s ease-in-out;-moz-transition:all 2s ease-in-out}
 .recent-projects .projects{width:25%;overflow-x:hidden;display:inline-block;margin:2em;background-color:#fff}
+.recent-projects .projects .project-description .project-paragraph,.recent-projects .projects .project-description .project-title{position:relative;margin:0;color:#576366;left:-100%;opacity:0;-webkit-transition:all 1.6s ease-in-out;-moz-transition:all 1.6s ease-in-out}
 .recent-projects .projects .project-description{width:100%;height:100%;background-color:#ffe6b3;text-align:left}
-.recent-projects .projects .project-description .project-title{padding:.6em 0 0 .6em;opacity:0;margin:0;color:#4a4941;position:relative;left:-100%;-webkit-transition:all 1.6s ease-in-out;-moz-transition:all 1.6s ease-in-out;-webkit-margin-before:0;-webkit-margin-after:0;font-weight:700}
-.recent-projects .projects .project-description .project-paragraph{margin:0;padding:0 .6em .6em;position:relative;left:-100%;opacity:0;text-align:left;-webkit-transition:all 1.6s ease-in-out;-moz-transition:all 1.6s ease-in-out}
+.recent-projects .projects .project-description .project-title{padding:.6em 0 0 .6em;-webkit-margin-before:0;-webkit-margin-after:0;font-weight:700}
+.recent-projects .projects .project-description .project-paragraph{padding:0 .6em .6em;text-align:left}
 .bcolor{background:#f2f2f2}
 .wrapper{overflow:hidden;position:relative;height:100%;width:100%}
 .wrapper .overlay,.wrapper .overlay .arrow-left,.wrapper .overlay .rectangle{top:0;position:absolute}
@@ -150,7 +152,7 @@ a.three-d.last-menu-item{padding:16px 17px}
 .wrapper .overlay{display:block;width:100%;right:-100%;transition:.4s ease-out;-webkit-transition:.4s ease-out}
 .wrapper .overlay .rectangle{display:block;margin-left:200px;width:100%;height:100%;background-color:rgba(255,255,255,.95)}
 .wrapper .overlay .arrow-left{position:relative;left:0;width:0;height:0;top:0;bottom:0;border-bottom:500px solid transparent;border-right:200px solid rgba(255,255,255,.95)}
-.wrapper .description,.wrapper .link{position:absolute;top:0;left:0;right:0;bottom:0}
+.wrapper .description,.wrapper .link{top:0;position:absolute;left:0;right:0;bottom:0}
 .wrapper .description{text-align:left;padding:30px 50px;color:#cc6812;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);-moz-opacity:0;-khtml-opacity:0;opacity:0;transition:.2s ease-out;-webkit-transition:.2s ease-out}
 .wrapper .description h3{text-align:center;font-size:20px;margin-bottom:25px;font-weight:700}
 .wrapper .link{z-index:10;margin:0}
@@ -190,14 +192,33 @@ ul.projects-block{margin:0;padding:0;width:100%;height:auto}
 #ct{width:80%;display:block;margin:0 auto}
 #site-nav{right:0;transition:all 1.2s ease-in-out;-webkit-transition:all 1.2s ease-in-out}
 }
+#portfolioTitle,#portfolioURL,.service-list-box{text-align:center;color:#576366}
 @media only screen and (min-device-width:320px)and (max-device-width:568px)and (-webkit-min-device-pixel-ratio:2)and (orientation:landscape){.recent-projects .projects{width:25%;height:100%;display:inline-block;margin:1em auto}
 .recent-projects .projects .project-description{display:none}
 .wrapper{width:100%}
 }
-.wire-frame{background:url(../img/wire-frame-website-800x600.png);background-size:cover}
+.wire-frame{background:url(../img/wire-frame-website-800x600.png);background-size:cover;width:60%}
 .service-list-image{width:50%;height:100%;background:url(../img/wire-frame-blue-drawing-1159x780.jpg);background-size:cover;display:inline-block;float:left}
+.service-list-box{width:50%;font-size:1.3em;display:inline-block;margin:10% 0}
+.ipad-dev{background:url(../img/ipad-web-development.jpg);background-size:cover;width:60%}
+.pageLogoContainer{width:40%}
+.contact-list-image{width:50%;height:100%;background:url(../img/web-dev-for-iphone.jpg)center center;background-size:cover;display:inline-block;float:left}
+.remove-top{top:0}
+.about-image{background:url(../img/web-design-company.jpg)center center;background-size:cover;width:60%}
+.about-bottom-image{width:50%;height:100%;background:url(../img/web-design-1000x667.jpg)center center;background-size:cover;display:inline-block;float:left}
+.aboutP p{margin:2% 7%;line-height:1.5em}
+.about-title{font-size:1.3em}
+.portfolioBusinessLogoWrap{background-color:#f2f2f2}
+#portfolio-business-logo{width:80%;display:block;margin:1% auto}
+#portfolioTitle{margin:20% auto 0;font-weight:700}
+#portfolioURL{font-weight:700;margin-top:0}
+.portfolio-business-devices{background-color:#fff;width:60%}
+#devicesIMG{width:98%;margin-top:10%}
+#portfolio-big-image-sunrise{width:100%;background:url(../img/sunrise-screen.jpg)center center;background-size:cover}
 .bottomFooter,.footerColor,.footerSection{background:#ffe6b3}
-.service-list-box{width:50%;font-size:1.3em;text-align:center;display:inline-block;margin:5% 0}
+.portfolioRec{width:100%}
+#portfolio-logo{margin:5% auto;display:block}
+.full-project-list .projects{width:15%;margin:1em}
 .footerSection{width:100%;height:100%;position:relative;top:9.8em}
 .footerSection ul{text-align:center;display:block;padding:0;width:50%;height:100%;margin:0 auto;border-bottom:1px solid #29b2d1}
 .footerSection li{display:inline-block;float:left;text-align:center;width:30%;height:15%;margin-right:1em}

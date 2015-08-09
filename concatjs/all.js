@@ -2627,6 +2627,7 @@ $(document).ready(function() {
         $mobileMatch = matchMedia('(max-width: 600px)'),
         $biggerThanMobile = matchMedia('(min-width: 600px)'),
         $navLineContainer = $(".nav-line-container"),
+        $topLogoPageText = $("#top-logo-page-text"),
         $navLine = $(".navLine");
         
 
@@ -2650,6 +2651,7 @@ $(document).ready(function() {
 				$("#imageMorph").css({"margin-top" : "0"});
                 $("#push-left-text").css({"right" : "0", "opacity" : "1"});
                 $("#small-logo").css({"margin" : "4em 4em 4em 4em", "opacity" : "1"});
+                $topLogoPageText.css({"opacity" : "0"});
                 slideMenuOffScreenWhenMobile();
             }
 
@@ -2664,6 +2666,7 @@ $(document).ready(function() {
                 $siteNav.css({'background':"transparent"});
                 $("#front").css({'background-color':"transparent"});
                 $icon.attr('class', 'iconId');
+                $topLogoPageText.css({"opacity" : "1"});
             }
 
 

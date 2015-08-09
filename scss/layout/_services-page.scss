@@ -5,6 +5,7 @@
 .wire-frame {
   background: url('../img/wire-frame-website-800x600.png');
   background-size: cover;
+  width: 60%;
 }
 
 .service-list-image {
@@ -17,10 +18,11 @@
 }
 
 .service-list-box {
+	color: #576366;
 	width: 50%;
 	font-size: 1.3em;
 	text-align: center;
 	// color: $codicated-white-color;
 	display: inline-block;
-	margin: 5% 0;
+	margin: 10% 0;
 }
