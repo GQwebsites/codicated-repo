@@ -17,11 +17,20 @@
 	margin-bottom: 0;
 }
 
-#portfolioURL {
+#portfolioURL a{
 	color: $codicated-small-page-logo;
 	text-align: center;
 	font-weight: bold;
 	margin-top: 0;
+	text-decoration: none;
+	display: block;
+	transition: all .3s ease-in-out;
+	-webkit-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+}
+
+#portfolioURL a:hover {
+	color: #fff;
 }
 
 .portfolio-business-devices {
