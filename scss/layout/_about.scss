@@ -23,3 +23,145 @@
 .about-title {
 	font-size: 1.3em;
 }
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: portrait) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+
+	.mission-statement #small-logo {
+		display: block;
+		width: 80%;
+	}
+	.about-image {
+		width: 100%;
+		height: 50%;
+		display: inline-block;
+	}
+
+	.pageLogoContainer {
+		height: 50%;
+		width: 100%
+	}
+
+	.about-bottom-image {
+		width: 100%;
+    	height: 0%;
+	}
+
+	.service-list-box {
+		width: 100%;
+		margin: 20% 0;
+		font-size: 1.1em;
+	}
+
+	.mission-statement h1 {
+		margin: 1% 1em 30%;
+	    border: 2px solid #fff;
+	    padding: .5em;
+	    border-radius: 10px;
+	    font-size: 2.5em;
+	    z-index: 1000;
+	    position: absolute;
+	    background-color: rgb(41, 178, 209);
+	}
+ 	
+ 	//Bottom Arrow
+	#triangle {
+            display: none;
+    // -webkit-animation: bounce 2s infinite ease-in-out;
+}
+
+	@-webkit-keyframes bounce {
+	0%, 20%, 60%, 100%  { -webkit-transform: translateY(0); }
+    40%  { -webkit-transform: translateY(-20px); }
+	80% { -webkit-transform: translateY(-10px); }
+}
+
+#triangleTop {
+        border-right: .5em solid rgb(41, 178, 209);
+    	border-bottom: .5em solid rgb(41, 178, 209);
+	    width: 1.5em;
+	    height: 1.5em;
+	    transform: rotate(45deg);
+	    margin: auto;
+	    display: block;
+	    position: absolute;
+	    left: 0;
+	    right: 0;
+	    bottom: 20%;
+    // -webkit-animation: bounce 2s infinite ease-in-out;
+}
+
+
+}
+
+@media screen and (max-width: 600px) {
+	.about-image {
+		width: 100%;
+		display: none;
+	}
+
+	.pageLogoContainer {
+		height: 100%;
+		width: 100%
+	}
+
+	.about-bottom-image {
+		width: 100%;
+    	height: 0%;
+	}
+
+	.service-list-box {
+		width: 100%;
+		margin: 20% 0;
+		font-size: 1.1em;
+	}
+
+	.mission-statement h1 {
+		margin: 50% 1em 30%;
+	}
+ 	
+ 	//Bottom Arrow
+	#triangle {
+        border-right: .5em solid rgba(255,255,255,.53);
+	    border-bottom: .5em solid rgba(255,255,255,.53);
+	    width: 1.5em;
+	    height: 1.5em;
+	    transform: rotate(45deg);
+	    margin: auto;
+	    display: block;
+	    position: absolute;
+	    left: 0;
+	    right: 0;
+	    bottom: 20%;
+    // -webkit-animation: bounce 2s infinite ease-in-out;
+}
+
+	@-webkit-keyframes bounce {
+	0%, 20%, 60%, 100%  { -webkit-transform: translateY(0); }
+    40%  { -webkit-transform: translateY(-20px); }
+	80% { -webkit-transform: translateY(-10px); }
+}
+
+#triangleTop {
+        border-right: .5em solid rgb(41, 178, 209);
+    	border-bottom: .5em solid rgb(41, 178, 209);
+	    width: 1.5em;
+	    height: 1.5em;
+	    transform: rotate(45deg);
+	    margin: auto;
+	    display: block;
+	    position: absolute;
+	    left: 0;
+	    right: 0;
+	    bottom: 20%;
+    // -webkit-animation: bounce 2s infinite ease-in-out;
+}
+
+
+
+
+
+}

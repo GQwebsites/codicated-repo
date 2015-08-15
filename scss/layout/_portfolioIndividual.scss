@@ -50,3 +50,44 @@
 	background-position: center center;
 
 }
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: portrait) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+
+	#portfolioTitle {
+			margin: 10% auto 0;
+		    border: none;
+		    padding: 0;
+		    border-radius: 0;
+		    font-size: 2.5em;
+		    z-index: 0;
+		    position: relative;
+		    background-color: transparent;
+		}
+}
+
+ 
+@media screen and (max-width: 768px) {
+
+	#uniquePortfolio {
+		height: 40%;
+		width: 100%;
+
+	}
+
+	#portfolioURL {
+		text-align: center;
+    	margin: 0 auto 1em;
+	}
+
+	.portfolio-business-devices {
+		width: 100%;
+	}
+
+	#uniquePortfolioDeviceWrap {
+		display: inline-block;
+	}
+}

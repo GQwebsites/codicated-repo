@@ -244,6 +244,7 @@
     width: 100%;
   }
 
+
 @media screen and (max-width: 769px) {
   //Recent Projects mobile CSS
   .recent-projects h2 {
@@ -317,10 +318,46 @@
 
 }
 
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: portrait) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+
+    #frontMS {
+      width: 100%;
+      height: 40%;
+      background-color: #ffe6b3;
+
+        #small-logo {
+          display: none;
+        }
+
+        h1 {
+          margin: 10% 1em 30%;
+        }
+    }
+
+    #frontSW {
+    background-color: #ffe6b3;
+    width: 100%;
+
+      #push-left-text {
+        margin: .5em .5em .5em;
+        right: -100%;
+        opacity: 0;
+        font-size: 2em;
+      }
+    }
+}
+
 @media screen and (max-width: 600px) {
 
   .mission-statement {
     background-color: #f46c6c;
+    //background-color: #ffe6b3;
+    font-size: 1.1em;
+    font-weight: bold;
     display: inline-block;
     float: left;
     //height: 40%;
@@ -328,6 +365,10 @@
     position: relative;
     width: 100%;
     z-index: -100;
+}
+
+#frontMS {
+  background-color: #ffe6b3;
 }
 
   .mission-statement #small-logo {
@@ -338,9 +379,9 @@
 
   }
 
-  .mission-statement h1 {
-    font-size: 1.4em;
-    color: #fff;
+  .mission-statement .missionTitle {
+    // font-size: 1.4em;
+    color: $codicated-primary-color;
     //margin: 0 1em;
     margin: 1em;
     text-align: center;
@@ -354,6 +395,10 @@
       height: 70%;
       text-align: center;
       width: 100%;
+
+        h2 {
+          font-size: 1.2em;
+        }
   }
 
   .responsive-web-dev #push-left-text {

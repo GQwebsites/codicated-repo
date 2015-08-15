@@ -21,3 +21,87 @@
 .remove-top {
 	top: 0;
 }
+
+.contactPs {
+	text-align: center;
+	font-size: 1.3em;
+	color:#fff;
+}
+
+.contactHOnes {
+	text-align: center;
+
+}
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: portrait) 
+  and (-webkit-min-device-pixel-ratio: 1){
+
+  	#contactStatement #small-logo {
+	    display: block;
+	    width: 24%;
+}
+
+	.mission-statement .contactHOnes {
+		text-align: center;
+		margin: 33% 4em 20%;
+	    border: 2px solid #fff;
+	    padding: .5em 1em;
+	    border-radius: 10px;
+	    font-size: 2.5em;
+	    z-index: 1000;
+	    position: absolute;
+	    background-color: #29b2d1;
+
+	}
+
+	.contactPs {
+		font-size: 2em;
+	}
+}
+
+@media screen and (max-width: 600px) {
+
+.contact-list-image {
+		display: none;
+	}
+
+ #contactStatement {
+ 	height: 100%;
+ }
+
+ .ipad-dev {
+ 	display: none;
+ }
+
+ .mission-statement .contactHOnes {
+ 	margin: 40% 1em 1em;
+ 	font-size: 1.6em;
+    font-weight: bold;
+ }
+
+ .mission-statement .contactPs {
+ 	font-size: 1.2em;
+ }
+
+ .service-list-box .contactHtwo{
+ 	font-size: 1.5em;
+	margin: .67em 1em;
+ }
+
+ .service-list-box .contactPtwo{
+ 	font-size: 1em;
+ 	margin: 1em;
+ }
+
+ .phoneNum {
+ 	background-color: #29b2d1;
+    padding: 2%;
+    margin: 0 10%;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    box-shadow:0 5px 0 0 rgba(0,0,0,.01),0 4px 0 0 rgba(0,0,0,.02),0 3px 0 0 rgba(0,0,0,.04),0 2px 0 0 rgba(0,0,0,.06),0 1px 0 0 rgba(0,0,0,.08),0 1px 0 0 rgba(255,255,255,.1)inset,1px 0 0 0 rgba(255,255,255,.1)inset,-1px 0 0 0 rgba(255,255,255,.1)inset,0 -1px 0 0 rgba(0,0,0,.1)inset;
+ }
+}

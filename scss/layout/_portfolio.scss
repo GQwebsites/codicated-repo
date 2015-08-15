@@ -5,9 +5,153 @@
 #portfolio-logo {
 	margin: 5% auto;
 	display: block;
+	width: 40%;
 }
 
 .full-project-list .projects {
 	width: 15%;
 	margin: 1em;
+}
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: portrait) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+
+    #portfolio-logo {
+    margin: 15% auto 10%;
+    display: block;
+    width: 80%;
+    }
+
+    #portfolioMS h1 {
+    margin: 1% 1em 30%;
+    border: none;
+    padding: .5em;
+    border-radius: 10px;
+    font-size: 2.5em;
+    z-index: 1;
+    position: relative;
+    text-align: center;
+    background-color: transparent;
+    }
+
+    .full-project-list .projects {
+      width: 95%;
+      margin: 1em;
+      border: .2em solid #fff;
+      border-radius: 1em;
+    }
+
+    .recent-projects .projects .project-description {
+        font-size: 1.6em;
+    }
+
+    .recent-projects .projects {
+      height: 7%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+
+	#portfolio-logo {
+		// margin: 30% auto 3%;
+		// width: 70%;
+    display: none;
+	}
+
+	#portfolioMS {
+		height: 100%;
+	}
+
+	.mission-statement h1 {
+		font-size: 1.2em;
+	}
+
+	//Recent Projects mobile CSS
+  .recent-projects h2 {
+    margin: 5.5em 0 0;
+  }
+  .recent-projects>p {
+    text-align:left;
+    margin:0 .3em;
+    display: none;
+  }
+
+
+  ul.projects-block {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .recent-projects .projects {
+    width: 75%;
+    display:block;
+    margin: .5em auto;
+    background-color: #ffe6b3;
+  }
+
+  .wrapper{
+    height: 100%;
+    width: 50%;
+    display: inline-block;
+    float: left;
+  }
+
+  .recent-projects .projects .project-description {
+    width: 50%;
+    font-size: 1em;
+    text-align: left;
+    display: inline-block;
+      .project-title ,.project-paragraph{
+        left: 0px;
+        opacity: 1;
+        text-align: left;
+        
+  }
+  }
+
+  .recent-projects {
+    top: 0;
+  }
+
+ .wrapper:hover .description {
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    /* IE 5.5-7 */
+    filter: alpha(opacity=0);
+    /* Netscape */
+    -moz-opacity: 0;
+    /* Safari 1.x */
+    -khtml-opacity: 0;
+    /* Modern browsers */
+    opacity: 0;
+ 
+    transition: 1s ease-in;
+    -webkit-transition: 1s ease-in;
+  }
+
+  .wrapper:hover .overlay {
+    right: -200px;
+  }
+
+  //  .back-nav-lines {
+  //     margin-top: -15.5em;
+  // }
+
+  .ul-nav-back {
+        //height: 15.6em;
+        height: 70em;
+
+        //width: 79%;
+        width: 76%;
+
+  }
+
+  .hideImage {
+  	display: none;
+  }
 }

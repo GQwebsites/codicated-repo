@@ -39,7 +39,7 @@
 }
 
 .bottomFooter {
-	  background: $codicated-white-color;
+	  background: transparent;
 	  position:absolute;
     bottom: 7.4em;
 	img{
@@ -114,7 +114,8 @@
   }
 
   .bottomFooter {
-    bottom: 8.4em;
+    // bottom: 13.4em;
+    bottom: 11.4em;
   }
 
   .bottomFooter img {

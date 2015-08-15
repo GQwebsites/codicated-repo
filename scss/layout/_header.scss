@@ -4,17 +4,27 @@ h1, h2, h3, p {
   font-weight: lighter;
 }
 
+#triangleTop, #triangle {
+  display: none;
+}
+
 #top-logo-page-text {
 position: absolute;
 opacity: 1;
 z-index: 2000;
-margin: 20% 47%;
+margin: 3% 78%;
 font-size: 2em;
 color: #fff;
 font-weight: lighter;
-transition: all .3s ease-in-out;
--webkit-transition: all .3s ease-in-out;
--moz-transition: all .3s ease-in-out;
+transition: all .5s ease-in-out;
+-webkit-transition: all .5s ease-in-out;
+-moz-transition: all .5s ease-in-out;
+background-color: #576366;
+border-radius: .2em .2em;
+padding: 0px 0.1em;
+// -webkit-transform: rotate(7deg);
+// -moz-transform: rotate(7deg);
+// transform: rotate(7deg);
 }
 
 svg {
@@ -35,7 +45,7 @@ svg {
 
 .threeD {
   //-webkit-perspective: 220em;
-  -webkit-perspective: 60000em;
+  -webkit-perspective: 10000em;
   -webkit-transition: all .07s linear;
   //-moz-perspective: 220em;
   -moz-perspective: 60000em;
@@ -89,6 +99,7 @@ svg {
 	width: 100%;
 	position: fixed;
 	z-index: 100;
+  //border-bottom: 1px solid grey; 
 	
     transition-delay: .50s; // on way down workd good
     //-webkit-transition: all .4s ease-in-out;
@@ -123,7 +134,7 @@ svg {
       width: 100%;
       top: 0;
       left: 0;
-      transition-delay: .50s;
+      // transition-delay: .50s;
       //-webkit-transition: all .5s ease-out;
       //-webkit-transform-style: preserve-3d;
     }
@@ -311,6 +322,16 @@ div#imageMorph.section.fp-section.fp-table.active {
 
 @media screen and (max-width: 600px) {
 
+  #top-logo-page-text {
+    font-size: 1.3em;
+    right: 0;
+    left: 0;
+    width: 6em;
+    text-align: center;
+    margin: auto;
+    bottom: 25%;
+  }
+  
   #site-nav #front {
     transition-delay: .0s;
 

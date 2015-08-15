@@ -2645,6 +2645,7 @@ $(document).ready(function() {
 
             if(index == 1 && direction =='down'){
                 toggleOpenMenuOnScroll();
+                $("#back").css({"opacity" : "0"});
                 morphSVGtoRec();
                 $navLine.css({'background-color': '#fff','opacity': '0'});
 				$icon.attr('class', 'nav-after-logo-animation');
@@ -2659,6 +2660,7 @@ $(document).ready(function() {
 
             if(index == 2 && direction == 'up'){
                 toggleOpenMenuOnScroll();
+                $siteNav.css({"border-bottom" : "none"});
                 $navLine.css({'background-color': '#000','opacity': '0'});
                 $("#codicated-c").css({"opacity" : "0"});
                 morphSVGtoCoditechure();
@@ -2704,6 +2706,8 @@ $(document).ready(function() {
                  	if(index == 2){
 
                          $("#front").css({'background-color':"#29b2d1"});
+                         $siteNav.css({"border-bottom" : "1px solid grey"});
+                         $("#back").css({"opacity" : "1"});
                          slideMenuOnScreenWhenMobile();
 
                          navLineOpacityOne();

@@ -26,3 +26,20 @@
 	display: inline-block;
 	margin: 10% 0;
 }
+
+@media screen and (max-width: 600px) {
+	#serviceWF {
+		display: none;
+	}
+
+	.service-list-image {
+		width: 100%;
+    	height: 0%;
+	}
+
+	.service-list-box {
+		width: 100%;
+		margin: 20% 0;
+		font-size: 1.1em;
+	}
+}
