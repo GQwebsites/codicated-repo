@@ -318,12 +318,17 @@ div#imageMorph.section.fp-section.fp-table.active {
       transition-delay: .2s;
     }
 
+    #top-logo-page-text {
+      margin: 3% 70%;
+      font-size: 1.8em;
+    }
+
 }
 
 @media screen and (max-width: 600px) {
 
   #top-logo-page-text {
-    font-size: 1.3em;
+    font-size: 1em;
     right: 0;
     left: 0;
     width: 6em;
@@ -347,4 +352,22 @@ div#imageMorph.section.fp-section.fp-table.active {
     -webkit-transition: all .0s ease-in-out; 
     transition: all .0s ease-in-out;
   }
+
+  #triangleTop {
+        border-right: .5em solid rgb(41, 178, 209);
+      border-bottom: .5em solid rgb(41, 178, 209);
+      width: 1.5em;
+      height: 1.5em;
+      transform: rotate(45deg);
+      margin: auto;
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 20%;
+      opacity: .9;
+      transition: all 1.2s ease-in-out;
+      -webkit-transition: all 1.2s ease-in-out;
+    // -webkit-animation: bounce 2s infinite ease-in-out;
+}
 }

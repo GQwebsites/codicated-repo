@@ -49,7 +49,7 @@
     }
 
     .recent-projects .projects {
-      height: 7%;
+      height: 9em;
     }
 }
 
@@ -147,11 +147,245 @@
         height: 70em;
 
         //width: 79%;
-        width: 76%;
+        width: 74%;
 
   }
 
   .hideImage {
   	display: none;
   }
+
+  #removeElement {
+    display: none;
+  }
 }
+
+//LANDSCAPE MOBILE CSS
+
+@media only screen 
+  and (min-device-width: 414px) 
+  and (max-device-width: 736px) 
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: landscape) { 
+  
+  #top-logo-page-text {
+      margin: 40% 40%;
+    }
+
+  #small-logo {
+      display: none;
+  }
+
+  .mission-statement h1 {
+      margin: 1.5em 1em;
+  }
+
+  .recent-projects .projects {
+      width: 25%;
+      height: initial;
+      display: inline-block;
+      margin: 1em auto;
+    }
+
+    .recent-projects .projects .project-description {
+      display: none;
+    }
+
+    .wrapper {
+      width: 100%;
+
+    }
+
+    .pageLogoContainer {
+      font-size: .8em;
+    }
+
+    .service-list-box {
+      font-size: 1em;
+    }
+
+    //Individual Portfolio CSS 
+      #uniquePortfolio {
+         height: 100%;
+         width: 40%;
+      }
+
+      .portfolio-business-devices {
+        width: 60%;
+      }
+
+    .bottomFooter {
+      display: none;
+    }
+
+    #removeElement {
+      display: none;
+    }
+}
+
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) { 
+    
+      #small-logo {
+        display: none;
+    }
+
+    .mission-statement h1 {
+        margin: 1.5em 1em;
+    }
+
+    .responsive-web-dev #push-left-text {
+        margin: 1em .5em 0em
+    }
+
+    .recent-projects .projects {
+      width: 25%;
+      height: initial;
+      display: inline-block;
+      margin: 1em auto;
+    }
+
+    .recent-projects .projects .project-description {
+      display: none;
+    }
+    //About List CSS
+    #aboutLB {
+      font-size: .9em;
+    }
+
+    .wrapper {
+      width: 100%;
+
+    }
+
+    .pageLogoContainer {
+      font-size: .8em;
+    }
+
+    .service-list-box {
+      font-size: 1em;
+    }
+
+    //Individual Portfolio CSS 
+      #uniquePortfolio {
+         height: 100%;
+         width: 40%;
+      }
+
+      .portfolio-business-devices {
+        width: 60%;
+      }
+
+    .bottomFooter {
+      display: none;
+    }
+
+    #removeElement {
+      display: none;
+    }
+
+    #top-logo-page-text {
+      margin: 40% 40%;
+    }
+
+  }
+
+  @media only screen 
+    and (min-device-width: 320px) 
+    and (max-device-width: 568px)
+    and (-webkit-min-device-pixel-ratio: 2)
+    and (orientation: landscape) {
+
+    .mission-statement, .responsive-web-dev{
+      height: 100%;
+      width: 50%;
+    }
+
+    #contactStatement {
+      width: 100%;
+
+        .contactHOnes {
+          margin: 5% 1em 1em;
+        }
+    }
+
+    .responsive-web-dev img {
+      margin: 0 auto;
+    }
+  
+    .recent-projects .projects {
+      width: 25%;
+      height: initial;
+      display: inline-block;
+      margin: 1em auto;
+    }
+
+    .recent-projects .projects .project-description {
+      display: none;
+    }
+
+    .wrapper {
+      width: 100%;
+
+    }
+
+    .recent-projects .projects .project-description {
+      display: none;
+    }
+
+
+    //About Mission Statement & Service Mission statment CSS  & Portfolio MS
+      #portfolioMS {
+        width: 100%;
+      }
+
+      #aboutMS, #serviceMS, {
+        width: 100%;
+
+          h1 {
+            margin: 6em auto 0;
+            text-align: center;
+          }
+      }
+
+      #triangle {
+        bottom: 40%;
+      }
+
+    //Service List CSS 
+      #slist {
+        margin: 12% 0;
+
+         p{
+          margin: .6em;
+         }
+      }
+
+    //Individual Portfolio CSS 
+      .portfolio-business-devices {
+        width: 60%;
+      }
+    .bottomFooter {
+      display: none;
+    }
+
+
+    #top-logo-page-text {
+      bottom: 35%;
+      margin: auto;
+    }
+  }
+
+  @media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+
+    #top-logo-page-text {
+      margin: auto;
+    }
+  }

@@ -2645,6 +2645,7 @@ $(document).ready(function() {
 
             if(index == 1 && direction =='down'){
                 toggleOpenMenuOnScroll();
+                traingleOpacity()
                 $("#back").css({"opacity" : "0"});
                 morphSVGtoRec();
                 $navLine.css({'background-color': '#fff','opacity': '0'});
@@ -2773,6 +2774,11 @@ $(document).ready(function() {
             function navLineOpacityOne() {
                 var $navLine = $(".navLine");
                     $navLine.css({"opacity" : "1"});
+            }
+
+            function traingleOpacity() {
+                var $triangleTop = $("#triangleTop");
+                    $triangleTop.css({"opacity" : "0"});
             }
 });
 

@@ -38,7 +38,9 @@
   and (max-device-width: 1024px) 
   and (orientation: portrait) 
   and (-webkit-min-device-pixel-ratio: 1){
-
+ 	.ipad-dev {
+ 		width: 100%;
+ 	}
   	#contactStatement #small-logo {
 	    display: block;
 	    width: 24%;
@@ -60,6 +62,18 @@
 	.contactPs {
 		font-size: 2em;
 	}
+
+	.contact-list-image {
+    	display: none;
+    }
+
+    #serviceListId {
+    width: 90%;
+    margin: 90% auto 0;
+    font-size: 1.6em;
+    display: block;
+	}
+
 }
 
 @media screen and (max-width: 600px) {
