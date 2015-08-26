@@ -102,6 +102,7 @@
       // reset transitions
       path.style.transition = path.style.WebkitTransition = "none";
 
+
       // reset stroke dash array and stroke dash offset
       path.style.strokeDasharray = length + " " + length;
       path.style.strokeDashoffset = length;
@@ -115,6 +116,7 @@
 
       // fill the path
       this._fillPath( path );
+
     }
   }
 
@@ -128,6 +130,7 @@
   DrawFillSVG.prototype._fillPath = function( path ) {
     path.addEventListener( transEndEventName, function() {
       // reset transitions
+      //alert("NO");
       path.style.transition = path.style.WebkitTransition = "none";
       path.style.transition = path.style.WebkitTransition = "fill-opacity 1s ease-in-out, stroke-opacity 1s ease-in-out";
 

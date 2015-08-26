@@ -1,20 +1,35 @@
 
 $(document).ready(function() {
     
-      var myIcons = new SVGMorpheus('#icon'),
-        $siteNav = $("#site-nav"),
-        $icon    = $("#icon"),
-        $mobileMatch = matchMedia('(max-width: 600px)'),
-        $biggerThanMobile = matchMedia('(min-width: 600px)'),
-        $navLineContainer = $(".nav-line-container"),
-        $topLogoPageText = $("#top-logo-page-text"),
-        $navLine = $(".navLine");
-        
+      // var myIcons = new SVGMorpheus('#icon'),
+      //   $siteNav = $("#site-nav"),
+      //   $icon    = $("#icon"),
+      //   $mobileMatch = matchMedia('(max-width: 600px)'),
+      //   $biggerThanMobile = matchMedia('(min-width: 600px)'),
+      //   $navLineContainer = $(".nav-line-container"),
+      //   $topLogoPageText = $("#top-logo-page-text"),
+      //   $navLine = $(".navLine");
 
+        var myIcons = new SVGMorpheus('#icon');
+        var $siteNav = $("#site-nav");
+        var $icon    = $("#icon");
+        var $mobileMatch = matchMedia('(max-width: 600px)');
+        var $biggerThanMobile = matchMedia('(min-width: 600px)');
+        var $navLineContainer = $(".nav-line-container");
+        var $topLogoPageText = $("#top-logo-page-text");
+        var $navLine = $(".navLine");
+
+    
+        //CHeck if user is using IE 10
+        var ua = window.navigator.userAgent;
+        if (ua.indexOf("Trident/7.0") > 0) {
+          $('html').addClass('ieB');
+        }
         
         //Toggle Menu open & close
         $navLineContainer.on( "click", function() {
                     $(".threedbox").toggleClass('threedbox-open-menu');
+                    $(".ieBack").toggleClass('ieBackopen');
                 });
 
     $('#fullpage').fullpage({
@@ -65,6 +80,8 @@ $(document).ready(function() {
                 aboutUsDrawFillAnimation();
                 servicesDrawFillAnimation();
                 phoneDrawFillAnimation();
+                // Inline SVG
+                //new Vivus('about-us-icon', {type: 'delayed', duration: 200});
              }
 
          },afterLoad: function(anchorLink, index){
@@ -97,7 +114,14 @@ $(document).ready(function() {
 
                      if(index == 3){
                         $siteNav.css({'background-color':"transparent"});
+                        
                      }
+
+                     // if(index == 4){
+                     //    ab.reset().play();
+                        
+                     // }
+
 
                    }
             });
@@ -139,10 +163,15 @@ $(document).ready(function() {
             
             function toggleOpenMenuOnScroll() {
                 var $boxthreed = $('#boxthreed');
+                var $backMenu = $('#back');
                     if($boxthreed.hasClass('threedbox-open-menu')) {
                         var $threedbox = $(".threedbox");
                             $threedbox.toggleClass('threedbox-open-menu');
-                    } 
+                    }
+                    if($backMenu.hasClass('ieBackopen')) {
+                        var $ieBack = $(".ieBack");
+                            $ieBack.toggleClass('ieBackopen');
+                    }  
             }
 
             function coditechtureCopacityOne() {
@@ -183,25 +212,31 @@ $(document).ready(function() {
 //   }    
 // }
 
-
+// ab = new Vivus('about-us-icon', {type: 'delayed', duration: 200});
 
 function aboutUsDrawFillAnimation() {
-                    var myAnimation = new DrawFillSVG({
-                      elementId: "about-us-icon"
-                    });
-                  };
+                if (!$('html').hasClass('ieB')) {                
+                  var myAnimation = new DrawFillSVG({
+                    elementId: "about-us-icon"
+                  });
+                }
+              };
 
 function servicesDrawFillAnimation() {
-                    var myAnimation = new DrawFillSVG({
-                      elementId: "services-icon"
-                    });
-                  };
+                    if (!$('html').hasClass('ieB')) {                
+                  var myAnimation = new DrawFillSVG({
+                    elementId: "services-icon"
+                  });
+                }
+              };
 
 function phoneDrawFillAnimation() {
-                    var myAnimation = new DrawFillSVG({
-                      elementId: "phone-icon"
-                    });
-                  };
+                    if (!$('html').hasClass('ieB')) {                
+                  var myAnimation = new DrawFillSVG({
+                    elementId: "phone-icon"
+                  });
+                }
+              };
 
 
 

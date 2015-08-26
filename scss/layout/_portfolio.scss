@@ -15,6 +15,16 @@
 
 @media only screen 
   and (min-device-width: 768px) 
+  and (max-device-width: 1024px)  
+  and (-webkit-min-device-pixel-ratio: 1) {
+    
+    .wrapper .overlay, .wrapper .description {
+      display: none;
+    }
+  }
+
+@media only screen 
+  and (min-device-width: 768px) 
   and (max-device-width: 1024px) 
   and (orientation: portrait) 
   and (-webkit-min-device-pixel-ratio: 1) {
@@ -49,11 +59,29 @@
     }
 
     .recent-projects .projects {
-      height: 9em;
+      height: 8em;
     }
 }
 
 @media screen and (max-width: 600px) {
+
+  #portfolioTitle {
+    margin: 10% auto 0;
+  }
+
+  // //Individual logo sizes for portrait mode
+  // #sr #portfolio-business-logo {
+  //   width: 30%;
+  // }
+  // #lc #portfolio-business-logo {
+  //   width: 25%;
+  // }
+  // #pt #portfolio-business-logo {
+  //   width: 45%;
+  // }
+  // #sm #portfolio-business-logo {
+  //   width: 55%;
+  // }
 
 	#portfolio-logo {
 		// margin: 30% auto 3%;
@@ -160,6 +188,23 @@
   }
 }
 
+@media screen and (max-width: 600px)
+and (orientation: portrait) {
+  //Individual logo sizes for portrait mode
+  #sr #portfolio-business-logo {
+    width: 30%;
+  }
+  #lc #portfolio-business-logo {
+    width: 25%;
+  }
+  #pt #portfolio-business-logo {
+    width: 45%;
+  }
+  #sm #portfolio-business-logo {
+    width: 55%;
+  }
+}
+
 //LANDSCAPE MOBILE CSS
 
 @media only screen 
@@ -262,11 +307,15 @@
     }
 
     .pageLogoContainer {
-      font-size: .8em;
+      font-size: .9em;
     }
 
     .service-list-box {
       font-size: 1em;
+         a {
+            text-decoration: none;
+            color: $codicated-small-page-logo;
+        }
     }
 
     //Individual Portfolio CSS 
@@ -288,7 +337,8 @@
     }
 
     #top-logo-page-text {
-      margin: 40% 40%;
+      display: none;
+      font-size: 1em;
     }
 
   }
@@ -305,7 +355,7 @@
     }
 
     #contactStatement {
-      width: 100%;
+      //width: 100%;
 
         .contactHOnes {
           margin: 5% 1em 1em;
@@ -346,10 +396,11 @@
         width: 100%;
 
           h1 {
-            margin: 6em auto 0;
+            margin: 2em auto 0;
             text-align: center;
           }
       }
+
 
       #triangle {
         bottom: 40%;
@@ -383,9 +434,41 @@
   and (min-device-width: 320px) 
   and (max-device-width: 480px)
   and (-webkit-min-device-pixel-ratio: 2)
-  and (orientation: landscape) {
+  and (orientation: portrait) {
 
     #top-logo-page-text {
-      margin: auto;
+      font-size: .9em;
     }
+
+    #portfolioURL {
+      font-size: .7em;
+      margin: 0 auto;
+    }
+
+    #portfolioTitle {
+    margin: 5% auto 0; 
+
+  }
+}
+
+  @media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+  
+    // .pageLogoContainer{
+    //   font-size: 1em;
+    // }
+
+    // #top-logo-page-text {
+    //   margin: auto;
+    // }
+
+    #portfolioTitle {
+    margin: 5% auto 0; 
+
+  }
+
+
   }

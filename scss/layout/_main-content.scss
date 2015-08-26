@@ -15,13 +15,15 @@
 	position: relative;
 	//top: 100%;
 	-webkit-transition: all .9s ease-in-out; 
+  -ms-transition: all .9s ease-in-out;
 
 		#small-logo {
 			width:40%;
 			margin: 4em 4em 4em -100%;
 			opacity: 0;
 			-webkit-transition: all 2s ease-in-out; 
-			-moz-transition: all 2s ease-in-out; 
+			-moz-transition: all 2s ease-in-out;
+      -ms-transition: all 2s ease-in-out;  
 		}
 
 		h1 {
@@ -41,6 +43,7 @@
 	position: relative;
 	//top: 100%;
 	-webkit-transition: all 1.2s ease-in-out;
+  -ms-transition: all 1.2s ease-in-out;
 	//-webkit-transition-delay: .9s;
 	//margin-left: -100%;
 	
@@ -56,6 +59,7 @@
 			position: relative;
 			opacity: 0;
 			-webkit-transition: all 1.2s ease-in-out;
+      -ms-transition: all 1.2s ease-in-out;
 
 		}
 }
@@ -76,15 +80,19 @@
 		color: $codicated-small-page-logo;
 		text-align: center;
     font-weight: bold;
+    margin-top: 5em;
 	}
 	p{
 		text-align: center;
+    color: $codicated-small-page-logo;
 	}
 
 	.projects-block {
 		text-align: center;
 		-webkit-transition: all 2s ease-in-out;
-    -moz-transition: all 2s ease-in-out; 
+    -moz-transition: all 2s ease-in-out;
+    -ms-transition: all 2s ease-in-out; 
+    padding: 0;
 	}
 
 	.projects {
@@ -110,6 +118,7 @@
 				left: -100%;
 				-webkit-transition: all 1.6s ease-in-out;
         -moz-transition: all 1.6s ease-in-out;
+        -ms-transition: all 1.6s ease-in-out;
 				-webkit-margin-before: 0em;
 				-webkit-margin-after: 0em;
         font-weight: bold;
@@ -125,6 +134,7 @@
 				text-align: left;
 				-webkit-transition: all 1.6s ease-in-out;
         -moz-transition: all 1.6s ease-in-out;
+        -ms-transition: all 1.6s ease-in-out;
 				
 			}
 		}
@@ -201,12 +211,12 @@
   .wrapper .description {
     text-align: left;
     position: absolute;
-    padding: 30px 50px;
+    padding: 10px;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    color: #cc6812;
+    color: #576366;
  
     /* IE 8 */
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -225,7 +235,7 @@
     .wrapper .description h3 {
       text-align: center;
       font-size: 20px;
-      margin-bottom: 25px;
+      margin-bottom: 5px;
       font-weight: bold;
     }
  
@@ -533,57 +543,6 @@
   }
 }
 
-@media only screen 
-  and (min-device-width: 375px) 
-  and (max-device-width: 667px) 
-  and (-webkit-min-device-pixel-ratio: 2)
-  and (orientation: landscape) { 
-
-
-    .recent-projects .projects {
-      width: 25%;
-      height: initial;
-      display: inline-block;
-      margin: 1em auto;
-    }
-
-    .recent-projects .projects .project-description {
-      display: none;
-    }
-
-    .wrapper {
-      width: 100%;
-
-    }
-
-  }
-
-  @media only screen 
-    and (min-device-width: 320px) 
-    and (max-device-width: 568px)
-    and (-webkit-min-device-pixel-ratio: 2)
-    and (orientation: landscape) {
-  
-    .recent-projects .projects {
-      width: 25%;
-      height: initial;
-      display: inline-block;
-      margin: 1em auto;
-    }
-
-    .recent-projects .projects .project-description {
-      display: none;
-    }
-
-    .wrapper {
-      width: 100%;
-
-    }
-
-    .recent-projects .projects .project-description {
-      display: none;
-    }
-  }
 
 
 

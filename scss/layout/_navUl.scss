@@ -98,3 +98,14 @@
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+
+    .front-li {
+      display: none;
+    }
+
+    .ul-nav-back a:hover {
+      background-color: $codicated-primary-color;
+    }
+}

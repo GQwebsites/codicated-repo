@@ -1,6 +1,8 @@
-
+#uniquePortfolio {
+	z-index: 0;
+}
 .portfolioBusinessLogoWrap {
-	background-color: $light-grey;
+	background-color: #fff;
 }
 
 #portfolio-business-logo {
@@ -17,13 +19,21 @@
 	margin-bottom: 0;
 }
 
+#portfolioURL {
+	text-align: center;
+	margin-top: 0;
+}
+
 #portfolioURL a{
 	color: $codicated-small-page-logo;
-	text-align: center;
+	//text-align: center;
 	font-weight: bold;
-	margin-top: 0;
+	margin-top: .5em;
 	text-decoration: none;
-	display: block;
+	display: inline-block;
+	border: 1px solid;
+	border-radius: 5px;
+	padding: 5px 10px;
 	transition: all .3s ease-in-out;
 	-webkit-transition: all .3s ease-in-out;
 	-moz-transition: all .3s ease-in-out;
@@ -51,6 +61,28 @@
 
 }
 
+// @media only screen 
+//   and (min-device-width: 320px) 
+//   and (max-device-width: 480px)
+//   and (-webkit-min-device-pixel-ratio: 2)
+//   and (orientation: portrait) {
+//     .service-list-box {
+//       font-size: .9em;
+//     }
+
+//     #top-logo-page-text {
+//       font-size: .9em;
+//     }
+
+//     #portfolioTitle {
+//       margin: 5% auto 0;
+//     }
+
+//     #portfolioURL {
+//       margin: 0 auto;
+//     }
+//   }
+
 @media only screen 
   and (min-device-width: 768px) 
   and (max-device-width: 1024px) 
@@ -58,7 +90,7 @@
   and (-webkit-min-device-pixel-ratio: 1) {
 
 	#portfolioTitle {
-			margin: 10% auto 0;
+			margin: 5% auto 0;
 		    border: none;
 		    padding: 0;
 		    border-radius: 0;
@@ -67,6 +99,19 @@
 		    position: relative;
 		    background-color: transparent;
 		}
+	//Individual logo sizes for portrait mode
+	#sr #portfolio-business-logo {
+		width: 40%;
+	}
+	#lc #portfolio-business-logo {
+		width: 30%;
+	}
+	#pt #portfolio-business-logo {
+		width: 50%;
+	}
+	#sm #portfolio-business-logo {
+		width: 60%;
+	}
 }
 
  

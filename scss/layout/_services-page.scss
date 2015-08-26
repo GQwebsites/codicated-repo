@@ -2,6 +2,11 @@
 //    background-color: $nav-back;
 // }
 
+#serviceListId a {
+	text-decoration: none;
+	color: $codicated-small-page-logo;
+}
+
 .wire-frame {
   background: url('../img/wire-frame-website-800x600.png');
   background-size: cover;

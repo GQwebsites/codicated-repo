@@ -12,7 +12,8 @@ h1, h2, h3, p {
 position: absolute;
 opacity: 1;
 z-index: 2000;
-margin: 3% 78%;
+//margin: 3% 78%;
+margin: 37% 47%;
 font-size: 2em;
 color: #fff;
 font-weight: lighter;
@@ -69,6 +70,9 @@ svg {
       display: block;
       width: 100%;
       //background: #079391;
+      -ms-transform: translateZ(-25px);
+      -ms-transition: all .5s ease-out;
+      -ms-transform-style: preserve-3d;
       -webkit-transform: translateZ(-25px);
       -webkit-transition: all .5s ease-out;
       -webkit-transform-style: preserve-3d;
@@ -92,6 +96,7 @@ svg {
       -moz-transform:  rotateX(90deg) translateZ(0px);
       -moz-transition: all .5s ease-out;
       -moz-transform-style: preserve-3d;
+      -ms-transform:  rotateX(90deg) translateZ(0px);
     }
     
 #site-nav {
@@ -108,6 +113,7 @@ svg {
   #front {
       height: 61px;
       background: transparent;
+      -ms-transform: rotateX(0deg) translateZ(25px);
       -webkit-transform: rotateX(0deg) translateZ(25px);
       -moz-transform: rotateX(0deg) translateZ(25px);
       transition-delay: .50s;
@@ -127,6 +133,7 @@ svg {
     #back {
       height: 61px;
       background: $nav-back;
+      //-ms-transform: rotateX(-90deg)translateZ(31px);
       -webkit-transform: rotateX(-90deg)translateZ(31px);
       -moz-transform: rotateX(-90deg)translateZ(31px);
       position: absolute;
@@ -160,22 +167,26 @@ svg {
 @-webkit-keyframes bounceIn { 
     0% { 
         opacity: 0; 
+        -ms-transform: scale(.3);
         -webkit-transform: scale(.3); 
         -moz-transform: scale(.3);
     } 
 
     50% { 
         opacity: 1; 
+        -ms-transform: scale(1.05); 
         -webkit-transform: scale(1.05); 
         -moz-transform: scale(1.05); 
     } 
 
     70% { 
+        -ms-transform: scale(.9); 
         -webkit-transform: scale(.9); 
         -moz-transform: scale(.9);
     } 
 
     100% { 
+         -ms-transform: scale(1); 
          -webkit-transform: scale(1); 
          -moz-transform: scale(1);
     } 
@@ -237,13 +248,27 @@ div#imageMorph.section.fp-section.fp-table.active {
   display: none;
 }
 
-//Show Coditechture PNG fallback when IE9
+//Show Coditechture PNG fallback when IE9 & 8
 #ieNine #ct {
-  display: block;
+  display:block;
+  margin: auto;
+  padding: 60px;
+  top: 0;
+  -webkit-animation: linear bounceIn 1s;
+  -webkit-transition: all .01s ease-in-out;
+  box-sizing: border-box;
+  width: 100%;
+  background: #FFF;
+  position: relative;
 }
-//Hide SVG when IE9
+
+//Hide SVG when IE9 or ie8
 #ieNine .iconId {
   display: none;
+}
+
+#ieNine .nav-after-logo-animation {
+  max-height: 0;
 }
 
 .iconId {
@@ -261,6 +286,7 @@ div#imageMorph.section.fp-section.fp-table.active {
   -webkit-transition: all .01s ease-in-out; 
   -moz-animation: linear bounceIn 1s;
   -moz-transition: all .01s ease-in-out; 
+  -ms-transition: all .01s ease-in-out; 
 }
 
 .rec-svg {
@@ -287,6 +313,7 @@ div#imageMorph.section.fp-section.fp-table.active {
 
 	-webkit-transition: all 2.7s ease-in-out; 
   -moz-transition: all 2.7s ease-in-out; 
+  -ms-transition: all 2.7s ease-in-out;
 
 }
 
@@ -350,24 +377,57 @@ div#imageMorph.section.fp-section.fp-table.active {
 
   #site-nav #front #codicated-c {
     -webkit-transition: all .0s ease-in-out; 
+    -moz-transition: all .0s ease-in-out;
     transition: all .0s ease-in-out;
   }
 
   #triangleTop {
-        border-right: .5em solid rgb(41, 178, 209);
+      border-right: .5em solid rgb(41, 178, 209);
       border-bottom: .5em solid rgb(41, 178, 209);
       width: 1.5em;
       height: 1.5em;
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
       transform: rotate(45deg);
       margin: auto;
       display: block;
       position: absolute;
       left: 0;
       right: 0;
-      bottom: 20%;
+      bottom: 16%;
       opacity: .9;
-      transition: all 1.2s ease-in-out;
       -webkit-transition: all 1.2s ease-in-out;
+      transition: all 1.2s ease-in-out;
     // -webkit-animation: bounce 2s infinite ease-in-out;
 }
+}
+
+//CSS Styles for IE8 & 9
+  #ieNine .threedbox-open-menu {
+      -ms-transform:  rotateX(0) translateZ(0px);
+    }
+
+  #ieNine .ieBack {
+      -ms-transform:  rotateX(90deg) translateZ(31px);
+    }
+
+  #ieNine .ieBackopen {
+      -ms-transform: rotateX(0)translateZ(0);
+    }
+
+//Target Internet Expolrer 10 or higher
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {  
+
+   .threedbox-open-menu {
+      -ms-transform:  rotateX(0) translateZ(0px);
+    }
+
+   .ieBack {
+      -ms-transform:  rotateX(90deg) translateZ(31px);
+    }
+
+   .ieBackopen {
+      -ms-transform: rotateX(0)translateZ(0);
+    }
+
 }
