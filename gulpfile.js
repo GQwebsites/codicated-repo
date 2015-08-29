@@ -18,7 +18,7 @@ var gulp = require('gulp'),
 
 //Minify Concatinated JS
 gulp.task('minifyconcatjs',['concatFiles'], function(){
-  gulp.src('concatjs/all.js')
+  gulp.src('concatjs/*.js')
   .pipe(plumber())
   .pipe(uglify())
   .pipe(gulp.dest("minjs"));
@@ -66,7 +66,7 @@ gulp.task('minifycss',['cssConcat'], function() {
 });
 
 //Gulp Concat
-gulp.task('concatFiles', function() {
+gulp.task('concatFiles',['concatVendorFiles'], function() {
   return gulp.src('js/*.js')
     .pipe(concat('all.js'))
     .pipe(gulp.dest('./concatjs/'));
@@ -74,14 +74,14 @@ gulp.task('concatFiles', function() {
 
 //Gulp Concat Vendor JS
 gulp.task('concatVendorFiles', function() {
-  return gulp.src('js/vendor/*.js')
-    .pipe(concat('allvendor.js'))
+  return gulp.src('js/depend/*.js')
+    .pipe(concat('alldepend.js'))
     .pipe(gulp.dest('./concatjs/'));
 });
 
 //Minify Concatinated Vendor JS
 gulp.task('minifyVendorconcatjs',['concatVendorFiles'], function(){
-  gulp.src('concatjs/allvendor.js')
+  gulp.src('concatjs/alldepend.js')
   .pipe(plumber())
   .pipe(uglify())
   .pipe(gulp.dest("minjs"));
@@ -93,7 +93,7 @@ gulp.task('minifyVendorconcatjs',['concatVendorFiles'], function(){
   //gulp.watch('js/vendor/*.js', ["concatVendorFiles"]);
  	//gulp.watch('js/*.js', ["minifyjs"]);
   gulp.watch('js/*.js', ["minifyconcatjs"]);
-  gulp.watch('js/vendor/*.js', ["minifyVendorconcatjs"]);
+  //gulp.watch('js/vendor/*.js', ["minifyVendorconcatjs"]);
   // gulp.watch('scss/**/*.scss', ["sasstocss"]);
   // gulp.watch('css/**/*.css', ["prefix"]);
   // gulp.watch('css/**/*.css', ["cssConcat"]);

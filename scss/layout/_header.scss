@@ -12,17 +12,20 @@ h1, h2, h3, p {
 position: absolute;
 opacity: 1;
 z-index: 2000;
-//margin: 3% 78%;
-margin: 37% 47%;
-font-size: 2em;
+text-align: center;
+left: 0;
+right: 0;
+width:6em;
+margin: 37% auto;
+font-size: 1.6em;
 color: #fff;
 font-weight: lighter;
 transition: all .5s ease-in-out;
 -webkit-transition: all .5s ease-in-out;
 -moz-transition: all .5s ease-in-out;
 background-color: #576366;
-border-radius: .2em .2em;
-padding: 0px 0.1em;
+border-radius: .2em;
+padding: 0 .1em;
 // -webkit-transform: rotate(7deg);
 // -moz-transform: rotate(7deg);
 // transform: rotate(7deg);
@@ -212,17 +215,12 @@ svg {
     } 
 } 
 
-div#site-nav:hover {
-  //height:200px;
-  //background-color: #222222;
-  //-webkit-transform: rotateX(90deg); 
-}
 
-.nav-bar-bg {
-	height: 100%;
-	background: url(../img/header-new.svg);
-	background-size: cover;
-}
+// .nav-bar-bg {
+// 	height: 100%;
+// 	background: url(../img/header-new.svg);
+// 	background-size: cover;
+// }
 
 #fullpage {
   height: 100%;
@@ -429,5 +427,18 @@ div#imageMorph.section.fp-section.fp-table.active {
    .ieBackopen {
       -ms-transform: rotateX(0)translateZ(0);
     }
-
+//Rotate first Nav line to form X
+    #back .nav-line-container .navLine:first-child {
+      transform: rotate(45deg);
+      margin-top: .9em;
+    }
+//Rotate 2nd Nav line to form X
+    #back .nav-line-container .navLine:nth-child(2){
+      transform: rotate(-45deg);
+      margin-top: -.8em;
+    }
+//Hide third Nav line
+    #back .nav-line-container .navLine:nth-child(3){
+      display: none;
+    }
 }

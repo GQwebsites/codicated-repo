@@ -1,14 +1,5 @@
 
 $(document).ready(function() {
-    
-      // var myIcons = new SVGMorpheus('#icon'),
-      //   $siteNav = $("#site-nav"),
-      //   $icon    = $("#icon"),
-      //   $mobileMatch = matchMedia('(max-width: 600px)'),
-      //   $biggerThanMobile = matchMedia('(min-width: 600px)'),
-      //   $navLineContainer = $(".nav-line-container"),
-      //   $topLogoPageText = $("#top-logo-page-text"),
-      //   $navLine = $(".navLine");
 
         var myIcons = new SVGMorpheus('#icon');
         var $siteNav = $("#site-nav");
@@ -18,6 +9,8 @@ $(document).ready(function() {
         var $navLineContainer = $(".nav-line-container");
         var $topLogoPageText = $("#top-logo-page-text");
         var $navLine = $(".navLine");
+        var $back = $('#back');
+        var $front = $('#front');
 
     
         //CHeck if user is using IE 10
@@ -41,11 +34,11 @@ $(document).ready(function() {
             if(index == 1 && direction =='down'){
                 toggleOpenMenuOnScroll();
                 traingleOpacity()
-                $("#back").css({"opacity" : "0"});
+                $back.css({"opacity" : "0"});
                 morphSVGtoRec();
                 $navLine.css({'background-color': '#fff','opacity': '0'});
-				$icon.attr('class', 'nav-after-logo-animation');
-				$("#imageMorph").css({"margin-top" : "0"});
+				        $icon.attr('class', 'nav-after-logo-animation');
+				        $("#imageMorph").css({"margin-top" : "0"});
                 $("#push-left-text").css({"right" : "0", "opacity" : "1"});
                 $("#small-logo").css({"margin" : "4em 4em 4em 4em", "opacity" : "1"});
                 $topLogoPageText.css({"opacity" : "0"});
@@ -62,7 +55,7 @@ $(document).ready(function() {
                 morphSVGtoCoditechure();
                 slideMenuOffScreenWhenMobile()
                 $siteNav.css({'background':"transparent"});
-                $("#front").css({'background-color':"transparent"});
+                $front.css({'background-color':"transparent"});
                 $icon.attr('class', 'iconId');
                 $topLogoPageText.css({"opacity" : "1"});
             }
@@ -92,7 +85,7 @@ $(document).ready(function() {
                     }
 
                     // if(index == 2 && $mobileMatch.matches){
-                    //     $("#front").css({'background-color':"#29b2d1"});
+                    //     $front.css({'background-color':"#29b2d1"});
                     //     slideMenuOnScreenWhenMobile();
 
                     //     navLineOpacityOne();
@@ -103,9 +96,9 @@ $(document).ready(function() {
 
                  	if(index == 2){
 
-                         $("#front").css({'background-color':"#29b2d1"});
+                         $front.css({'background-color':"#29b2d1"});
                          $siteNav.css({"border-bottom" : "1px solid grey"});
-                         $("#back").css({"opacity" : "1"});
+                         $back.css({"opacity" : "1"});
                          slideMenuOnScreenWhenMobile();
 
                          navLineOpacityOne();
@@ -116,11 +109,6 @@ $(document).ready(function() {
                         $siteNav.css({'background-color':"transparent"});
                         
                      }
-
-                     // if(index == 4){
-                     //    ab.reset().play();
-                        
-                     // }
 
 
                    }
@@ -156,7 +144,7 @@ $(document).ready(function() {
 
             function frontMenuTransparent() {
                 if($biggerThanMobile.matches) {
-                    var $front = $("#front");
+                    var $front = $front;
                         $front.css({'background-color':"transparent"});
                 }
             }
