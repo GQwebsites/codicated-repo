@@ -16,7 +16,7 @@ $(document).ready(function() {
         //CHeck if user is using IE 10
         var ua = window.navigator.userAgent;
         if (ua.indexOf("Trident/7.0") > 0) {
-          $('html').addClass('ieB');
+          $('html').addClass('ie10');
         }
         
         //Toggle Menu open & close
@@ -115,13 +115,13 @@ $(document).ready(function() {
             });
 
     function morphSVGtoRec() {
-                if ($biggerThanMobile.matches) {
+                if ($biggerThanMobile.matches && !$('html').hasClass('ieB')) {
                     myIcons.to('rec-svg',{duration:1000});
                 }
             }
 
             function morphSVGtoCoditechure() {
-                if ($biggerThanMobile.matches) {
+                if ($biggerThanMobile.matches && !$('html').hasClass('ieB')) {
                     myIcons.to('codicated-logo-svg',{duration:1000});
                 }
             }
@@ -203,7 +203,7 @@ $(document).ready(function() {
 // ab = new Vivus('about-us-icon', {type: 'delayed', duration: 200});
 
 function aboutUsDrawFillAnimation() {
-                if (!$('html').hasClass('ieB')) {                
+                if (!$('html').hasClass('ieB') && !$('html').hasClass('ie10')) {                
                   var myAnimation = new DrawFillSVG({
                     elementId: "about-us-icon"
                   });
@@ -211,7 +211,7 @@ function aboutUsDrawFillAnimation() {
               };
 
 function servicesDrawFillAnimation() {
-                    if (!$('html').hasClass('ieB')) {                
+                    if (!$('html').hasClass('ieB') && !$('html').hasClass('ie10')) {                
                   var myAnimation = new DrawFillSVG({
                     elementId: "services-icon"
                   });
@@ -219,7 +219,7 @@ function servicesDrawFillAnimation() {
               };
 
 function phoneDrawFillAnimation() {
-                    if (!$('html').hasClass('ieB')) {                
+                    if (!$('html').hasClass('ieB') && !$('html').hasClass('ie10')) {                
                   var myAnimation = new DrawFillSVG({
                     elementId: "phone-icon"
                   });

@@ -1,3 +1,4 @@
+
 .ul-nav {
             display: inline-block;
 			overflow: hidden;
@@ -98,6 +99,14 @@
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
+
+#ieNine .three-d-box,#ieNine .front-li,#ieNine .back-li {
+      display: none;
+    }
+
+#ieNine .ul-nav-back a:hover {
+      background-color: $codicated-primary-color;
+    }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 

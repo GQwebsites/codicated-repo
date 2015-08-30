@@ -401,16 +401,17 @@ div#imageMorph.section.fp-section.fp-table.active {
 }
 
 //CSS Styles for IE8 & 9
-  #ieNine .threedbox-open-menu {
-      -ms-transform:  rotateX(0) translateZ(0px);
-    }
+  // #ieNine .threedbox-open-menu {
+  //     background-color: #000;
+  //   }
 
   #ieNine .ieBack {
-      -ms-transform:  rotateX(90deg) translateZ(31px);
+      display: none;
     }
 
   #ieNine .ieBackopen {
-      -ms-transform: rotateX(0)translateZ(0);
+      display: block
+      
     }
 
 //Target Internet Expolrer 10 or higher

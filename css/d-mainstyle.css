@@ -277,14 +277,11 @@ div#imageMorph.section.fp-section.fp-table.active {
     opacity: .9;
     -webkit-transition: all 1.2s ease-in-out;
     transition: all 1.2s ease-in-out; } }
-#ieNine .threedbox-open-menu {
-  -ms-transform: rotateX(0) translateZ(0px); }
-
 #ieNine .ieBack {
-  -ms-transform: rotateX(90deg) translateZ(31px); }
+  display: none; }
 
 #ieNine .ieBackopen {
-  -ms-transform: rotateX(0) translateZ(0); }
+  display: block; }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .threedbox-open-menu {
@@ -387,6 +384,12 @@ a.three-d.last-menu-item {
   padding: 15px 10px;
   pointer-events: none;
   box-sizing: border-box; }
+
+#ieNine .three-d-box, #ieNine .front-li, #ieNine .back-li {
+  display: none; }
+
+#ieNine .ul-nav-back a:hover {
+  background-color: #29b2d1; }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .front-li {
