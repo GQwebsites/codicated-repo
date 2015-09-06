@@ -46,7 +46,6 @@ svg {
   width: 100%; }
 
 .threedbox {
-  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -63,7 +62,6 @@ svg {
   -moz-transform-style: preserve-3d; }
 
 .threedbox-open-menu {
-  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -307,6 +305,30 @@ div#imageMorph.section.fp-section.fp-table.active {
 
   #back .nav-line-container .navLine:nth-child(3) {
     display: none; } }
+@supports (-ms-accelerator: true) {
+  .threedbox-open-menu {
+    -ms-transform: rotateX(0) translateZ(0px); }
+
+  .ieBack {
+    -ms-transform: rotateX(90deg) translateZ(31px); }
+
+  .ieBackopen {
+    -ms-transform: rotateX(0) translateZ(0); }
+
+  #back .nav-line-container .navLine:first-child {
+    -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+    margin-top: .9em; }
+
+  #back .nav-line-container .navLine:nth-child(2) {
+    -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    margin-top: -.8em; }
+
+  #back .nav-line-container .navLine:nth-child(3) {
+    display: none; } }
 .ul-nav {
   display: inline-block;
   overflow: hidden;
@@ -361,7 +383,7 @@ a.three-d.last-menu-item {
 
 .three-d-box, .front-li, .back-li {
   position: absolute;
-  top: 0;
+  top: 0.05em;
   left: 0;
   display: block;
   width: 100%;
@@ -392,6 +414,12 @@ a.three-d.last-menu-item {
   background-color: #29b2d1; }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .front-li {
+    display: none; }
+
+  .ul-nav-back a:hover {
+    background-color: #29b2d1; } }
+@supports (-ms-accelerator: true) {
   .front-li {
     display: none; }
 
@@ -1565,10 +1593,15 @@ a.three-d.last-menu-item {
   .footerSection li p {
     font-size: .9em; } }
 #ieNine .footerSection li {
-  height: auto;
+  height: 30%;
   width: 27%; }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .footerSection li {
-    height: auto;
+    height: 30%;
+    width: 27%; } }
+/* Windows 10 Edge Browser @supports method */
+@supports (-ms-accelerator: true) {
+  .footerSection li {
+    height: 30%;
     width: 27%; } }

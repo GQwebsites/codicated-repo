@@ -69,7 +69,7 @@
         }
 		.three-d-box, .front-li, .back-li {
 			position: absolute;
-            top: 0;
+            top: 0.05em;
             left: 0;
             display: block;
             width: 100%;
@@ -110,6 +110,16 @@
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 
+    .front-li {
+      display: none;
+    }
+
+    .ul-nav-back a:hover {
+      background-color: $codicated-primary-color;
+    }
+}
+
+@supports (-ms-accelerator:true) {
     .front-li {
       display: none;
     }

@@ -49,7 +49,8 @@ svg {
 
 .threeD {
   //-webkit-perspective: 220em;
-  -webkit-perspective: 10000em;
+   -webkit-perspective: 10000em;
+  //-webkit-perspective: 6000000em;
   -webkit-transition: all .07s linear;
   //-moz-perspective: 220em;
   -moz-perspective: 60000em;
@@ -66,7 +67,7 @@ svg {
 
 .threedbox {
       // height:61px;
-      height: 100%;
+      //height: 100%;
       position: absolute;
       top: 0;
       left: 0;
@@ -86,7 +87,7 @@ svg {
 
 .threedbox-open-menu {
       // height:61px;
-      height: 100%;
+      //height: 100%;
       position: absolute;
       top: 0;
       left: 0;
@@ -418,6 +419,34 @@ div#imageMorph.section.fp-section.fp-table.active {
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {  
 
    .threedbox-open-menu {
+      -ms-transform:  rotateX(0) translateZ(0px);
+    }
+
+   .ieBack {
+      -ms-transform:  rotateX(90deg) translateZ(31px);
+    }
+
+   .ieBackopen {
+      -ms-transform: rotateX(0)translateZ(0);
+    }
+//Rotate first Nav line to form X
+    #back .nav-line-container .navLine:first-child {
+      transform: rotate(45deg);
+      margin-top: .9em;
+    }
+//Rotate 2nd Nav line to form X
+    #back .nav-line-container .navLine:nth-child(2){
+      transform: rotate(-45deg);
+      margin-top: -.8em;
+    }
+//Hide third Nav line
+    #back .nav-line-container .navLine:nth-child(3){
+      display: none;
+    }
+}
+
+@supports (-ms-accelerator:true) {
+  .threedbox-open-menu {
       -ms-transform:  rotateX(0) translateZ(0px);
     }
 

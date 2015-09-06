@@ -177,13 +177,15 @@
 
 // Footer Styles for IE 9 & 8
 #ieNine  .footerSection li {
-    height: auto;
+    // height: auto;
+    height: 30%;
     width: 27%;
   }
 //Styles for IE 10+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .footerSection li {
-    height: auto;
+    // height: auto;
+    height: 30%;
     width: 27%;
   }
 
@@ -193,6 +195,17 @@
   // .footerSection li:nth-child(3) {
   //   margin-left: .7em;
   // }
+}
+
+/* Windows 10 Edge Browser @supports method */
+
+@supports (-ms-accelerator:true) {
+  .footerSection li {
+    // height: auto;
+    height: 30%;
+    width: 27%;
+  } 
+  
 }
 
 
