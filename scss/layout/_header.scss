@@ -336,8 +336,8 @@ div#imageMorph.section.fp-section.fp-table.active {
 }
 
 @media only screen 
-  and (min-device-width: 768px) 
-  and (max-device-width: 1024px) 
+  and (min-width: 768px) 
+  and (max-width: 1024px) 
   and (-webkit-min-device-pixel-ratio: 1) {
 
     #site-nav, #site-nav #front {
@@ -445,30 +445,30 @@ div#imageMorph.section.fp-section.fp-table.active {
     }
 }
 
-@supports (-ms-accelerator:true) {
-  .threedbox-open-menu {
-      -ms-transform:  rotateX(0) translateZ(0px);
-    }
+// @supports (-ms-accelerator:true) {
+//   .threedbox-open-menu {
+//       -ms-transform:  rotateX(0) translateZ(0px);
+//     }
 
-   .ieBack {
-      -ms-transform:  rotateX(90deg) translateZ(31px);
-    }
+//    .ieBack {
+//       -ms-transform:  rotateX(90deg) translateZ(31px);
+//     }
 
-   .ieBackopen {
-      -ms-transform: rotateX(0)translateZ(0);
-    }
-//Rotate first Nav line to form X
-    #back .nav-line-container .navLine:first-child {
-      transform: rotate(45deg);
-      margin-top: .9em;
-    }
-//Rotate 2nd Nav line to form X
-    #back .nav-line-container .navLine:nth-child(2){
-      transform: rotate(-45deg);
-      margin-top: -.8em;
-    }
-//Hide third Nav line
-    #back .nav-line-container .navLine:nth-child(3){
-      display: none;
-    }
-}
+//    .ieBackopen {
+//       -ms-transform: rotateX(0)translateZ(0);
+//     }
+// //Rotate first Nav line to form X
+//     #back .nav-line-container .navLine:first-child {
+//       transform: rotate(45deg);
+//       margin-top: .9em;
+//     }
+// //Rotate 2nd Nav line to form X
+//     #back .nav-line-container .navLine:nth-child(2){
+//       transform: rotate(-45deg);
+//       margin-top: -.8em;
+//     }
+// //Hide third Nav line
+//     #back .nav-line-container .navLine:nth-child(3){
+//       display: none;
+//     }
+// }

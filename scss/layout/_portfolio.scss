@@ -13,9 +13,10 @@
 	margin: 1em;
 }
 
+//The CSS I Change foe Samsung Tab 4 Test? Removed device from max-width
 @media only screen 
-  and (min-device-width: 768px) 
-  and (max-device-width: 1024px)  
+  and (min-width: 768px) 
+  and (max-width: 1024px)  
   and (-webkit-min-device-pixel-ratio: 1) {
     
     .wrapper .overlay, .wrapper .description {
@@ -23,9 +24,10 @@
     }
   }
 
+//The CSS I Change foe Samsung Tab 4 Test? Removed device from max-width
 @media only screen 
-  and (min-device-width: 768px) 
-  and (max-device-width: 1024px) 
+  and (min-width: 768px) 
+  and (max-width: 1024px) 
   and (orientation: portrait) 
   and (-webkit-min-device-pixel-ratio: 1) {
 

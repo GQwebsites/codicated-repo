@@ -228,7 +228,7 @@ div#imageMorph.section.fp-section.fp-table.active {
   #site-nav, #site-nav #front {
     -webkit-transition-delay: .2s;
             transition-delay: .2s; } }
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
   #site-nav, #site-nav #front {
     -webkit-transition-delay: .2s;
             transition-delay: .2s; }
@@ -282,30 +282,6 @@ div#imageMorph.section.fp-section.fp-table.active {
   display: block; }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .threedbox-open-menu {
-    -ms-transform: rotateX(0) translateZ(0px); }
-
-  .ieBack {
-    -ms-transform: rotateX(90deg) translateZ(31px); }
-
-  .ieBackopen {
-    -ms-transform: rotateX(0) translateZ(0); }
-
-  #back .nav-line-container .navLine:first-child {
-    -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-            transform: rotate(45deg);
-    margin-top: .9em; }
-
-  #back .nav-line-container .navLine:nth-child(2) {
-    -webkit-transform: rotate(-45deg);
-        -ms-transform: rotate(-45deg);
-            transform: rotate(-45deg);
-    margin-top: -.8em; }
-
-  #back .nav-line-container .navLine:nth-child(3) {
-    display: none; } }
-@supports (-ms-accelerator: true) {
   .threedbox-open-menu {
     -ms-transform: rotateX(0) translateZ(0px); }
 
@@ -414,12 +390,6 @@ a.three-d.last-menu-item {
   background-color: #29b2d1; }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .front-li {
-    display: none; }
-
-  .ul-nav-back a:hover {
-    background-color: #29b2d1; } }
-@supports (-ms-accelerator: true) {
   .front-li {
     display: none; }
 
@@ -683,7 +653,7 @@ a.three-d.last-menu-item {
     opacity: 1;
     transition: 1s ease-in;
     -webkit-transition: 1s ease-in; } }
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
   #frontMS {
     width: 100%;
     height: 40%;
@@ -852,7 +822,7 @@ a.three-d.last-menu-item {
   display: inline-block;
   margin: 10% 0; }
 
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
   .wire-frame {
     width: 100%; }
 
@@ -921,7 +891,7 @@ a.three-d.last-menu-item {
 .contactHOnes {
   text-align: center; }
 
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
   .ipad-dev {
     width: 100%; }
 
@@ -931,7 +901,7 @@ a.three-d.last-menu-item {
 
   .mission-statement .contactHOnes {
     text-align: center;
-    margin: 25% 4em 20%;
+    margin: 25% 22% 20%;
     border: 2px solid #fff;
     padding: .5em 1em;
     border-radius: 10px;
@@ -1006,7 +976,7 @@ a.three-d.last-menu-item {
 .about-title {
   font-size: 1.3em; }
 
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
   .mission-statement #small-logo {
     display: block;
     width: 80%; }
@@ -1164,7 +1134,7 @@ a.three-d.last-menu-item {
   background-size: cover;
   background-position: center center; }
 
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
   #portfolioTitle {
     margin: 5% auto 0;
     border: none;
@@ -1212,10 +1182,10 @@ a.three-d.last-menu-item {
   width: 15%;
   margin: 1em; }
 
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
   .wrapper .overlay, .wrapper .description {
     display: none; } }
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
   #portfolio-logo {
     margin: 15% auto 10%;
     display: block;
@@ -1556,13 +1526,13 @@ a.three-d.last-menu-item {
     width: 30%;
     margin: 0 auto;
     display: block; } }
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1) {
   .footerSection ul {
     margin: 17em auto; }
 
   .footerSection li {
     width: 28.7%;
-    height: 12%; }
+    height: 10%; }
 
   .bottomFooter {
     bottom: 18.4em; } }

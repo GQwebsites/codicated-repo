@@ -119,12 +119,12 @@
     }
 }
 
-@supports (-ms-accelerator:true) {
-    .front-li {
-      display: none;
-    }
+// @supports (-ms-accelerator:true) {
+//     .front-li {
+//       display: none;
+//     }
 
-    .ul-nav-back a:hover {
-      background-color: $codicated-primary-color;
-    }
-}
+//     .ul-nav-back a:hover {
+//       background-color: $codicated-primary-color;
+//     }
+// }

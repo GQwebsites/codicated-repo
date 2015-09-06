@@ -4131,6 +4131,9 @@ $(document).ready(function() {
         if (ua.indexOf("Trident/7.0") > 0) {
           $('html').addClass('ie10');
         }
+        if (ua.indexOf("Edge/12.0") > 0) {
+          $('html').addClass('edge12');
+        }
         
         //Toggle Menu open & close
         $navLineContainer.on( "click", function() {
@@ -4316,7 +4319,7 @@ $(document).ready(function() {
 // ab = new Vivus('about-us-icon', {type: 'delayed', duration: 200});
 
 function aboutUsDrawFillAnimation() {
-                if (!$('html').hasClass('ieB') && !$('html').hasClass('ie10')) {                
+                if (!$('html').hasClass('ieB') && !$('html').hasClass('ie10') && !$('html').addClass('edge12')) {                
                   var myAnimation = new DrawFillSVG({
                     elementId: "about-us-icon"
                   });
@@ -4324,7 +4327,7 @@ function aboutUsDrawFillAnimation() {
               };
 
 function servicesDrawFillAnimation() {
-                    if (!$('html').hasClass('ieB') && !$('html').hasClass('ie10')) {                
+                    if (!$('html').hasClass('ieB') && !$('html').hasClass('ie10') && !$('html').addClass('edge12')) {                
                   var myAnimation = new DrawFillSVG({
                     elementId: "services-icon"
                   });
@@ -4332,7 +4335,7 @@ function servicesDrawFillAnimation() {
               };
 
 function phoneDrawFillAnimation() {
-                    if (!$('html').hasClass('ieB') && !$('html').hasClass('ie10')) {                
+                    if (!$('html').hasClass('ieB') && !$('html').hasClass('ie10') && !$('html').addClass('edge12')) {                
                   var myAnimation = new DrawFillSVG({
                     elementId: "phone-icon"
                   });

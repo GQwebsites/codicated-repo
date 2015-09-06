@@ -111,7 +111,7 @@ div#imageMorph.section.fp-section.fp-table.active{margin-top:0}
 .nav-after-class-toggle{padding:0;position:fixed;margin-top:-35%;-webkit-transition:all 1.5s ease-in-out;-moz-transition:all 1.5s ease-in-out}
 @media only screen and (min-device-width:1600px)and (max-device-width:2560px)and (-webkit-min-device-pixel-ratio:1.5){#site-nav,#site-nav #front{-webkit-transition-delay:.2s;transition-delay:.2s}
 }
-@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (-webkit-min-device-pixel-ratio:1){#site-nav,#site-nav #front{-webkit-transition-delay:.2s;transition-delay:.2s}
+@media only screen and (min-width:768px)and (max-width:1024px)and (-webkit-min-device-pixel-ratio:1){#site-nav,#site-nav #front{-webkit-transition-delay:.2s;transition-delay:.2s}
 #top-logo-page-text{margin:3% 70%;font-size:1.8em}
 }
 @media screen and (max-width:600px){#top-logo-page-text{font-size:1em;right:0;left:0;width:6em;text-align:center;margin:auto;bottom:25%}
@@ -122,13 +122,6 @@ div#imageMorph.section.fp-section.fp-table.active{margin-top:0}
 #ieNine .ieBack{display:none}
 #ieNine .ieBackopen{display:block}
 @media screen and (-ms-high-contrast:active),(-ms-high-contrast:none){.threedbox-open-menu{-ms-transform:rotateX(0)translateZ(0)}
-.ieBack{-ms-transform:rotateX(90deg)translateZ(31px)}
-.ieBackopen{-ms-transform:rotateX(0)translateZ(0)}
-#back .nav-line-container .navLine:first-child{-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg);margin-top:.9em}
-#back .nav-line-container .navLine:nth-child(2){-webkit-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg);margin-top:-.8em}
-#back .nav-line-container .navLine:nth-child(3){display:none}
-}
-@supports (-ms-accelerator:true){.threedbox-open-menu{-ms-transform:rotateX(0)translateZ(0)}
 .ieBack{-ms-transform:rotateX(90deg)translateZ(31px)}
 .ieBackopen{-ms-transform:rotateX(0)translateZ(0)}
 #back .nav-line-container .navLine:first-child{-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg);margin-top:.9em}
@@ -149,9 +142,6 @@ a.three-d.last-menu-item{padding:16px 17px}
 #ieNine .back-li,#ieNine .front-li,#ieNine .three-d-box{display:none}
 #ieNine .ul-nav-back a:hover{background-color:#29b2d1}
 @media screen and (-ms-high-contrast:active),(-ms-high-contrast:none){.front-li{display:none}
-.ul-nav-back a:hover{background-color:#29b2d1}
-}
-@supports (-ms-accelerator:true){.front-li{display:none}
 .ul-nav-back a:hover{background-color:#29b2d1}
 }
 .statementWrapper{width:100%;height:100%;position:relative;top:3.8em}
@@ -195,7 +185,7 @@ ul.projects-block{margin:0;padding:0;width:100%;height:100%}
 .recent-projects{top:0}
 .wrapper:hover .description{-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";filter:alpha(opacity=1);-moz-opacity:1;-khtml-opacity:1;opacity:1;transition:1s ease-in;-webkit-transition:1s ease-in}
 }
-@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){#frontMS,#frontSW{background-color:#ffe6b3;width:100%}
+@media only screen and (min-width:768px)and (max-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){#frontMS,#frontSW{background-color:#ffe6b3;width:100%}
 #frontMS{height:40%}
 #frontMS #small-logo{display:none}
 #frontMS h1{margin:10% 1em 30%}
@@ -232,7 +222,7 @@ ul.projects-block{margin:0;padding:0;width:100%;height:auto}
 .wire-frame{background:url(../img/wire-frame-website-800x600.png);background-size:cover;width:60%}
 .service-list-image{width:50%;height:100%;background:url(../img/wire-frame-blue-drawing-1159x780.jpg);background-size:cover;display:inline-block;float:left}
 .service-list-box{color:#576366;width:50%;font-size:1.3em;display:inline-block;margin:10% 0}
-@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){.wire-frame{width:100%}
+@media only screen and (min-width:768px)and (max-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){.wire-frame{width:100%}
 .service-list-image{display:none}
 #slist{background-color:#fff;border-radius:.5em;margin:45% auto 0;width:90%;display:block;border:2px solid #ffe6b3;font-size:1.7em}
 .servicePbold{background-color:#ffe6b3;padding:1em 2em;margin:1em 5em;border-radius:.5em}
@@ -248,9 +238,9 @@ ul.projects-block{margin:0;padding:0;width:100%;height:auto}
 .remove-top{top:0}
 .contactPs{font-size:1.3em;color:#fff}
 .contactPs a{color:#fff;margin:0;padding:0}
-@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){.ipad-dev{width:100%}
+@media only screen and (min-width:768px)and (max-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){.ipad-dev{width:100%}
 #contactStatement #small-logo{display:block;width:24%}
-.mission-statement .contactHOnes{text-align:center;margin:25% 4em 20%;border:2px solid #fff;padding:.5em 1em;border-radius:10px;font-size:2.5em;z-index:1000;position:absolute;background-color:#29b2d1}
+.mission-statement .contactHOnes{text-align:center;margin:25% 22% 20%;border:2px solid #fff;padding:.5em 1em;border-radius:10px;font-size:2.5em;z-index:1000;position:absolute;background-color:#29b2d1}
 .contactPs{font-size:2em}
 .contact-list-image{display:none}
 #serviceListId{width:90%;margin:90% auto 0;font-size:1.6em;display:block}
@@ -268,7 +258,7 @@ ul.projects-block{margin:0;padding:0;width:100%;height:auto}
 .about-bottom-image{width:50%;height:100%;background:url(../img/web-design-1000x667.jpg)center center;background-size:cover;display:inline-block;float:left}
 .aboutP p{margin:2% 7%;line-height:1.5em}
 .about-title{font-size:1.3em}
-@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){.mission-statement #small-logo{display:block;width:80%}
+@media only screen and (min-width:768px)and (max-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){.mission-statement #small-logo{display:block;width:80%}
 #aboutLB{width:95%;margin:60% auto 0;font-size:1.6em;display:block}
 .about-image{width:100%;height:50%;display:inline-block}
 .pageLogoContainer{height:50%;width:100%}
@@ -300,7 +290,7 @@ ul.projects-block{margin:0;padding:0;width:100%;height:auto}
 .portfolio-business-devices{background-color:#fff;width:60%}
 #devicesIMG{width:98%;margin-top:10%}
 #portfolio-big-image-sunrise{width:100%;background:url(../img/sunrise-screen.jpg)center center;background-size:cover}
-@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){#portfolioTitle{margin:5% auto 0;border:none;padding:0;border-radius:0;font-size:2.5em;z-index:0;position:relative;background-color:transparent}
+@media only screen and (min-width:768px)and (max-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){#portfolioTitle{margin:5% auto 0;border:none;padding:0;border-radius:0;font-size:2.5em;z-index:0;position:relative;background-color:transparent}
 #sr #portfolio-business-logo{width:40%}
 #lc #portfolio-business-logo{width:30%}
 #pt #portfolio-business-logo{width:50%}
@@ -314,9 +304,9 @@ ul.projects-block{margin:0;padding:0;width:100%;height:auto}
 .portfolioRec{width:100%}
 #portfolio-logo{margin:5% auto;display:block;width:40%}
 .full-project-list .projects{width:15%;margin:1em}
-@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (-webkit-min-device-pixel-ratio:1){.wrapper .description,.wrapper .overlay{display:none}
+@media only screen and (min-width:768px)and (max-width:1024px)and (-webkit-min-device-pixel-ratio:1){.wrapper .description,.wrapper .overlay{display:none}
 }
-@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){#portfolio-logo{margin:15% auto 10%;display:block;width:80%}
+@media only screen and (min-width:768px)and (max-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){#portfolio-logo{margin:15% auto 10%;display:block;width:80%}
 #portfolioMS h1{margin:1% 1em 30%;border:none;padding:.5em;border-radius:10px;font-size:2.5em;z-index:1;position:relative;text-align:center;background-color:transparent}
 .full-project-list .projects{width:95%;margin:1em;border:.2em solid #fff;border-radius:1em}
 .recent-projects .projects .project-description{font-size:1.6em}
@@ -405,8 +395,8 @@ ul.projects-block{margin:0;padding:0;width:100%;height:auto}
 .bottomFooter{bottom:8.4em}
 .bottomFooter img{width:30%;margin:0 auto;display:block}
 }
-@media only screen and (min-device-width:768px)and (max-device-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){.footerSection ul{margin:17em auto}
-.footerSection li{width:28.7%;height:12%}
+@media only screen and (min-width:768px)and (max-width:1024px)and (orientation:portrait)and (-webkit-min-device-pixel-ratio:1){.footerSection ul{margin:17em auto}
+.footerSection li{width:28.7%;height:10%}
 .bottomFooter{bottom:18.4em}
 }
 @media screen and (max-width:600px){.footerSection ul{width:90%}
